@@ -86,6 +86,26 @@ class AdminPanelProvider extends PanelProvider
                         li.fi-sidebar-group:nth-of-type(2) button svg { color: #10b981 !important; } 
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
+
+                       /* 📍 ធ្វើឱ្យរូបកណ្តឹងលេចពណ៌ច្បាស់ (ពណ៌លឿង/មាស) */
+                        header.fi-topbar button svg {
+                            color: #fbd38d !important; /* ពណ៌លឿងស្រាល ឱ្យងាយឃើញ */
+                            transition: all 0.2s ease-in-out !important;
+                        }
+
+                        header.fi-topbar button:hover svg {
+                            color: #f59e0b !important; /* លឿងទុំពេលដាក់ Mouse លើ */
+                            transform: scale(1.15) !important;
+                        }
+
+                        /* 📍 ធ្វើឱ្យរង្វង់លេខ (Badge Notification) លេចពណ៌ក្រហមឆ្អៅ និងអក្សរស */
+                        header.fi-topbar button span[class*="bg-"],
+                        header.fi-topbar button div[class*="bg-"] {
+                            background-color: #ef4444 !important; /* ពណ៌ក្រហម */
+                            color: #ffffff !important; /* លេខពណ៌ស */
+                            border: none !important;
+                            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important; /* ថែមស្រមោលក្រហមតិចៗឱ្យកាន់តែលេច */
+                        }
                     </style>
                 ')
             )
@@ -101,7 +121,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 // 📍 យើងលុប/បិទ Widgets\AccountWidget::class ចេញ ដើម្បីកុំឱ្យវាចេញប្រអប់ Welcome ជាន់គ្នា
-                // ព្រោះប្រព័ន្ធនឹងទាញយក WelcomeWidget ថ្មីដែលយើងទើបបង្កើតអម្បាញ់មិញយកមកបង្ហាញដោយស្វ័យប្រវត្តិហើយ!
             ])
             ->middleware([
                 EncryptCookies::class,
