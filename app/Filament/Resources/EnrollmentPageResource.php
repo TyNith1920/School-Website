@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -25,7 +24,6 @@ class EnrollmentPageResource extends Resource
 
     protected static ?string $navigationGroup = 'Admissions & Careers';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'Enrollment Page';
     protected static ?string $pluralModelLabel = 'Enrollment Pages';
 
@@ -35,10 +33,6 @@ class EnrollmentPageResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (Text Content)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('Hero Section')
@@ -71,9 +65,6 @@ class EnrollmentPageResource extends Resource
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Media & Files)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('Media & Attachments')
@@ -82,14 +73,21 @@ class EnrollmentPageResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Featured Image')
+                                            ->disk('cloudinary') 
+                                            ->fetchFileInformation(false) 
                                             ->image()
                                             ->directory('enrollment')
                                             ->required(),
                                             
+                                        // 📍 កែប្រែត្រង់នេះឱ្យត្រូវ ១០០%
                                         FileUpload::make('pdf_file')
                                             ->label('📄 Enrollment Form (PDF)')
-                                            ->acceptedFileTypes(['application/pdf'])
-                                            ->directory('enrollment/pdfs'),
+                                            ->disk('public') // 👈 បង្ខំឱ្យប្រើ public (Local)
+                                            ->directory('enrollment/pdfs')
+                                            ->preserveFilenames()
+                                            ->downloadable()
+                                            ->openable(),
+                                            // 👈 មិនបាច់ដាក់ acceptedFileTypes ទេ ទុកឱ្យវាទទេរបែបនេះមានសុវត្ថិភាពជាង
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
                             
@@ -103,6 +101,7 @@ class EnrollmentPageResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
+                    ->disk('cloudinary') 
                     ->circular(),
 
                 TextColumn::make('hero_title')
@@ -129,7 +128,7 @@ class EnrollmentPageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->button(),
-                Tables\Actions\DeleteAction::make()->button(), // 📍 ថែមប៊ូតុង Delete ឱ្យកុំឱ្យខ្វះ
+                Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

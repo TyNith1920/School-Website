@@ -65,6 +65,8 @@ class FacultyResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('📸 Profile Image')
+                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                                             ->image()
                                             ->directory('faculties'),
 
@@ -86,6 +88,7 @@ class FacultyResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('📸 Image')
+                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
                     ->circular(),
 
                 TextColumn::make('name')

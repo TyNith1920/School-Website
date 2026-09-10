@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -25,7 +24,6 @@ class NewsResource extends Resource
 
     protected static ?string $navigationGroup = 'Website Content';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'News & Event';
     protected static ?string $pluralModelLabel = 'News & Events';
 
@@ -35,10 +33,6 @@ class NewsResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (News Details)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('Article Information')
@@ -57,7 +51,6 @@ class NewsResource extends Resource
                                             ->placeholder('https://facebook.com/...')
                                             ->url(),
 
-                                        // 📍 ប្រើ RichEditor ជំនួស Textarea ដើម្បីឱ្យ Admin អាចលេងស្ទាយអក្សរបាន
                                         RichEditor::make('description')
                                             ->label('📝 Content Details')
                                             ->toolbarButtons([
@@ -68,9 +61,6 @@ class NewsResource extends Resource
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Media)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('Media')
@@ -79,9 +69,10 @@ class NewsResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Featured Image')
+                                            ->disk('cloudinary') // 📍 បន្ថែមបន្ទាត់នេះ ដើម្បីបញ្ជូនរូបទៅ Cloudinary
                                             ->image()
                                             ->directory('news-images')
-                                            ->required() // គួរតែតម្រូវឱ្យមានរូបភាពជានិច្ច
+                                            ->required()
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
@@ -96,7 +87,8 @@ class NewsResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
-                    ->circular(), // ធ្វើឱ្យរូបភាពចេញជារង្វង់មូល
+                    ->disk('cloudinary') // 📍 បន្ថែមបន្ទាត់នេះ ដើម្បីទាញរូបពី Cloudinary មកបង្ហាញក្នុងតារាង
+                    ->circular(), 
 
                 TextColumn::make('title')
                     ->label('🏷️ Title')
@@ -104,7 +96,7 @@ class NewsResource extends Resource
                     ->sortable()
                     ->weight('bold')
                     ->color('primary')
-                    ->limit(40), // កាត់អត្ថបទបើវែងពេកកុំឱ្យខូចតារាង
+                    ->limit(40), 
 
                 TextColumn::make('link')
                     ->label('🔗 Link')
@@ -113,10 +105,10 @@ class NewsResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label('📅 Posted Date')
-                    ->dateTime('d M Y, h:i A') // ទម្រង់ថ្ងៃខែស្អាត
+                    ->dateTime('d M Y, h:i A') 
                     ->sortable()
                     ->badge()
-                    ->color('success'), // ប្រអប់ពណ៌បៃតង
+                    ->color('success'), 
             ])
             ->filters([
                 //

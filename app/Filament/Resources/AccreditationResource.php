@@ -108,6 +108,8 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('logo')
                             ->label('Organization Logo')
+                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                             ->helperText(
                                 'Recommended: transparent PNG or WebP image, up to 2MB.'
                             )
@@ -147,6 +149,8 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('document_image')
                             ->label('Certificate Images')
+                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                             ->helperText(
                                 'Upload up to 10 JPG, PNG, or WebP images. Each image must be no larger than 5MB.'
                             )
@@ -183,6 +187,8 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('gallery')
                             ->label('Gallery Images')
+                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                             ->helperText(
                                 'Upload up to 50 JPG, PNG, or WebP images. Each image must be no larger than 5MB.'
                             )
@@ -219,6 +225,7 @@ class AccreditationResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('Logo')
+                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
                     ->height(60)
                     ->width(70)
                     ->extraImgAttributes([

@@ -8,6 +8,14 @@
 @section('content')
 
 @php
+    // 📍 មុខងារទាញរូបភាពពី Cloudinary ដោយសុវត្ថិភាព
+    $getMediaUrl = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try { return \Storage::disk('cloudinary')->url($path); } 
+        catch (\Exception $e) { return asset('storage/' . $path); }
+    };
+
     $rawImages = $activity->gallery_images;
 
     if (is_array($rawImages)) {
@@ -18,9 +26,10 @@
         $storedImages = [];
     }
 
+    // 📍 ប្រើប្រាស់ $getMediaUrl សម្រាប់រូបភាព Gallery នីមួយៗ
     $galleryImages = collect($storedImages)
         ->filter()
-        ->map(fn ($image) => asset('storage/' . $image))
+        ->map(fn ($image) => $getMediaUrl($image))
         ->values()
         ->all();
 @endphp
@@ -29,7 +38,7 @@
 <section class="relative isolate min-h-[430px] overflow-hidden bg-slate-950 md:min-h-[500px]">
     @if($activity->image)
         <img
-            src="{{ Storage::url($activity->image) }}"
+            src="{{ $getMediaUrl($activity->image) }}"
             alt="{{ $activity->title }}"
             class="absolute inset-0 h-full w-full object-cover"
         >

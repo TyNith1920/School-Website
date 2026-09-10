@@ -63,11 +63,15 @@ class ChildSafeguardingResource extends Resource
                                     ->schema([
                                         FileUpload::make('pdf_file')
                                             ->label('📄 Policy Document (PDF)')
+                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                                             ->acceptedFileTypes(['application/pdf'])
                                             ->directory('safeguarding-pdfs'),
                                             
                                         FileUpload::make('images')
                                             ->label('🖼️ Images')
+                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                                             ->image()
                                             ->multiple() 
                                             ->panelLayout('grid') 
@@ -93,6 +97,7 @@ class ChildSafeguardingResource extends Resource
                     
                 ImageColumn::make('images')
                     ->label('🖼️ Images')
+                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
                     ->circular() 
                     ->stacked() 
                     ->limit(3), 

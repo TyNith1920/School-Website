@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -65,7 +64,7 @@ class CareerResource extends Resource
                                         RichEditor::make('description')
                                             ->label('📝 Job Description')
                                             ->columnSpanFull(),
-                                    ])->columns(2), // បែងចែកប្រអប់ Title និង Type ជា ២ ជួរស្មើគ្នា
+                                    ])->columns(2), 
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
                         // ==============================================
@@ -83,6 +82,7 @@ class CareerResource extends Resource
 
                                         FileUpload::make('application_file')
                                             ->label('📄 Application Form (PDF)')
+                                            ->disk('public') // 📍 រក្សាទុក PDF ក្នុង Local Public Disk ដូចទំព័រ Enrollment
                                             ->directory('careers-files')
                                             ->acceptedFileTypes(['application/pdf']),
                                     ]),
@@ -107,9 +107,9 @@ class CareerResource extends Resource
                     ->label('💼 Job Type')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Full-Time' => 'success', // ពណ៌បៃតង
-                        'Part-Time' => 'warning', // ពណ៌ទឹកក្រូច
-                        'Contract' => 'info',     // ពណ៌ខៀវ
+                        'Full-Time' => 'success', 
+                        'Part-Time' => 'warning', 
+                        'Contract' => 'info',    
                         default => 'primary',
                     }),
 
@@ -121,7 +121,7 @@ class CareerResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label('📅 Posted Date')
-                    ->dateTime('d M Y') // ទម្រង់ថ្ងៃខែស្អាត
+                    ->dateTime('d M Y') 
                     ->sortable(),
             ])
             ->filters([

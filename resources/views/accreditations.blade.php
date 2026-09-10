@@ -4,6 +4,16 @@
 
 @section('content')
 
+    @php
+        // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាពពី Cloudinary
+        $getMediaUrl = function($path) {
+            if (empty($path)) return null;
+            if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+            try { return \Storage::disk('cloudinary')->url($path); } 
+            catch (\Exception $e) { return asset('storage/' . $path); }
+        };
+    @endphp
+
     {{-- Alpine.js សម្រាប់ Certificate និង Gallery sliders --}}
     <script
         defer
@@ -26,8 +36,7 @@
         @if(isset($setting) && $setting->banner_image)
             <div
                 class="relative w-full h-[300px] md:h-[500px] bg-cover bg-center"
-                style="background-image:
-                    url('{{ asset('storage/' . $setting->banner_image) }}');"
+                style="background-image: url('{{ $getMediaUrl($setting->banner_image) }}');"
             >
                 <div class="absolute inset-0 bg-black bg-opacity-30"></div>
 
@@ -38,8 +47,7 @@
             </div>
         @else
             <div
-                class="relative w-full h-[300px] md:h-[500px]
-                       bg-[#1a365d] overflow-hidden"
+                class="relative w-full h-[300px] md:h-[500px] bg-[#1a365d] overflow-hidden"
             >
                 <div
                     class="absolute inset-0 opacity-20"
@@ -67,11 +75,10 @@
             <div class="flex flex-wrap justify-center items-center gap-10 md:gap-20 mb-16">
                 @foreach($accreditations as $acc)
                     @if($acc->logo)
-                        <!-- (📍 ថែម AOS Zoom-in ជារលកតាមរយៈ $loop->index) -->
                         <img
                             data-aos="zoom-in"
                             data-aos-delay="{{ $loop->index * 150 }}"
-                            src="{{ asset('storage/' . $acc->logo) }}"
+                            src="{{ $getMediaUrl($acc->logo) }}"
                             alt="{{ $acc->name }}"
                             class="h-20 md:h-28 max-w-[220px] object-contain transition-transform duration-300 hover:scale-105"
                             loading="lazy"
@@ -80,7 +87,7 @@
                 @endforeach
             </div>
 
-            {{-- Introduction (📍 ថែម AOS Fade-up) --}}
+            <!-- {{-- Introduction --}}
             <p
                 data-aos="fade-up"
                 class="text-center text-gray-800 text-base md:text-lg max-w-4xl mx-auto font-medium leading-relaxed mb-24 md:mb-32"
@@ -95,33 +102,19 @@
                 school meets the standards established for international
                 schools and continuously evaluates and improves its programs
                 and teaching.
-            </p>
+            </p> -->
 
             {{-- Accreditation Details --}}
             @foreach($accreditations as $acc)
 
                 @php
-                    /*
-                     * គាំទ្រទាំងទិន្នន័យចាស់ជា string
-                     * និងទិន្នន័យថ្មីជា array។
-                     */
                     $documentImages = is_array($acc->document_image)
-                        ? array_values(
-                            array_filter($acc->document_image)
-                        )
-                        : (
-                            filled($acc->document_image)
-                                ? [$acc->document_image]
-                                : []
-                        );
+                        ? array_values(array_filter($acc->document_image))
+                        : (filled($acc->document_image) ? [$acc->document_image] : []);
 
                     $galleryImages = is_array($acc->gallery)
                         ? array_values(array_filter($acc->gallery))
-                        : (
-                            filled($acc->gallery)
-                                ? [$acc->gallery]
-                                : []
-                        );
+                        : (filled($acc->gallery) ? [$acc->gallery] : []);
 
                     $hasDocuments = count($documentImages) > 0;
                     $hasGallery = count($galleryImages) > 0;
@@ -130,13 +123,11 @@
                 @if($hasDocuments || $hasGallery)
                     <section class="mb-28 md:mb-40 overflow-hidden">
 
-                        <!-- (📍 ថែម AOS Fade-up លើចំណងជើង) -->
                         <h2 data-aos="fade-up" class="text-3xl md:text-5xl font-extrabold text-center text-black mb-12 md:mb-20">
                             {{ $acc->name }}
                         </h2>
 
                         @if($acc->description)
-                            <!-- (📍 ថែម AOS Fade-up លើអត្ថបទ) -->
                             <p data-aos="fade-up" data-aos-delay="100" class="max-w-4xl mx-auto text-center text-gray-700 leading-relaxed mb-12">
                                 {{ $acc->description }}
                             </p>
@@ -146,7 +137,6 @@
 
                             {{-- Certificate Images Slider --}}
                             @if($hasDocuments)
-                                <!-- (📍 ថែម AOS Fade-right ឱ្យស្លាយនេះរុញចូលពីឆ្វេង) -->
                                 <div data-aos="fade-right" data-aos-delay="200" class="w-full {{ $hasGallery ? 'xl:w-5/12' : 'max-w-3xl mx-auto' }}">
                                     <h3 class="text-xl font-bold text-center mb-5">
                                         Certificates
@@ -165,13 +155,13 @@
                                                     x-show="activeDocument === {{ $index }}"
                                                     x-transition.opacity
                                                     x-cloak
-                                                    href="{{ asset('storage/' . $documentImage) }}"
+                                                    href="{{ $getMediaUrl($documentImage) }}"
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     class="absolute inset-0 flex items-center justify-center p-4 md:p-6"
                                                 >
                                                     <img
-                                                        src="{{ asset('storage/' . $documentImage) }}"
+                                                        src="{{ $getMediaUrl($documentImage) }}"
                                                         alt="{{ $acc->name }} certificate {{ $index + 1 }}"
                                                         class="w-full h-full object-contain"
                                                         loading="lazy"
@@ -219,7 +209,6 @@
 
                             {{-- Activity Gallery Slider --}}
                             @if($hasGallery)
-                                <!-- (📍 ថែម AOS Fade-left ឱ្យស្លាយនេះរុញចូលពីស្តាំ) -->
                                 <div data-aos="fade-left" data-aos-delay="300" class="w-full {{ $hasDocuments ? 'xl:w-7/12' : 'max-w-6xl mx-auto' }} flex flex-col justify-center">
                                     <h3 class="text-xl font-bold text-center mb-5">
                                         Activity Gallery
@@ -238,13 +227,13 @@
                                                     x-show="activeSlide === {{ $index }}"
                                                     x-transition.opacity
                                                     x-cloak
-                                                    href="{{ asset('storage/' . $image) }}"
+                                                    href="{{ $getMediaUrl($image) }}"
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     class="absolute inset-0"
                                                 >
                                                     <img
-                                                        src="{{ asset('storage/' . $image) }}"
+                                                        src="{{ $getMediaUrl($image) }}"
                                                         class="w-full h-full object-cover"
                                                         alt="{{ $acc->name }} gallery image {{ $index + 1 }}"
                                                         loading="lazy"

@@ -77,7 +77,7 @@ class PageResource extends Resource
                                     ])->columns(2), // ដាក់ Title និង Slug ទន្ទឹមគ្នាជា ២ ជួរ
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
+                
                         // ផ្នែកខាងស្តាំ (Media)
                         // ==============================================
                         Group::make()
@@ -86,19 +86,25 @@ class PageResource extends Resource
                                     ->description('Upload a cover image and multiple gallery photos')
                                     ->icon('heroicon-o-photo')
                                     ->schema([
+                                        // 🖼️ Cover Image
                                         FileUpload::make('image')
                                             ->label('🖼️ Cover Image')
                                             ->image()
+                                            ->disk('cloudinary') 
                                             ->directory('pages-images')
+                                            ->fetchFileInformation(false) // 📍 ថែមបន្ទាត់នេះ ដើម្បីកុំឲ្យលោតបាត់រូបពេល Edit
                                             ->columnSpanFull(),
 
+                                        // 📸 Gallery (Multiple)
                                         FileUpload::make('gallery')
                                             ->label('📸 Gallery (Multiple)')
                                             ->image()
                                             ->multiple()
+                                            ->disk('cloudinary') 
                                             ->panelLayout('grid') 
                                             ->directory('pages/gallery')
                                             ->reorderable()
+                                            ->fetchFileInformation(false) // 📍 ថែមបន្ទាត់នេះដូចគ្នា
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
@@ -113,7 +119,9 @@ class PageResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Cover')
-                    ->circular(),
+                    ->disk('cloudinary')
+                    ->circular()
+                    ->height(50),
 
                 TextColumn::make('title')
                     ->label('🏷️ Title')
@@ -130,6 +138,7 @@ class PageResource extends Resource
                 // 📍 បង្ហាញរូប Gallery ត្រួតៗគ្នាស្អាតក្នុងតារាង
                 ImageColumn::make('gallery')
                     ->label('📸 Gallery')
+                    ->disk('cloudinary')
                     ->circular()
                     ->stacked()
                     ->limit(3),

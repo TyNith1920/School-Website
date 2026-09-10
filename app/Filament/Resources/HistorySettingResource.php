@@ -30,7 +30,6 @@ class HistorySettingResource extends Resource
     {
         return $form
             ->schema([
-
                 /*
                 |--------------------------------------------------------------------------
                 | Banner Slider
@@ -60,6 +59,8 @@ class HistorySettingResource extends Resource
 
                                 Forms\Components\FileUpload::make('file')
                                     ->label('Banner File')
+                                    ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                                    ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                                     ->helperText(
                                         fn (Get $get): string =>
                                             $get('type') === 'video'
@@ -79,7 +80,7 @@ class HistorySettingResource extends Resource
                                     )
                                     ->openable()
                                     ->downloadable()
-                                    ->nullable() // 📍 ប្តូរពី required() មកជា nullable() ដើម្បីកុំឱ្យវាបង្ខំទាមទាររូបភាព
+                                    ->nullable() 
                                     ->columnSpanFull(),
                             ])
                             ->columns(2)
@@ -138,6 +139,8 @@ class HistorySettingResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('founder_image')
                             ->label('Founder Image')
+                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
                             ->helperText('Recommended: portrait JPG, PNG, or WebP image, up to 5MB.')
                             ->image()
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -184,6 +187,7 @@ class HistorySettingResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('founder_image')
                     ->label('Founder')
+                    ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary សម្រាប់បង្ហាញរូបក្នុងតារាង
                     ->circular()
                     ->height(55)
                     ->ring(2), 

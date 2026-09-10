@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -24,7 +23,6 @@ class SiteBannerResource extends Resource
 
     protected static ?string $navigationGroup = 'Website Content';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'Site Banner';
     protected static ?string $pluralModelLabel = 'Site Banners';
 
@@ -64,6 +62,7 @@ class SiteBannerResource extends Resource
                                     ->schema([
                                         FileUpload::make('image_path')
                                             ->label('🖼️ Upload Banner')
+                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ Upload រូបភាព Banner
                                             ->image()
                                             ->directory('banners')
                                             ->required()
@@ -81,8 +80,9 @@ class SiteBannerResource extends Resource
             ->columns([
                 ImageColumn::make('image_path')
                     ->label('🖼️ Banner')
-                    ->height(50) // កំណត់កម្ពស់ឱ្យល្មម
-                    ->extraImgAttributes(['class' => 'object-cover rounded-md']), // ធ្វើឱ្យរូបចេញជារាងចតុកោណកែងស្អាតដូច Banner ពិតៗ
+                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ទាញរូបមកបង្ហាញក្នុងតារាង
+                    ->height(50) 
+                    ->extraImgAttributes(['class' => 'object-cover rounded-md']), 
 
                 TextColumn::make('page_name')
                     ->label('📄 Page Name')
@@ -93,7 +93,7 @@ class SiteBannerResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label('📅 Created Date')
-                    ->dateTime('d M Y') // ទម្រង់ថ្ងៃខែ (ឧទាហរណ៍: 21 Aug 2026)
+                    ->dateTime('d M Y') 
                     ->sortable()
                     ->badge(),
             ])

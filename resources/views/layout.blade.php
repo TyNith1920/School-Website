@@ -172,6 +172,18 @@
 </main>
 
 <!-- MASTER FOOTER -->
+@php
+    $getFooterImg = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try {
+            return \Storage::disk('cloudinary')->url($path);
+        } catch (\Exception $e) {
+            return asset('storage/' . $path);
+        }
+    };
+@endphp
+
 <footer class="notranslate bg-[#0b1240] text-white pt-10 pb-8 mt-12 border-t-4 border-[#e06d64]">
     <div class="max-w-7xl mx-auto px-6">
         
@@ -185,19 +197,24 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 text-gray-300 text-sm">
-            <div class="lg:col-span-1">
+            <div class="lg:col-span-1 overflow-hidden">
                 <div class="flex items-center space-x-4 mb-6">
                     <h3 class="font-black text-lg tracking-wide text-[#e06d64] uppercase">{{ __('Truth | Integrity | Love') }}</h3>
                 </div>
-                <div class="inline-flex flex-wrap gap-6 items-center mt-2">
+                
+                <!-- 📍 បង្ខំឲ្យនៅតែមួយជួរ (flex) និងបន្ថយកម្ពស់រូបភាពបន្តិច (h-8 md:h-10) -->
+                <div class="flex items-center gap-4 mt-5">
                     @if(isset($footer) && !empty($footer->logos_image))
-                        @if(is_array($footer->logos_image))
-                            @foreach($footer->logos_image as $logo)
-                                <img src="{{ asset('storage/' . $logo) }}" alt="Logos" class="h-10 md:h-14 object-contain bg-transparent hover:scale-110 transition-transform duration-300">
-                            @endforeach
-                        @else
-                            <img src="{{ asset('storage/' . $footer->logos_image) }}" alt="Logos" class="h-10 md:h-14 object-contain bg-transparent">
-                        @endif
+                        @php
+                            $rawLogos = $footer->logos_image;
+                            $logos = is_array($rawLogos) ? $rawLogos : (is_string($rawLogos) ? json_decode($rawLogos, true) ?? [$rawLogos] : []);
+                        @endphp
+                        
+                        @foreach($logos as $logo)
+                            @if($logo)
+                                <img src="{{ $getFooterImg($logo) }}" alt="Logo" class="h-8 md:h-10 w-auto shrink-0 object-contain hover:scale-110 transition-transform duration-300">
+                            @endif
+                        @endforeach
                     @endif
                 </div>
             </div>
@@ -223,7 +240,7 @@
                 <h3 class="font-bold text-[#e06d64] mb-3">{{ __('Scan to Telegram') }}</h3>
                 @if(isset($footer) && $footer->telegram_qr)
                     <div class="bg-white p-2 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
-                        <img src="{{ asset('storage/' . $footer->telegram_qr) }}" alt="Telegram QR" class="w-24 h-24 md:w-28 md:h-28 object-contain">
+                        <img src="{{ $getFooterImg($footer->telegram_qr) }}" alt="Telegram QR" class="w-24 h-24 md:w-28 md:h-28 object-contain">
                     </div>
                 @endif
             </div>

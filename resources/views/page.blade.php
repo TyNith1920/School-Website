@@ -10,92 +10,44 @@
 @php
     $pageTitle = $page->title ?: 'Academic Program';
 
-    $rawGallery = $page->gallery ?? [];
+    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាព ទោះជា Local ឬ Cloudinary ក៏វាស្គាល់
+    $getImageUrl = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try {
+            return \Storage::disk('cloudinary')->url($path);
+        } catch (\Exception $e) {
+            return asset('storage/' . $path);
+        }
+    };
 
-    if (is_array($rawGallery)) {
-        $storedGallery = $rawGallery;
-    } elseif (is_string($rawGallery)) {
-        $storedGallery = json_decode($rawGallery, true) ?? [];
-    } else {
-        $storedGallery = [];
-    }
+    $coverImageUrl = $getImageUrl($page->image);
+
+    $rawGallery = $page->gallery ?? [];
+    $storedGallery = is_array($rawGallery) ? $rawGallery : (is_string($rawGallery) ? json_decode($rawGallery, true) ?? [] : []);
 
     $galleryImages = collect($storedGallery)
         ->filter()
-        ->map(fn ($image) => Storage::url($image))
+        ->map(fn ($img) => $getImageUrl($img))
         ->values()
         ->all();
 
-    $hasContent = filled(
-        trim(strip_tags($page->content ?? ''))
-    );
+    $hasContent = filled(trim(strip_tags($page->content ?? '')));
 @endphp
 
 <style>
-    [x-cloak] {
-        display: none !important;
-    }
-
-    .academic-content > * + * {
-        margin-top: 1rem;
-    }
-
-    .academic-content h1,
-    .academic-content h2,
-    .academic-content h3 {
-        color: #081747;
-        font-weight: 800;
-        line-height: 1.3;
-        margin-top: 1.75rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .academic-content h1 {
-        font-size: 2rem;
-    }
-
-    .academic-content h2 {
-        font-size: 1.65rem;
-    }
-
-    .academic-content h3 {
-        font-size: 1.35rem;
-    }
-
-    .academic-content p {
-        color: #475569;
-        font-size: 1rem;
-        line-height: 1.85;
-    }
-
-    .academic-content ul,
-    .academic-content ol {
-        color: #475569;
-        line-height: 1.8;
-        padding-left: 1.5rem;
-    }
-
-    .academic-content ul {
-        list-style: disc;
-    }
-
-    .academic-content ol {
-        list-style: decimal;
-    }
-
-    .academic-content a {
-        color: #1d4ed8;
-        font-weight: 700;
-        text-decoration: underline;
-    }
-
-    .academic-content img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 1rem;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
+    [x-cloak] { display: none !important; }
+    .academic-content > * + * { margin-top: 1rem; }
+    .academic-content h1, .academic-content h2, .academic-content h3 { color: #081747; font-weight: 800; line-height: 1.3; margin-top: 1.75rem; margin-bottom: 0.75rem; }
+    .academic-content h1 { font-size: 2rem; }
+    .academic-content h2 { font-size: 1.65rem; }
+    .academic-content h3 { font-size: 1.35rem; }
+    .academic-content p { color: #475569; font-size: 1rem; line-height: 1.85; }
+    .academic-content ul, .academic-content ol { color: #475569; line-height: 1.8; padding-left: 1.5rem; }
+    .academic-content ul { list-style: disc; }
+    .academic-content ol { list-style: decimal; }
+    .academic-content a { color: #1d4ed8; font-weight: 700; text-decoration: underline; }
+    .academic-content img { max-width: 100%; height: auto; border-radius: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem; }
 </style>
 
 <div
@@ -103,31 +55,10 @@
         lightboxOpen: false,
         activeIndex: 0,
         images: @js($galleryImages),
-
-        openLightbox(index) {
-            this.activeIndex = index;
-            this.lightboxOpen = true;
-        },
-
-        closeLightbox() {
-            this.lightboxOpen = false;
-        },
-
-        previousImage() {
-            if (this.images.length <= 1) return;
-
-            this.activeIndex =
-                (this.activeIndex - 1 + this.images.length) %
-                this.images.length;
-        },
-
-        nextImage() {
-            if (this.images.length <= 1) return;
-
-            this.activeIndex =
-                (this.activeIndex + 1) %
-                this.images.length;
-        }
+        openLightbox(index) { this.activeIndex = index; this.lightboxOpen = true; },
+        closeLightbox() { this.lightboxOpen = false; },
+        previousImage() { if (this.images.length <= 1) return; this.activeIndex = (this.activeIndex - 1 + this.images.length) % this.images.length; },
+        nextImage() { if (this.images.length <= 1) return; this.activeIndex = (this.activeIndex + 1) % this.images.length; }
     }"
     x-effect="document.body.style.overflow = lightboxOpen ? 'hidden' : ''"
     @keydown.escape.window="lightboxOpen && closeLightbox()"
@@ -137,36 +68,13 @@
 >
     {{-- Hero --}}
     <section class="relative isolate min-h-[420px] overflow-hidden bg-[#081747] md:min-h-[520px]">
-        @if(!empty($page->image))
-            <img
-                src="{{ Storage::url($page->image) }}"
-                alt=""
-                aria-hidden="true"
-                class="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-2xl md:hidden"
-            >
-            <img
-                src="{{ Storage::url($page->image) }}"
-                alt="{{ $pageTitle }}"
-                class="absolute inset-0 h-full w-full object-contain object-center md:hidden"
-            >
-            <img
-                src="{{ Storage::url($page->image) }}"
-                alt="{{ $pageTitle }}"
-                class="absolute inset-0 hidden h-full w-full object-cover object-center md:block"
-            >
+        @if($coverImageUrl)
+            <img src="{{ $coverImageUrl }}" aria-hidden="true" class="absolute inset-0 h-full w-full scale-110 object-cover opacity-70 blur-2xl md:hidden">
+            <img src="{{ $coverImageUrl }}" alt="{{ $pageTitle }}" class="absolute inset-0 h-full w-full object-contain object-center md:hidden">
+            <img src="{{ $coverImageUrl }}" alt="{{ $pageTitle }}" class="absolute inset-0 hidden h-full w-full object-cover object-center md:block">
         @else
             <div class="absolute inset-0 bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb]"></div>
-            <div
-                class="absolute inset-0 opacity-20"
-                style="
-                    background-image: radial-gradient(
-                        circle,
-                        rgba(255,255,255,0.8) 1px,
-                        transparent 1px
-                    );
-                    background-size: 24px 24px;
-                "
-            ></div>
+            <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
         @endif
 
         <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/65 to-slate-950/20"></div>
@@ -174,7 +82,6 @@
 
         <div class="relative z-10 mx-auto flex min-h-[420px] max-w-7xl items-center px-6 py-16 md:min-h-[520px] md:px-10">
             <div class="max-w-4xl">
-                {{-- Breadcrumb (📍 ថែម AOS Fade-up) --}}
                 <div data-aos="fade-up" class="mb-7 flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-200">
                     <a href="{{ url('/') }}" class="transition-colors hover:text-orange-400">Home</a>
                     <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -183,24 +90,19 @@
                     <span class="text-orange-400">{{ $pageTitle }}</span>
                 </div>
 
-                {{-- Subtitle (📍 ថែម AOS Fade-up ជាមួយ Delay 100ms) --}}
                 <div data-aos="fade-up" data-aos-delay="100" class="mb-5 flex items-center gap-3">
                     <span class="h-1 w-12 rounded-full bg-orange-500"></span>
                     <span class="text-sm font-bold uppercase tracking-[0.2em] text-orange-400">Academic Program</span>
                 </div>
 
-                {{-- Title (📍 ថែម AOS Fade-up ជាមួយ Delay 200ms) --}}
                 <h1 data-aos="fade-up" data-aos-delay="200" class="max-w-4xl text-4xl font-black uppercase leading-tight tracking-wide text-white drop-shadow-lg sm:text-5xl md:text-7xl">
                     {{ $pageTitle }}
                 </h1>
 
-                {{-- Description (📍 ថែម AOS Fade-up ជាមួយ Delay 300ms) --}}
                 <p data-aos="fade-up" data-aos-delay="300" class="mt-6 max-w-2xl text-base leading-7 text-slate-200 md:text-lg">
-                    Inspiring students through quality education, meaningful
-                    experiences and a caring learning environment.
+                    Inspiring students through quality education, meaningful experiences and a caring learning environment.
                 </p>
 
-                {{-- Photo Count Badge (📍 ថែម AOS Fade-up ជាមួយ Delay 400ms) --}}
                 @if(count($galleryImages) > 0)
                     <div data-aos="fade-up" data-aos-delay="400" class="mt-8 inline-flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur-md">
                         <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16l4-4a2 2 0 012.8 0l2.2 2.2 2-2a2 2 0 012.8 0L21 15.4M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -218,7 +120,6 @@
     <section class="px-5 py-14 md:px-8 md:py-20">
         <div class="mx-auto max-w-7xl">
             @if($hasContent)
-                {{-- (📍 ថែម AOS Fade-up លើប្រអប់ Content) --}}
                 <div data-aos="fade-up" class="mb-20 overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_15px_50px_rgba(15,23,42,0.08)]">
                     <div class="grid grid-cols-1 lg:grid-cols-[310px_1fr]">
                         <div class="relative overflow-hidden bg-gradient-to-br from-[#081747] to-[#173c9c] p-8 text-white md:p-10">
@@ -245,7 +146,6 @@
             {{-- Gallery --}}
             @if(count($galleryImages) > 0)
                 <div>
-                    {{-- (📍 ថែម AOS Fade-right លើចំណងជើង Gallery) --}}
                     <div data-aos="fade-right" class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
                         <div>
                             <div class="mb-3 flex items-center gap-3">
@@ -264,7 +164,6 @@
 
                     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         @foreach($galleryImages as $index => $image)
-                            {{-- (📍 ថែម AOS Zoom-in និងប្រើ Index របស់ Loop ដើម្បីបង្កើត Delay ឱ្យវាផុសជារលកម្តងមួយៗ) --}}
                             <button
                                 data-aos="zoom-in"
                                 data-aos-delay="{{ ($index % 3) * 100 }}"
@@ -272,19 +171,11 @@
                                 @click="openLightbox({{ $index }})"
                                 class="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-200 text-left shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                             >
-                                <img
-                                    src="{{ $image }}"
-                                    alt="{{ $pageTitle }} gallery image {{ $index + 1 }}"
-                                    loading="lazy"
-                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                >
-
+                                <img src="{{ $image }}" alt="{{ $pageTitle }} gallery image {{ $index + 1 }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/10 to-transparent opacity-40 transition-opacity duration-300 group-hover:opacity-90"></div>
-
                                 <div class="absolute bottom-4 left-4 translate-y-3 text-sm font-bold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                                     Photo {{ $index + 1 }}
                                 </div>
-
                                 <div class="absolute bottom-4 right-4 flex h-11 w-11 scale-75 items-center justify-center rounded-full bg-orange-500 text-white opacity-0 shadow-lg transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
                                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5.2-5.2m2.2-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0zM10.5 7.5v6m-3-3h6"></path></svg>
                                 </div>
@@ -304,7 +195,7 @@
         </div>
     </section>
 
-    {{-- Lightbox (រក្សាទុកដដែល) --}}
+    {{-- Lightbox --}}
     @if(count($galleryImages) > 0)
         <div
             x-show="lightboxOpen"
@@ -315,22 +206,15 @@
             role="dialog"
             aria-modal="true"
         >
-            {{-- Close --}}
             <button type="button" @click="closeLightbox()" aria-label="Close image" class="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-red-600 md:right-8 md:top-6">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-
-            {{-- Previous --}}
             <button x-show="images.length > 1" type="button" @click.stop="previousImage()" aria-label="Previous image" class="absolute left-3 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-orange-500 md:left-8 md:h-14 md:w-14">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
-
-            {{-- Next --}}
             <button x-show="images.length > 1" type="button" @click.stop="nextImage()" aria-label="Next image" class="absolute right-3 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-orange-500 md:right-8 md:h-14 md:w-14">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
-
-            {{-- Active image --}}
             <div class="relative flex max-h-[90vh] max-w-[90vw] items-center justify-center">
                 <img :src="images[activeIndex]" :alt="'{{ addslashes($pageTitle) }} photo ' + (activeIndex + 1)" class="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl">
                 <div class="absolute bottom-4 right-4 rounded-full bg-slate-950/70 px-4 py-2 text-sm font-bold text-white backdrop-blur-sm">
@@ -340,5 +224,4 @@
         </div>
     @endif
 </div>
-
 @endsection

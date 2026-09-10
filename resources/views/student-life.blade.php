@@ -4,16 +4,24 @@
 
 @section('content')
 
+@php
+    // 📍 មុខងារទាញរូបភាពពី Cloudinary ដោយសុវត្ថិភាព
+    $getMediaUrl = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try { return \Storage::disk('cloudinary')->url($path); } 
+        catch (\Exception $e) { return asset('storage/' . $path); }
+    };
+@endphp
+
 {{-- Hero --}}
 <section class="relative isolate flex min-h-[310px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] md:min-h-[380px]">
-    
     <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
 
     <div class="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-400/30 blur-3xl"></div>
     <div class="absolute -bottom-36 right-0 h-96 w-96 rounded-full bg-orange-400/20 blur-3xl"></div>
 
     <div class="relative z-10 mx-auto max-w-4xl px-6 py-16 text-center">
-        
         <div data-aos="fade-down" class="mb-5 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-blue-50 backdrop-blur-sm">
             Beyond the Classroom
         </div>
@@ -28,7 +36,6 @@
             Discover the activities, celebrations and experiences that make
             student life at LIS truly special.
         </p>
-        
     </div>
 
     <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-14" style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
@@ -61,7 +68,7 @@
         </div>
 
         {{-- Activity cards --}}
-        @if(count($activities) > 0)
+        @if(isset($activities) && count($activities) > 0)
             <div class="flex flex-wrap justify-center gap-8">
                 @foreach($activities as $index => $activity)
                     @php
@@ -88,7 +95,7 @@
                         <div class="relative aspect-[16/11] overflow-hidden bg-slate-100">
                             @if($activity->image)
                                 <img
-                                    src="{{ Storage::url($activity->image) }}"
+                                    src="{{ $getMediaUrl($activity->image) }}"
                                     alt="{{ $activity->title }}"
                                     loading="lazy"
                                     class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"

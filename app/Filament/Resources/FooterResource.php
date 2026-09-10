@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -25,7 +24,6 @@ class FooterResource extends Resource
 
     protected static ?string $navigationGroup = 'Website Content';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'Footer Setting';
     protected static ?string $pluralModelLabel = 'Footer Settings';
 
@@ -35,13 +33,8 @@ class FooterResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (Contact, Location & Hours)
-                        // ==============================================
                         Group::make()
                             ->schema([
-                                // ប្រអប់ទី១៖ ព័ត៌មានទំនាក់ទំនង និងអាសយដ្ឋាន
                                 Section::make('Contact & Location')
                                     ->description('Set up phone numbers, telegram, email, and address')
                                     ->icon('heroicon-o-map-pin')
@@ -63,7 +56,6 @@ class FooterResource extends Resource
                                             ->required()
                                             ->columnSpanFull(),
 
-                                        // 📍 ថែមប្រអប់ Address នៅទីនេះ
                                         Textarea::make('address')
                                             ->label('📍 School Address')
                                             ->placeholder('Enter the physical address here...')
@@ -71,7 +63,6 @@ class FooterResource extends Resource
                                             ->columnSpanFull(),
                                     ])->columns(2),
 
-                                // ប្រអប់ទី២៖ ម៉ោងធ្វើការ
                                 Section::make('Office Hours')
                                     ->description('Display the working hours on the website footer')
                                     ->icon('heroicon-o-clock')
@@ -88,12 +79,8 @@ class FooterResource extends Resource
                                     ])->columns(2),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Media, QR & Logos)
-                        // ==============================================
                         Group::make()
                             ->schema([
-                                // 📍 ថែមប្រអប់ QR Code ថ្មីនៅទីនេះ
                                 Section::make('Telegram QR Code')
                                     ->description('Upload the Telegram QR for easy scanning')
                                     ->icon('heroicon-o-qr-code')
@@ -101,6 +88,8 @@ class FooterResource extends Resource
                                         FileUpload::make('telegram_qr')
                                             ->label('📱 Telegram QR')
                                             ->image()
+                                            ->disk('cloudinary') 
+                                            ->fetchFileInformation(false) 
                                             ->directory('footers/qr')
                                             ->columnSpanFull(),
                                     ]),
@@ -112,13 +101,14 @@ class FooterResource extends Resource
                                         FileUpload::make('logos_image')
                                             ->label('🏆 Partner Logos')
                                             ->image()
+                                            ->disk('cloudinary') 
+                                            ->fetchFileInformation(false) 
                                             ->directory('footers/logos')
                                             ->multiple()
-                                            ->panelLayout('grid') // ឱ្យរូបរៀបជាក្រឡាៗ
+                                            ->panelLayout('grid')
                                             ->reorderable(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
-                            
                     ]),
             ]);
     }
@@ -137,9 +127,9 @@ class FooterResource extends Resource
                     ->label('📧 Email')
                     ->searchable(),
                     
-                // 📍 ថែម QR Code បង្ហាញក្នុងតារាង
                 ImageColumn::make('telegram_qr')
                     ->label('📱 QR Code')
+                    ->disk('cloudinary')
                     ->circular(),
 
                 TextColumn::make('weekdays_time')
@@ -149,6 +139,7 @@ class FooterResource extends Resource
 
                 ImageColumn::make('logos_image')
                     ->label('🏆 Logos')
+                    ->disk('cloudinary')
                     ->circular()
                     ->stacked()
                     ->limit(3),

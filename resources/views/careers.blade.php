@@ -4,6 +4,16 @@
 
 @section('content')
 
+@php
+    // 📍 មុខងារទាញរូបភាពពី Cloudinary ដោយសុវត្ថិភាព
+    $getMediaUrl = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try { return \Storage::disk('cloudinary')->url($path); } 
+        catch (\Exception $e) { return asset('storage/' . $path); }
+    };
+@endphp
+
 <!-- ផ្នែកទី ១៖ ពណ៌សាច់ (Light Peach) -->
 <div class="bg-[#fdf4eb] pt-32 pb-24 md:pb-36 text-center relative overflow-hidden z-0">
     
@@ -62,9 +72,9 @@
             data-aos-delay="200"
             class="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-4 border-white/5 relative group"
         >
-            @if($banner && $banner->image)
+            @if(isset($banner) && $banner->image)
                 <img
-                    src="{{ Storage::url($banner->image) }}"
+                    src="{{ $getMediaUrl($banner->image) }}"
                     alt="Life International School Team"
                     class="w-full h-[300px] md:h-[450px] object-cover group-hover:scale-105 transition-transform duration-700"
                 >
@@ -91,34 +101,42 @@
             </h3>
         </div>
 
-        @if($jobs->count() > 0)
+        @if(isset($jobs) && $jobs->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 @foreach($jobs as $index => $job)
                     <div
                         data-aos="fade-up"
                         data-aos-delay="{{ ($index % 2) * 150 }}"
-                        class="bg-white rounded-2xl shadow-md border border-gray-100 p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                        class="bg-white rounded-2xl shadow-md border border-gray-100 p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                     >
-                        <div class="flex justify-between items-start mb-4">
-                            <h4 class="text-2xl font-bold text-[#0b1240]">
-                                {{ $job->title }}
-                            </h4>
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                {{ $job->job_type }}
-                            </span>
-                        </div>
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h4 class="text-2xl font-bold text-[#0b1240]">
+                                    {{ $job->title }}
+                                </h4>
+                                @if($job->job_type)
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                        {{ $job->job_type }}
+                                    </span>
+                                @endif
+                            </div>
 
-                        <div class="text-gray-600 mb-6 prose prose-sm max-w-none line-clamp-3">
-                            {!! $job->description !!}
+                            <div class="text-gray-600 mb-6 prose prose-sm max-w-none line-clamp-3">
+                                {!! $job->description !!}
+                            </div>
                         </div>
 
                         <div class="flex items-center space-x-4 pt-4 border-t border-gray-100">
                             @if($job->application_file)
+                                {{-- 📍 ឯកសារ PDF ទាញពី Local Public Disk ដូចទំព័រ Enrollment --}}
                                 <a
-                                    href="{{ Storage::url($job->application_file) }}"
+                                    href="{{ asset('storage/' . $job->application_file) }}"
                                     target="_blank"
-                                    class="bg-[#de8b8b] hover:bg-[#c97474] text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm w-full text-center"
+                                    class="bg-[#de8b8b] hover:bg-[#c97474] text-white font-bold py-3 px-6 rounded-lg transition-colors text-sm w-full text-center flex items-center justify-center gap-2"
                                 >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
                                     Download Application
                                 </a>
                             @else

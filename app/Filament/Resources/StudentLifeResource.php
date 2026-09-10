@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -35,10 +34,6 @@ class StudentLifeResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (General Information)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('General Information')
@@ -62,9 +57,6 @@ class StudentLifeResource extends Resource
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Media)
-                        // ==============================================
                         Group::make()
                             ->schema([
                                 Section::make('Media')
@@ -73,12 +65,14 @@ class StudentLifeResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Cover Image')
+                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
                                             ->image()
                                             ->directory('student-life-images')
                                             ->required(),
 
                                         FileUpload::make('gallery_images')
                                             ->label('📸 Gallery Images (Multiple)')
+                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
                                             ->image()
                                             ->multiple()
                                             ->panelLayout('grid')
@@ -97,6 +91,7 @@ class StudentLifeResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Cover')
+                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
                     ->circular(),
 
                 TextColumn::make('title')
@@ -108,9 +103,10 @@ class StudentLifeResource extends Resource
 
                 ImageColumn::make('gallery_images')
                     ->label('📸 Gallery')
+                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
                     ->circular()
-                    ->stacked() // បង្ហាញរូបត្រួតៗគ្នាស្អាត
-                    ->limit(3), // កំណត់បង្ហាញត្រឹម ៣ រូប
+                    ->stacked()
+                    ->limit(3),
 
                 TextColumn::make('updated_at')
                     ->label('⏱️ Last Updated')

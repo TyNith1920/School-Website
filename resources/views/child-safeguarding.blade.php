@@ -17,6 +17,14 @@
     $mainInfo = $safeguardings->first();
     $pageTitle = $mainInfo?->title ?: 'Child Safeguarding';
     $pageDescription = $mainInfo?->description ?: 'At Life International School, the safety, protection, and well-being of every child is our highest priority.';
+
+    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញឯកសារ និងរូបភាពពី Cloudinary
+    $getMediaUrl = function($path) {
+        if (empty($path)) return null;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        try { return \Storage::disk('cloudinary')->url($path); } 
+        catch (\Exception $e) { return asset('storage/' . $path); }
+    };
 @endphp
 
 <div x-data="{
@@ -74,7 +82,8 @@
                 </p>
 
                 @if(filled($mainInfo?->pdf_file))
-                    <a data-aos="fade-up" data-aos-delay="400" href="{{ Storage::url($mainInfo->pdf_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 mt-9 bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-wider px-7 py-4 rounded-xl shadow-xl hover:-translate-y-1 transition-all">
+                    <!-- 📍 កែប្រែការទាញឯកសារ PDF ពី Cloudinary -->
+                    <a data-aos="fade-up" data-aos-delay="400" href="{{ $getMediaUrl($mainInfo->pdf_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 mt-9 bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-wider px-7 py-4 rounded-xl shadow-xl hover:-translate-y-1 transition-all">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
@@ -173,8 +182,9 @@
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                         @foreach($images as $index => $imagePath)
-                                            <button data-aos="zoom-in" data-aos-delay="{{ ($index % 3) * 150 }}" type="button" @click="openImage(@js(Storage::url($imagePath)))" class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 group text-left">
-                                                <img src="{{ Storage::url($imagePath) }}" alt="{{ $item->title ?: 'Safeguarding' }} image {{ $index + 1 }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                                            <!-- 📍 កែប្រែការទាញរូបភាពពី Cloudinary -->
+                                            <button data-aos="zoom-in" data-aos-delay="{{ ($index % 3) * 150 }}" type="button" @click="openImage(@js($getMediaUrl($imagePath)))" class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 group text-left">
+                                                <img src="{{ $getMediaUrl($imagePath) }}" alt="{{ $item->title ?: 'Safeguarding' }} image {{ $index + 1 }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                                                 <div class="absolute inset-0 bg-gradient-to-t from-blue-950/75 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity"></div>
                                                 <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between">
                                                     <span class="text-white text-sm font-bold">Photo {{ $index + 1 }}</span>

@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import Components សម្រាប់រៀបចំ Layout
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
@@ -21,7 +20,6 @@ class CareerBannerResource extends Resource
 
     protected static ?string $navigationGroup = 'Admissions & Careers';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'Career Banner';
     protected static ?string $pluralModelLabel = 'Career Banners';
 
@@ -35,6 +33,7 @@ class CareerBannerResource extends Resource
                     ->schema([
                         FileUpload::make('image')
                             ->label('🖼️ Banner Image')
+                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ Upload Banner
                             ->image()
                             ->directory('career-banners')
                             ->required()
@@ -49,14 +48,15 @@ class CareerBannerResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Banner Image')
-                    ->height(60) // កំណត់កម្ពស់រូប Banner ឱ្យល្មមមើលក្នុងតារាង
-                    ->extraImgAttributes(['class' => 'object-contain']), // ជួយកុំឱ្យរូប Banner ខូចទ្រង់ទ្រាយ
+                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ទាញរូបមកបង្ហាញក្នុងតារាង
+                    ->height(60) 
+                    ->extraImgAttributes(['class' => 'object-contain']), 
 
                 TextColumn::make('updated_at')
                     ->label('⏱️ Last Updated')
-                    ->dateTime('d M Y, h:i A') // បង្ហាញទម្រង់ថ្ងៃខែម៉ោង (ឧ. 21 Aug 2026, 01:50 PM)
+                    ->dateTime('d M Y, h:i A') 
                     ->sortable()
-                    ->badge(), // ធ្វើឱ្យចេញជាប្រអប់ពណ៌
+                    ->badge(), 
             ])
             ->filters([
                 //

@@ -18,20 +18,13 @@ class BannerResource extends Resource
 
     protected static ?string $navigationLabel = 'Banners';
 
-    // Keep this disabled because the navigation group already has an icon.
-    // protected static ?string $navigationIcon = 'heroicon-o-photo';
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                /*
-                |--------------------------------------------------------------------------
-                | Banner Content
-                |--------------------------------------------------------------------------
-                */
+
                 Forms\Components\Section::make('Banner Content')
                     ->description(
                         'Set the slogan displayed in the homepage banner.'
@@ -50,19 +43,16 @@ class BannerResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                /*
-                |--------------------------------------------------------------------------
-                | Banner Media
-                |--------------------------------------------------------------------------
-                */
                 Forms\Components\Section::make('Images and Video')
                     ->description(
                         'The feature image appears on the right, while the video is used as the background.'
                     )
                     ->icon('heroicon-o-film')
                     ->schema([
+
                         Forms\Components\FileUpload::make('image')
                             ->label('Feature Image')
+                            ->disk('cloudinary')
                             ->helperText(
                                 'Recommended size: 1200 × 900px. JPG, PNG, or WebP, up to 5MB.'
                             )
@@ -83,6 +73,7 @@ class BannerResource extends Resource
 
                         Forms\Components\FileUpload::make('video')
                             ->label('Background Video')
+                            ->disk('cloudinary')
                             ->helperText(
                                 'Use MP4 or WebM. Compress the video to less than 30MB for better website performance.'
                             )
@@ -96,6 +87,7 @@ class BannerResource extends Resource
                             ->downloadable()
                             ->maxSize(30720)
                             ->columnSpanFull(),
+
                     ])
                     ->columns(2)
                     ->collapsible(),
@@ -106,8 +98,10 @@ class BannerResource extends Resource
     {
         return $table
             ->columns([
+
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
+                    ->disk('cloudinary')
                     ->height(65),
 
                 Tables\Columns\TextColumn::make('title')
@@ -134,6 +128,7 @@ class BannerResource extends Resource
                     ->dateTime('d-M-Y h:i A')
                     ->timezone('Asia/Phnom_Penh')
                     ->sortable(),
+
             ])
             ->defaultSort('updated_at', 'desc')
             ->actions([
