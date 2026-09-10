@@ -10,6 +10,9 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+# កែរប្រែ Port របស់ Apache ឱ្យស្របតាម Port របស់ Render ($PORT)
+RUN sed -ri -e 's/80/8585/g' /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf
+
 # បើកដំណើរការ Apache Rewrite (សម្រាប់ URL របស់ Laravel)
 RUN a2enmod rewrite
 
@@ -25,3 +28,6 @@ RUN npm install && npm run build
 
 # ផ្តល់សិទ្ធិឱ្យ Laravel អាច Save រូបភាព ឬ Cache បាន
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Script សម្រាប់ជំនួស Port របស់ Apache ទៅតាម Render PORT ពេល Start
+CMD ["sh", "-c", "sed -i \"s/8585/$PORT/g\" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf && apache2-foreground"]
