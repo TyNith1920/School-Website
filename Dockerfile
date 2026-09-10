@@ -1,9 +1,9 @@
 FROM php:8.2-apache
 
-# ដំឡើង Tools ចាំបាច់, libicu-dev (សម្រាប់ intl) និង PostgreSQL Driver សម្រាប់ Aiven
-RUN apt-get update && apt-get install -y libpq-dev libicu-dev zip unzip git nodejs npm \
+# ដំឡើង Tools, libicu-dev (intl), libzip-dev (zip) និង PostgreSQL Driver
+RUN apt-get update && apt-get install -y libpq-dev libicu-dev libzip-dev zip unzip git nodejs npm \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo pdo_pgsql intl
+    && docker-php-ext-install pdo pdo_pgsql intl zip
 
 # កំណត់ទីតាំងឱ្យ Apache ចង្អុលទៅកាន់ Folder "public" របស់ Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
