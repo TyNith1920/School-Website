@@ -12,6 +12,10 @@ use App\Models\Admission;
 use App\Models\Page;
 use App\Models\Career;
 use App\Models\CareerBanner;
+// 📍 ថែម ៣ បន្ទាត់នេះសម្រាប់ Setup Database & Admin
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 // ១. ទំព័រដើម (Home)
 Route::get('/', function () {
@@ -92,7 +96,7 @@ Route::get('/student-life/{id}/gallery', function ($id) {
 // ១២. ទំព័រស្វែងរក (Search Function)
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-// ១៣. ទំព័រទូទៅតាមរយៈ ID (ប្រសិនបើបងនៅតែប្រើវា)
+// ១៣. ទំព័រទូទៅតាមរយៈ ID
 Route::get('/page/{id}', function ($id) {
     $page = Page::findOrFail($id);
     return view('page', compact('page'));
@@ -105,6 +109,25 @@ Route::get('lang/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('lang.switch');
+
+
+// 📍 ថែម Route ថ្មីនៅទីនេះ (ត្រូវតែនៅពីលើ Route '/{slug}') 📍
+Route::get('/setup-db', function () {
+    Artisan::call('migrate', ['--force' => true]);
+
+    if (!User::where('email', 'admin@gmail.com')->exists()) {
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password123'),
+        ]);
+        return 'ជោគជ័យ! តារាង Database និងគណនី Admin ត្រូវបានបង្កើតរួចរាល់។ សូមចូលទៅកាន់ទំព័រ /admin';
+    }
+
+    return 'គណនី Admin មានរួចរាល់ហើយ! សូមចូលទៅកាន់ទំព័រ /admin';
+});
+
+
 // ១៤. ទំព័រទូទៅតាមរយៈ Slug (Academics Pages) - ត្រូវនៅក្រោមគេបង្អស់ជានិច្ច!
 Route::get('/{slug}', function ($slug) {
     $page = Page::where('slug', $slug)->firstOrFail();

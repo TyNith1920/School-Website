@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// 📍 ១. ថែមបន្ទាត់នេះ ដើម្បីហៅមុខងារ Avatar របស់ Filament មកប្រើ
+// 📍 ហៅមុខងារ Avatar និង សិទ្ធិចូល Panel របស់ Filament មកប្រើ
 use Filament\Models\Contracts\HasAvatar; 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-// 📍 ២. ថែម "implements HasAvatar" នៅទីនេះ
-class User extends Authenticatable implements HasAvatar
+// 📍 ថែម "FilamentUser" នៅក្បែរ HasAvatar
+class User extends Authenticatable implements HasAvatar, FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -51,9 +53,15 @@ class User extends Authenticatable implements HasAvatar
         ];
     }
 
-    // 📍 ៣. ថែម Function នេះនៅខាងក្រោមគេ ដើម្បីទាញរូប logo.png មកបង្ហាញនៅជ្រុងខាងស្តាំ
+    // 📍 មុខងារទាញរូប logo.png មកបង្ហាញនៅជ្រុងខាងស្តាំ
     public function getFilamentAvatarUrl(): ?string
     {
         return asset('images/logo.png');
+    }
+
+    // 📍 មុខងារដោះស្រាយ Error 403 (អនុញ្ញាតឱ្យចូលផ្ទាំង Admin)
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true; 
     }
 }
