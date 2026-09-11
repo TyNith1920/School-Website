@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        
+        // 📍 ថែមបន្ទាត់នេះ ដើម្បីប្រាប់ Laravel ឱ្យទុកចិត្តប្រព័ន្ធរបស់ Render (ជួយដោះស្រាយបញ្ហា Upload រូបភាព)
+        $middleware->trustProxies(at: '*');
+
         $middleware->web(append: [
             \App\Http\Middleware\LanguageMiddleware::class,
         ]);

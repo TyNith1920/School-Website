@@ -113,18 +113,10 @@ Route::get('lang/{locale}', function ($locale) {
 
 // 📍 ថែម Route ថ្មីនៅទីនេះ (ត្រូវតែនៅពីលើ Route '/{slug}') 📍
 Route::get('/setup-db', function () {
+    Artisan::call('optimize:clear'); // 📍 កុំភ្លេចថែមបន្ទាត់នេះ
     Artisan::call('migrate', ['--force' => true]);
-
-    if (!User::where('email', 'admin@gmail.com')->exists()) {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password123'),
-        ]);
-        return 'ជោគជ័យ! តារាង Database និងគណនី Admin ត្រូវបានបង្កើតរួចរាល់។ សូមចូលទៅកាន់ទំព័រ /admin';
-    }
-
-    return 'គណនី Admin មានរួចរាល់ហើយ! សូមចូលទៅកាន់ទំព័រ /admin';
+    Artisan::call('storage:link'); 
+    // ... (កូដផ្សេងៗទៀតទុកដដែល)
 });
 
 
