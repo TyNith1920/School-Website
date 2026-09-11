@@ -12,13 +12,19 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    public function boot(): void
-    {
-        if (
-            str_contains(request()->url(), 'ngrok') ||
-            app()->environment('production')
-        ) {
-            URL::forceScheme('https');
+    // public function boot(): void
+    // {
+    //     if (
+    //         str_contains(request()->url(), 'ngrok') ||
+    //         app()->environment('production')
+    //     ) {
+    //         URL::forceScheme('https');
+    //     }
+    // }
+            public function boot(): void
+        {
+            if (config('app.env') === 'production') {
+                URL::forceScheme('https');
+            }
         }
-    }
 }
