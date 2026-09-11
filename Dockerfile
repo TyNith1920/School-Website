@@ -1,33 +1,30 @@
 FROM php:8.2-apache
 
-# ដំឡើង Tools, libicu-dev (intl), libzip-dev (zip) និង PostgreSQL Driver
+# 1. ដំឡើង Tools, សម្រាប់អាន Database និង Extension ផ្សេងៗដែលចំបាច់
 RUN apt-get update && apt-get install -y libpq-dev libicu-dev libzip-dev zip unzip git nodejs npm \
     && docker-php-ext-configure intl \
     && docker-php-ext-install pdo pdo_pgsql intl zip
 
-# កំណត់ទីតាំងឱ្យ Apache ចង្អុលទៅកាន់ Folder "public" របស់ Laravel
+# 2. កំណត់ទីតាំង Document Root ឱ្យចង្អុលទៅ public របស់ Laravel
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# កែរប្រែ Port របស់ Apache ឱ្យស្របតាម Port របស់ Render ($PORT)
-RUN sed -ri -e 's/80/8585/g' /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf
-
-# បើកដំណើរការ Apache Rewrite (សម្រាប់ URL របស់ Laravel)
+# 3. បើក Mod Rewrite
 RUN a2enmod rewrite
 
-# Copy កូដទាំងអស់ចូលទៅកាន់ Server
+# 4. Copy Code ចូល Server
 COPY . /var/www/html
 
-# ដំឡើង Composer 
+# 5. ដំឡើង Composer 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# ដំឡើង NPM និង Build Tailwind CSS (Filament)
+# 6. ដំឡើង NPM និង Build សម្រាប់ Filament/Tailwind
 RUN npm install && npm run build
 
-# ផ្តល់សិទ្ធិឱ្យ Laravel អាច Save រូបភាព ឬ Cache បាន
+# 7. ផ្តល់សិទ្ធិ Folder
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Script សម្រាប់ជំនួស Port របស់ Apache ទៅតាម Render PORT ពេល Start
-CMD ["sh", "-c", "sed -i \"s/8585/$PORT/g\" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf && apache2-foreground"]
+# 8. Start Apache ដោយកំណត់ Port តាម Render (ចំណុចសំខាន់ដើម្បីកុំឱ្យ Error Timeout)
+CMD sed -i "s/80/$PORT/g" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf && apache2-foreground
