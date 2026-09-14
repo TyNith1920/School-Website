@@ -52,7 +52,7 @@ class BannerResource extends Resource
 
                         Forms\Components\FileUpload::make('image')
                             ->label('Feature Image')
-                            ->disk('cloudinary')
+                            ->disk('s3')
                             ->helperText(
                                 'Recommended size: 1200 × 900px. JPG, PNG, or WebP, up to 5MB.'
                             )
@@ -73,7 +73,7 @@ class BannerResource extends Resource
 
                         Forms\Components\FileUpload::make('video')
                             ->label('Background Video')
-                            ->disk('cloudinary')
+                            ->disk('s3')
                             ->helperText(
                                 'Use MP4 or WebM. Compress the video to less than 30MB for better website performance.'
                             )
@@ -101,7 +101,7 @@ class BannerResource extends Resource
 
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
-                    ->disk('cloudinary')
+                    ->disk('s3')
                     ->height(65),
 
                 Tables\Columns\TextColumn::make('title')
