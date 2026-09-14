@@ -3,9 +3,9 @@
 @section('content')
 
 @php
-    // 📍 ការពារ Error: បើអត់មានរូប ឱ្យវាលោតចេញរូបភាពទទេរជំនួស
-    $bannerImage = $banner && $banner->image ? \Storage::disk('cloudinary')->url($banner->image) : null;
-    $bannerVideo = $banner && $banner->video ? \Storage::disk('cloudinary')->url($banner->video) : null;
+    // 📍 ដូរពី 'cloudinary' ទៅ 's3' ដើម្បីទាញរូបពី Cloudflare R2
+    $bannerImage = $banner && $banner->image ? \Storage::disk('s3')->url($banner->image) : null;
+    $bannerVideo = $banner && $banner->video ? \Storage::disk('s3')->url($banner->video) : null;
     $defaultImage = 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop';
 @endphp
 
@@ -66,7 +66,8 @@
         <div data-aos="zoom-in" data-aos-delay="200" class="w-full md:w-1/2 relative flex justify-center items-center">
             <div class="relative w-[320px] h-[320px] md:w-[450px] md:h-[450px] overflow-hidden transition-transform duration-700 hover:scale-105" 
                  style="border-radius: 42% 58% 66% 34% / 43% 36% 64% 57%; box-shadow: 0 20px 50px rgba(0,0,0,0.15);">
-                <img src="{{ isset($admission) && $admission->image ? \Storage::disk('cloudinary')->url($admission->image) : $defaultImage }}" class="w-full h-full object-cover">
+                <!-- 📍 ដូរពី 'cloudinary' ទៅ 's3' -->
+                <img src="{{ isset($admission) && $admission->image ? \Storage::disk('s3')->url($admission->image) : $defaultImage }}" class="w-full h-full object-cover">
             </div>
         </div>
     </div>
@@ -81,13 +82,13 @@
                 @foreach($news as $index => $item)
                 <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 150 }}" 
                      class="bg-white p-4 shadow-sm hover:shadow-lg transition-shadow cursor-pointer group"
-                     @click="imgModalSrc = '{{ $item->image ? \Storage::disk('cloudinary')->url($item->image) : $defaultImage }}'; 
+                     @click="imgModalSrc = '{{ $item->image ? \Storage::disk('s3')->url($item->image) : $defaultImage }}'; 
                              modalTitle = {{ json_encode(__($item->title)) }}; 
                              modalDesc = {{ json_encode(__($item->description)) }}; 
                              imgModal = true">
 
-                    <!-- 📍 ត្រួតពិនិត្យរូបភាព News -->
-                    <img src="{{ $item->image ? \Storage::disk('cloudinary')->url($item->image) : $defaultImage }}" 
+                    <!-- 📍 ដូរពី 'cloudinary' ទៅ 's3' -->
+                    <img src="{{ $item->image ? \Storage::disk('s3')->url($item->image) : $defaultImage }}" 
                          class="w-full h-48 object-cover mb-4 group-hover:opacity-80 transition-opacity">
 
                     <h3 class="font-bold text-[#e87c75] text-lg mb-2 text-center">{{ __($item->title) }}</h3>
@@ -131,9 +132,9 @@
                 @foreach($whyChooseUs as $index => $feature)
                 <div data-aos="zoom-in" data-aos-delay="{{ ($index % 4) * 150 }}" class="flex flex-col items-center text-center">
                     
-                    <!-- 📍 ត្រួតពិនិត្យរូបភាព Why Choose Us (កន្លែងដែល Error មុននេះ) -->
+                    <!-- 📍 ដូរពី 'cloudinary' ទៅ 's3' -->
                     @if($feature->image)
-                        <img src="{{ \Storage::disk('cloudinary')->url($feature->image) }}" class="w-20 h-20 object-contain mb-4">
+                        <img src="{{ \Storage::disk('s3')->url($feature->image) }}" class="w-20 h-20 object-contain mb-4">
                     @else
                         <div class="w-20 h-20 bg-gray-300 rounded-full mb-4 flex items-center justify-center text-gray-500 text-xs">No Icon</div>
                     @endif
