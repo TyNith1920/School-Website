@@ -59,8 +59,8 @@ class HistorySettingResource extends Resource
 
                                 Forms\Components\FileUpload::make('file')
                                     ->label('Banner File')
-                                    ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                                    ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                                    ->disk('s3') // កំណត់ទៅ Cloudflare R2
+                                    ->fetchFileInformation(false)
                                     ->helperText(
                                         fn (Get $get): string =>
                                             $get('type') === 'video'
@@ -139,8 +139,8 @@ class HistorySettingResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('founder_image')
                             ->label('Founder Image')
-                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
+                            ->fetchFileInformation(false)
                             ->helperText('Recommended: portrait JPG, PNG, or WebP image, up to 5MB.')
                             ->image()
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
@@ -187,7 +187,7 @@ class HistorySettingResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('founder_image')
                     ->label('Founder')
-                    ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary សម្រាប់បង្ហាញរូបក្នុងតារាង
+                    ->disk('s3') // ទាញរូបពី Cloudflare R2
                     ->circular()
                     ->height(55)
                     ->ring(2), 
