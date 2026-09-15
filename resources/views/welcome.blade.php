@@ -190,7 +190,10 @@
                             <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" w="24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>
                         </span>
                     </summary>
-                    <p class="text-gray-600 mt-4 text-sm leading-relaxed">{{ __($faq->answer) }}</p>
+                  <!-- កូដថ្មី -->
+                <div class="text-gray-600 mt-4 text-sm leading-relaxed prose prose-sm max-w-none">
+                    {!! $faq->answer !!}
+                </div>
                 </details>
                 @endforeach
             @else
