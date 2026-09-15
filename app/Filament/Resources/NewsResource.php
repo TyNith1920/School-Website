@@ -69,7 +69,7 @@ class NewsResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Featured Image')
-                                            ->disk('cloudinary') // 📍 បន្ថែមបន្ទាត់នេះ ដើម្បីបញ្ជូនរូបទៅ Cloudinary
+                                            ->disk('s3') // ប្ដូរទៅ S3 (Cloudflare R2)
                                             ->image()
                                             ->directory('news-images')
                                             ->required()
@@ -87,7 +87,7 @@ class NewsResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
-                    ->disk('cloudinary') // 📍 បន្ថែមបន្ទាត់នេះ ដើម្បីទាញរូបពី Cloudinary មកបង្ហាញក្នុងតារាង
+                    ->disk('s3') // ប្ដូរទៅ S3 (Cloudflare R2)
                     ->circular(), 
 
                 TextColumn::make('title')
