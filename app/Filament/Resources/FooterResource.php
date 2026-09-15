@@ -88,7 +88,7 @@ class FooterResource extends Resource
                                         FileUpload::make('telegram_qr')
                                             ->label('📱 Telegram QR')
                                             ->image()
-                                            ->disk('cloudinary') 
+                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
                                             ->fetchFileInformation(false) 
                                             ->directory('footers/qr')
                                             ->columnSpanFull(),
@@ -101,7 +101,7 @@ class FooterResource extends Resource
                                         FileUpload::make('logos_image')
                                             ->label('🏆 Partner Logos')
                                             ->image()
-                                            ->disk('cloudinary') 
+                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
                                             ->fetchFileInformation(false) 
                                             ->directory('footers/logos')
                                             ->multiple()
@@ -129,7 +129,7 @@ class FooterResource extends Resource
                     
                 ImageColumn::make('telegram_qr')
                     ->label('📱 QR Code')
-                    ->disk('cloudinary')
+                    ->disk('s3') // ទាញរូបពី Cloudflare R2
                     ->circular(),
 
                 TextColumn::make('weekdays_time')
@@ -139,7 +139,7 @@ class FooterResource extends Resource
 
                 ImageColumn::make('logos_image')
                     ->label('🏆 Logos')
-                    ->disk('cloudinary')
+                    ->disk('s3') // ទាញរូបពី Cloudflare R2
                     ->circular()
                     ->stacked()
                     ->limit(3),
