@@ -88,7 +88,8 @@ class FooterResource extends Resource
                                         FileUpload::make('telegram_qr')
                                             ->label('📱 Telegram QR')
                                             ->image()
-                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
+                                            ->disk('s3')
+                                            ->visibility('public')
                                             ->fetchFileInformation(false) 
                                             ->directory('footers/qr')
                                             ->columnSpanFull(),
@@ -101,7 +102,8 @@ class FooterResource extends Resource
                                         FileUpload::make('logos_image')
                                             ->label('🏆 Partner Logos')
                                             ->image()
-                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
+                                            ->disk('s3')
+                                            ->visibility('public')
                                             ->fetchFileInformation(false) 
                                             ->directory('footers/logos')
                                             ->multiple()
