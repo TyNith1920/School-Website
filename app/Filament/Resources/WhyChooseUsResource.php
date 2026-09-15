@@ -70,6 +70,7 @@ class WhyChooseUsResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Icon Image')
+                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
                                             ->image()
                                             ->directory('why-choose-us')
                                             ->required()
@@ -87,8 +88,9 @@ class WhyChooseUsResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Icon')
-                    ->size(45) // កំណត់ទំហំ Icon ឱ្យល្មម
-                    ->extraImgAttributes(['class' => 'object-contain']), // ការពារកុំឱ្យ Icon យឺតខូចទ្រង់ទ្រាយ
+                    ->disk('s3') // ទាញរូបពី Cloudflare R2
+                    ->size(45)
+                    ->extraImgAttributes(['class' => 'object-contain']),
 
                 TextColumn::make('title')
                     ->label('🏷️ Title')
@@ -99,7 +101,7 @@ class WhyChooseUsResource extends Resource
 
                 TextColumn::make('description')
                     ->label('📝 Description')
-                    ->limit(50) // កាត់អត្ថបទឲ្យខ្លីកុំឲ្យរុញតារាងវែងពេក
+                    ->limit(50)
                     ->color('gray'),
             ])
             ->filters([
