@@ -29,42 +29,66 @@
 
     <div class="bg-warm font-sans text-gray-900 w-full pb-10">
 
-        {{-- Banner --}}
-        @if(isset($setting) && $setting->banner_image)
-            <div
-                class="relative w-full h-[300px] md:h-[500px] bg-cover bg-center"
-                style="background-image: url('{{ $getMediaUrl($setting->banner_image) }}');"
-            >
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+        {{-- High-End Modern Accreditations Banner --}}
+        <div class="relative w-full min-h-[460px] md:min-h-[560px] lg:min-h-[620px] bg-[#0b1240] overflow-hidden flex items-end md:items-center">
+            
+            {{-- Background Image --}}
+            @if(isset($setting) && $setting->banner_image)
+                <div class="absolute inset-0 bg-cover bg-center md:bg-[center_top_15%] transition-transform duration-1000 scale-100 hover:scale-105"
+                     style="background-image: url('{{ $getMediaUrl($setting->banner_image) }}');">
+                </div>
+            @else
+                <div class="absolute inset-0 bg-[#0b1240]"></div>
+            @endif
 
-                <div
-                    class="absolute bottom-0 w-full bg-warm h-24 md:h-32"
-                    style="clip-path: polygon(0 100%, 100% 0, 100% 100%);"
-                ></div>
-            </div>
-        @else
-            <div
-                class="relative w-full h-[300px] md:h-[500px] bg-[#1a365d] overflow-hidden"
-            >
-                <div
-                    class="absolute inset-0 opacity-20"
-                    style="
-                        background-image:
-                            radial-gradient(
-                                circle,
-                                #ffffff 1px,
-                                transparent 1px
-                            );
-                        background-size: 20px 20px;
-                    "
-                ></div>
+            {{-- Vignette & Deep Navy Gradients --}}
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b1240] via-[#0b1240]/40 to-black/30"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#0b1240]/80 via-[#0b1240]/40 to-transparent hidden md:block"></div>
 
-                <div
-                    class="absolute bottom-0 w-full bg-warm h-24 md:h-32"
-                    style="clip-path: polygon(0 100%, 100% 0, 100% 100%);"
-                ></div>
+            {{-- Ambient Floating Glow --}}
+            <div class="absolute top-10 left-10 w-72 h-72 bg-[#e06d64]/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            {{-- Content / Floating Glass Card --}}
+            <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 py-16 md:py-24">
+                <div class="max-w-2xl bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20 shadow-2xl"
+                     data-aos="fade-up" data-aos-duration="1000">
+                    
+                    {{-- Official Tag --}}
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#e06d64] text-white text-xs font-bold tracking-wider uppercase mb-4 shadow-sm">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Global Standards & Recognition
+                    </div>
+
+                    {{-- Title --}}
+                    <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight uppercase drop-shadow-md">
+                        Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-[#e06d64]">Accreditations</span>
+                    </h1>
+
+                    {{-- Subtitle --}}
+                    <p class="text-gray-100 text-xs sm:text-sm md:text-base mt-3 leading-relaxed font-light drop-shadow">
+                        Committed to educational excellence through accredited programs, recognized both by national ministries and global education institutions.
+                    </p>
+
+                    {{-- Breadcrumb Navigation --}}
+                    <div class="flex items-center gap-2 text-xs font-medium text-gray-300 mt-5 pt-4 border-t border-white/15">
+                        <a href="/" class="hover:text-[#e06d64] transition">Home</a>
+                        <span>/</span>
+                        <span class="text-orange-200">About Us</span>
+                        <span>/</span>
+                        <span class="text-[#e06d64] font-bold">Accreditations</span>
+                    </div>
+                </div>
             </div>
-        @endif
+
+            {{-- Soft Wave Transition ភ្ជាប់ទៅផ្ទៃខាងក្រោម (#fdfaf6) យ៉ាងរលូន --}}
+            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+                <svg class="relative block w-full h-10 sm:h-14 md:h-18 lg:h-20 text-[#fdfaf6]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M0,0 C200,60 450,20 600,45 C800,75 1000,20 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
 
         <div class="max-w-[1400px] mx-auto px-5 md:px-12 py-12">
 
