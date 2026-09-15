@@ -51,10 +51,11 @@ class AccreditationSettingResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('banner_image')
                             ->label('Banner Image')
-                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                            ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
+                            ->visibility('public') // 📍 អនុញ្ញាត Public Access
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ ឬគាំង loading ពេល Edit
                             ->helperText(
-                                'Recommended size: 1920 × 700px. Use JPG, PNG, or WebP, up to 5MB.'
+                                'Recommended size: 1920 × 700px. Use JPG, PNG, or WebP, up to 10MB.'
                             )
                             ->image()
                             ->acceptedFileTypes([
@@ -74,7 +75,7 @@ class AccreditationSettingResource extends Resource
                             ->panelLayout('integrated')
                             ->openable()
                             ->downloadable()
-                            ->maxSize(5120)
+                            ->maxSize(10240) // 10MB
                             ->required()
                             ->columnSpanFull(),
                     ]),
@@ -92,7 +93,7 @@ class AccreditationSettingResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('banner_image')
                     ->label('Banner Image')
-                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
+                    ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
                     ->height(90)
                     ->width(180)
                     ->extraImgAttributes([
@@ -107,10 +108,6 @@ class AccreditationSettingResource extends Resource
             ])
             ->defaultSort('updated_at', 'desc')
             ->actions([
-                /*
-                 * មិនដាក់ ViewAction ព្រោះ Resource នេះ
-                 * មិនមាន ViewAccreditationSetting page។
-                 */
                 Tables\Actions\EditAction::make()
                     ->label('Edit')
                     ->color('primary'),
