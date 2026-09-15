@@ -74,18 +74,21 @@ class BannerResource extends Resource
                         Forms\Components\FileUpload::make('video')
                             ->label('Background Video')
                             ->disk('s3')
+                            ->visibility('public')
+                            ->fetchFileInformation(false)
                             ->helperText(
-                                'Use MP4 or WebM. Compress the video to less than 30MB for better website performance.'
+                                'Use MP4 or WebM. Video size can be up to 100MB.'
                             )
                             ->acceptedFileTypes([
                                 'video/mp4',
                                 'video/webm',
+                                'video/quicktime',
                             ])
                             ->directory('banners/videos')
                             ->previewable(false)
                             ->openable()
                             ->downloadable()
-                            ->maxSize(30720)
+                            ->maxSize(102400) // 102400 KB = 100MB
                             ->columnSpanFull(),
 
                     ])
