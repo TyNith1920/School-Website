@@ -68,7 +68,9 @@ class FacultyResource extends Resource
                                             ->disk('s3') // កំណត់ទៅ Cloudflare R2
                                             ->fetchFileInformation(false)
                                             ->image()
-                                            ->directory('faculties'),
+                                            ->directory('faculties')
+                                            ->maxSize(10240) // កំណត់ត្រឹម 10MB
+                                            ->helperText('Allowed format: JPG, PNG, WebP up to 10MB'),
 
                                         TextInput::make('sort_order')
                                             ->label('🔢 Sort Order')
