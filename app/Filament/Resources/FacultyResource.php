@@ -65,8 +65,8 @@ class FacultyResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('📸 Profile Image')
-                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                                            ->disk('s3') // កំណត់ទៅ Cloudflare R2
+                                            ->fetchFileInformation(false)
                                             ->image()
                                             ->directory('faculties'),
 
@@ -88,7 +88,7 @@ class FacultyResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('📸 Image')
-                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
+                    ->disk('s3') // ទាញរូបពី Cloudflare R2
                     ->circular(),
 
                 TextColumn::make('name')
@@ -106,7 +106,7 @@ class FacultyResource extends Resource
                 TextColumn::make('sort_order')
                     ->label('🔢 Sort Order')
                     ->sortable()
-                    ->badge(), // ធ្វើឱ្យចេញជាប្រអប់ពណ៌
+                    ->badge(),
             ])
             ->filters([
                 //
