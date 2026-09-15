@@ -108,10 +108,11 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('logo')
                             ->label('Organization Logo')
-                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                            ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
+                            ->visibility('public') // 📍 អនុញ្ញាត Public Access
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំង loading
                             ->helperText(
-                                'Recommended: transparent PNG or WebP image, up to 2MB.'
+                                'Recommended: transparent PNG or WebP image, up to 10MB.'
                             )
                             ->image()
                             ->acceptedFileTypes([
@@ -131,7 +132,7 @@ class AccreditationResource extends Resource
                             ->panelLayout('integrated')
                             ->openable()
                             ->downloadable()
-                            ->maxSize(2048)
+                            ->maxSize(10240) // 10MB
                             ->columnSpanFull(),
                     ])
                     ->collapsible(),
@@ -149,10 +150,11 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('document_image')
                             ->label('Certificate Images')
-                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                            ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
+                            ->visibility('public') // 📍 អនុញ្ញាត Public Access
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំង loading
                             ->helperText(
-                                'Upload up to 10 JPG, PNG, or WebP images. Each image must be no larger than 5MB.'
+                                'Upload up to 10 JPG, PNG, or WebP images. Each image must be no larger than 10MB.'
                             )
                             ->image()
                             ->acceptedFileTypes([
@@ -168,7 +170,7 @@ class AccreditationResource extends Resource
                             ->imagePreviewHeight('180')
                             ->openable()
                             ->downloadable()
-                            ->maxSize(5120)
+                            ->maxSize(10240) // 10MB
                             ->maxFiles(10)
                             ->columnSpanFull(),
                     ])
@@ -187,10 +189,11 @@ class AccreditationResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('gallery')
                             ->label('Gallery Images')
-                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                            ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
+                            ->visibility('public') // 📍 អនុញ្ញាត Public Access
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំង loading
                             ->helperText(
-                                'Upload up to 50 JPG, PNG, or WebP images. Each image must be no larger than 5MB.'
+                                'Upload up to 50 JPG, PNG, or WebP images. Each image must be no larger than 10MB.'
                             )
                             ->image()
                             ->acceptedFileTypes([
@@ -206,7 +209,7 @@ class AccreditationResource extends Resource
                             ->imagePreviewHeight('160')
                             ->openable()
                             ->downloadable()
-                            ->maxSize(5120)
+                            ->maxSize(10240) // 10MB
                             ->maxFiles(50)
                             ->columnSpanFull(),
                     ])
@@ -225,7 +228,7 @@ class AccreditationResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('Logo')
-                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
+                    ->disk('s3') // 📍 ប្តូរទៅ Cloudflare R2
                     ->height(60)
                     ->width(70)
                     ->extraImgAttributes([
