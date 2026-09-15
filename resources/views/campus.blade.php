@@ -32,47 +32,47 @@
 
     {{-- Hero Banner --}}
     <section
-        class="relative min-h-[420px] md:min-h-[540px]
+        class="relative min-h-[460px] md:min-h-[560px]
                flex items-center overflow-hidden
-               bg-gradient-to-br from-[#071b4b] via-[#143b8f]
-               to-[#2474c6]"
+               bg-gradient-to-br from-[#071b4b] via-[#0f2d72]
+               to-[#1a4a9c]"
     >
-        {{-- Decorative background --}}
+        {{-- Decorative background pattern --}}
         <div
-            class="absolute inset-0 opacity-20"
+            class="absolute inset-0 opacity-15"
             style="
                 background-image:
                     radial-gradient(
                         circle,
-                        rgba(255,255,255,.7) 1px,
+                        rgba(255,255,255,.8) 1px,
                         transparent 1px
                     );
                 background-size: 24px 24px;
             "
         ></div>
 
+        {{-- Ambient Glow Orbs --}}
         <div
-            class="absolute -top-24 -right-24 w-80 h-80
-                   rounded-full bg-cyan-300/20 blur-3xl"
+            class="absolute -top-24 -right-24 w-96 h-96
+                   rounded-full bg-cyan-400/20 blur-3xl pointer-events-none"
         ></div>
 
         <div
             class="absolute -bottom-28 -left-20 w-96 h-96
-                   rounded-full bg-orange-400/15 blur-3xl"
+                   rounded-full bg-orange-500/15 blur-3xl pointer-events-none"
         ></div>
 
         {{-- Hero Content --}}
         <div
             class="relative z-10 max-w-7xl mx-auto w-full
-                   px-6 md:px-12 py-16 text-center"
+                   px-6 md:px-12 pt-16 pb-24 text-center"
         >
             {{-- Breadcrumb --}}
-            <!-- 📍 ថែម AOS Fade-up -->
             <div
-                data-aos="fade-up"
+                data-aos="fade-down"
                 class="inline-flex flex-wrap justify-center items-center
-                       gap-2 text-sm md:text-base text-blue-100
-                       font-semibold mb-8"
+                       gap-2 text-sm md:text-base text-blue-200
+                       font-medium mb-6 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm"
             >
                 <a
                     href="{{ url('/') }}"
@@ -95,52 +95,48 @@
                     />
                 </svg>
 
-                <span class="text-orange-400">
+                <span class="text-orange-400 font-semibold">
                     Campus
                 </span>
             </div>
 
             {{-- Small label --}}
-            <!-- 📍 ថែម AOS Fade-up ជាមួយ Delay -->
             <div
                 data-aos="fade-up" data-aos-delay="100"
                 class="inline-flex items-center gap-3 mb-6
                        text-orange-300 font-bold uppercase
                        tracking-[0.25em] text-xs md:text-sm"
             >
-                <span class="w-10 md:w-16 h-1 bg-orange-400 rounded-full"></span>
+                <span class="w-8 md:w-12 h-0.5 bg-orange-400 rounded-full"></span>
                 Campus Experience
-                <span class="w-10 md:w-16 h-1 bg-orange-400 rounded-full"></span>
+                <span class="w-8 md:w-12 h-0.5 bg-orange-400 rounded-full"></span>
             </div>
 
-            <!-- 📍 ថែម AOS Fade-up ជាមួយ Delay -->
             <h1
-                data-aos="fade-up" data-aos-delay="200"
+                data-aos="zoom-in" data-aos-delay="200"
                 class="text-4xl sm:text-5xl md:text-7xl
                        font-black text-white uppercase
-                       tracking-wide leading-tight drop-shadow-xl"
+                       tracking-tight leading-tight drop-shadow-xl"
             >
                 {{ $campusTitle }}
             </h1>
 
-            <!-- 📍 ថែម AOS Fade-up ជាមួយ Delay -->
             <p
                 data-aos="fade-up" data-aos-delay="300"
                 class="max-w-3xl mx-auto mt-6 text-base md:text-xl
-                       text-blue-100 leading-relaxed"
+                       text-blue-100 leading-relaxed font-light"
             >
                 {{ $campusDescription }}
             </p>
 
-            <!-- 📍 ថែម AOS Fade-up ជាមួយ Delay -->
             <a
                 data-aos="fade-up" data-aos-delay="400"
                 href="#campus-tour"
                 class="inline-flex items-center gap-3 mt-9
-                       bg-orange-500 hover:bg-orange-600
-                       text-white font-bold px-7 py-3.5
-                       rounded-xl shadow-lg hover:shadow-xl
-                       hover:-translate-y-1 transition-all"
+                       bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600
+                       text-white font-bold px-8 py-3.5
+                       rounded-xl shadow-lg hover:shadow-orange-500/25
+                       hover:-translate-y-0.5 transition-all"
             >
                 Explore Our Campus
 
@@ -160,15 +156,12 @@
             </a>
         </div>
 
-        {{-- Bottom shape --}}
-        <div
-            class="absolute bottom-0 left-0 w-full h-10 md:h-16
-                   bg-slate-50"
-            style="
-                clip-path:
-                    polygon(0 75%, 50% 100%, 100% 55%, 100% 100%, 0 100%);
-            "
-        ></div>
+        {{-- Soft Organic Wave Transition to Content (bg-slate-50) --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+            <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+        </div>
     </section>
 
     {{-- Main Content --}}
@@ -177,9 +170,7 @@
         class="max-w-7xl mx-auto px-5 md:px-8
                py-14 md:py-20 scroll-mt-24"
     >
-
         {{-- Section Heading --}}
-        <!-- 📍 ថែម AOS Fade-up -->
         <div data-aos="fade-up" class="max-w-3xl mx-auto text-center mb-12">
             <span
                 class="inline-flex items-center gap-2
@@ -204,7 +195,6 @@
         </div>
 
         {{-- Video --}}
-        <!-- 📍 ថែម AOS Zoom-in -->
         <section
             data-aos="zoom-in" data-aos-delay="100"
             class="bg-white rounded-2xl md:rounded-3xl
@@ -303,7 +293,6 @@
                    gap-8 lg:gap-12 items-stretch"
         >
             {{-- Contact Information --}}
-            <!-- 📍 ថែម AOS Fade-right -->
             <div
                 data-aos="fade-right" data-aos-delay="200"
                 class="bg-white p-7 md:p-10 rounded-2xl md:rounded-3xl
@@ -427,7 +416,7 @@
                            justify-center gap-2 bg-blue-900
                            hover:bg-blue-800 text-white font-bold
                            py-4 px-6 rounded-xl shadow-md
-                           hover:-translate-y-1 transition-all"
+                           hover:-translate-y-0.5 transition-all"
                 >
                     Contact the School
 
@@ -448,7 +437,6 @@
             </div>
 
             {{-- Map --}}
-            <!-- 📍 ថែម AOS Fade-left -->
             <div
                 data-aos="fade-left" data-aos-delay="300"
                 class="bg-white rounded-2xl md:rounded-3xl
