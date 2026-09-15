@@ -177,7 +177,7 @@
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
         try {
-            return \Storage::disk('cloudinary')->url($path);
+            return \Storage::disk('s3')->url($path);
         } catch (\Exception $e) {
             return asset('storage/' . $path);
         }
