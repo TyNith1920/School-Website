@@ -24,12 +24,12 @@
         ->values()
         ->all();
 
-    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាព និង វីដេអូ ពី Cloudinary
+    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាព និង វីដេអូ ពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
         try {
-            return \Storage::disk('cloudinary')->url($path);
+            return \Storage::disk('s3')->url($path);
         } catch (\Exception $e) {
             return asset('storage/' . $path);
         }
@@ -194,7 +194,6 @@
                 class="absolute inset-0"
             >
                 @if(($slide['type'] ?? 'image') === 'video')
-                    <!-- 📍 កែប្រែការទាញវីដេអូពី Cloudinary -->
                     <video
                         src="{{ $getMediaUrl($slide['file']) }}"
                         autoplay
@@ -205,7 +204,6 @@
                         class="h-full w-full object-cover"
                     ></video>
                 @else
-                    <!-- 📍 កែប្រែការទាញរូបភាពពី Cloudinary -->
                     <img
                         src="{{ $getMediaUrl($slide['file']) }}"
                         alt="History and Governance banner {{ $index + 1 }}"
@@ -380,7 +378,6 @@
                     <div class="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr]">
                         <div class="relative min-h-[350px] bg-blue-950">
                             @if($historySetting->founder_image)
-                                <!-- 📍 កែប្រែការទាញរូប Founder ពី Cloudinary -->
                                 <img
                                     src="{{ $getMediaUrl($historySetting->founder_image) }}"
                                     alt="{{ $historySetting->founder_name ?: 'Founder' }}"
@@ -501,7 +498,6 @@
                         <article data-aos="zoom-in" data-aos-delay="{{ ($index % 3) * 150 }}" class="group w-full max-w-[350px] rounded-[26px] border border-slate-200 bg-white p-7 text-center shadow-[0_10px_35px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-2 hover:border-blue-200 hover:shadow-xl sm:w-[calc(50%_-_1rem)] lg:w-[calc(33.333%_-_1.35rem)]">
                             <div class="mx-auto h-48 w-48 overflow-hidden rounded-full border-4 border-blue-50 bg-slate-100 shadow-lg transition-all duration-300 group-hover:border-orange-200">
                                 @if($faculty->image)
-                                    <!-- 📍 កែប្រែការទាញរូប Faculty ពី Cloudinary -->
                                     <img
                                         src="{{ $getMediaUrl($faculty->image) }}"
                                         alt="{{ $faculty->name }}"
