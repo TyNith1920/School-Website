@@ -5,20 +5,17 @@
 @section('content')
 
     @php
-        // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាពពី Cloudinary
+        // 📍 មុខងារទាញរូបភាពពី Cloudflare R2 (s3)
         $getMediaUrl = function($path) {
             if (empty($path)) return null;
             if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-            try { return \Storage::disk('cloudinary')->url($path); } 
-            catch (\Exception $e) { return asset('storage/' . $path); }
+            try { 
+                return \Storage::disk('s3')->url($path); 
+            } catch (\Exception $e) { 
+                return asset('storage/' . $path); 
+            }
         };
     @endphp
-
-    {{-- Alpine.js សម្រាប់ Certificate និង Gallery sliders --}}
-    <script
-        defer
-        src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
-    ></script>
 
     <style>
         .bg-warm {
@@ -86,23 +83,6 @@
                     @endif
                 @endforeach
             </div>
-
-            <!-- {{-- Introduction --}}
-            <p
-                data-aos="fade-up"
-                class="text-center text-gray-800 text-base md:text-lg max-w-4xl mx-auto font-medium leading-relaxed mb-24 md:mb-32"
-            >
-                Life International School is fully accredited by MoEYS and
-                ACSI and is officially recognized by the Cambodian
-                government.
-
-                <br><br>
-
-                Life International School accreditations ensure that the
-                school meets the standards established for international
-                schools and continuously evaluates and improves its programs
-                and teaching.
-            </p> -->
 
             {{-- Accreditation Details --}}
             @foreach($accreditations as $acc)
