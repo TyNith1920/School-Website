@@ -12,7 +12,6 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
-// 📍 Import ៣ នេះបន្ថែមសម្រាប់ធ្វើប្រអប់ និងបែងចែក Layout
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -63,20 +62,28 @@ class ChildSafeguardingResource extends Resource
                                     ->schema([
                                         FileUpload::make('pdf_file')
                                             ->label('📄 Policy Document (PDF)')
-                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 បើក Public URL
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->acceptedFileTypes(['application/pdf'])
-                                            ->directory('safeguarding-pdfs'),
+                                            ->directory('safeguarding-pdfs')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(51200), // 50MB
                                             
                                         FileUpload::make('images')
                                             ->label('🖼️ Images')
-                                            ->disk('cloudinary') // 📍 បន្ថែមការភ្ជាប់ទៅ Cloudinary
-                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យលោតបាត់ពេល Edit
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 បើក Public URL
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->image()
                                             ->multiple() 
                                             ->panelLayout('grid') 
                                             ->directory('safeguarding-images')
-                                            ->reorderable(),
+                                            ->reorderable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(20480), // 20MB
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
 
@@ -91,13 +98,13 @@ class ChildSafeguardingResource extends Resource
                 TextColumn::make('title')
                     ->label('🏷️ Title')
                     ->searchable() 
-                    ->sortable()
+                    ->sortable() 
                     ->weight('bold') 
                     ->color('primary'),
                     
                 ImageColumn::make('images')
                     ->label('🖼️ Images')
-                    ->disk('cloudinary') // 📍 បន្ថែមសម្រាប់បង្ហាញរូបក្នុងតារាង
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular() 
                     ->stacked() 
                     ->limit(3), 
@@ -105,7 +112,7 @@ class ChildSafeguardingResource extends Resource
                 TextColumn::make('updated_at')
                     ->label('⏱️ Last Updated')
                     ->dateTime('d M Y, h:i A') 
-                    ->sortable()
+                    ->sortable() 
                     ->badge(), 
             ])
             ->filters([
