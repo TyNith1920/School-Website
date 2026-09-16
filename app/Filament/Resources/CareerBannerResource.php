@@ -33,9 +33,14 @@ class CareerBannerResource extends Resource
                     ->schema([
                         FileUpload::make('image')
                             ->label('🖼️ Banner Image')
-                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ Upload Banner
+                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                            ->visibility('public') // 📍 បើក Public URL
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំង UI ពេល Edit
                             ->image()
                             ->directory('career-banners')
+                            ->openable()
+                            ->downloadable()
+                            ->maxSize(15360) // 15MB
                             ->required()
                             ->columnSpanFull(),
                     ]),
@@ -48,13 +53,14 @@ class CareerBannerResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Banner Image')
-                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ទាញរូបមកបង្ហាញក្នុងតារាង
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->height(60) 
                     ->extraImgAttributes(['class' => 'object-contain']), 
 
                 TextColumn::make('updated_at')
                     ->label('⏱️ Last Updated')
                     ->dateTime('d M Y, h:i A') 
+                    ->timezone('Asia/Phnom_Penh')
                     ->sortable()
                     ->badge(), 
             ])

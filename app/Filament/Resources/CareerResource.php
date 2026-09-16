@@ -63,6 +63,10 @@ class CareerResource extends Resource
 
                                         RichEditor::make('description')
                                             ->label('📝 Job Description')
+                                            ->toolbarButtons([
+                                                'bold', 'italic', 'underline', 'strike',
+                                                'bulletList', 'orderedList', 'link', 'redo', 'undo', 'h2', 'h3'
+                                            ])
                                             ->columnSpanFull(),
                                     ])->columns(2), 
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
@@ -82,9 +86,14 @@ class CareerResource extends Resource
 
                                         FileUpload::make('application_file')
                                             ->label('📄 Application Form (PDF)')
-                                            ->disk('public') // 📍 រក្សាទុក PDF ក្នុង Local Public Disk ដូចទំព័រ Enrollment
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 អនុញ្ញាតឱ្យ Download បានជាសាធារណៈ
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំង UI ពេល Edit
                                             ->directory('careers-files')
-                                            ->acceptedFileTypes(['application/pdf']),
+                                            ->acceptedFileTypes(['application/pdf'])
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(20480), // 20MB
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
                             
