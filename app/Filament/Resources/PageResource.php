@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារសំខាន់ៗ
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
 use Filament\Forms\Components\Section;
@@ -27,16 +26,12 @@ class PageResource extends Resource
 
     protected static ?string $navigationGroup = 'Website Content';
 
-    // 📍 ១. កំណត់ឈ្មោះដែលត្រូវបង្ហាញនៅលើ Menu ខាងឆ្វេងផ្ទាល់ (Sidebar Menu)
     protected static ?string $navigationLabel = 'Academics Pages';
 
-    // 📍 ២. កំណត់ឈ្មោះពេលបង្ហាញឯកវចនៈ (ឧ. លោតត្រង់ប៊ូតុង "New Academics Page")
     protected static ?string $modelLabel = 'Academics Page';
 
-    // 📍 ៣. កំណត់ឈ្មោះពេលបង្ហាញពហុវចនៈ (ឧ. លោតនៅខាងលើក្បាលតារាង)
     protected static ?string $pluralModelLabel = 'Academics Pages';
     
-    // ... កូដផ្សេងៗនៅខាងក្រោមរក្សាទុកដដែល ...
     public static function form(Form $form): Form
     {
         return $form
@@ -74,10 +69,11 @@ class PageResource extends Resource
                                                 'bulletList', 'orderedList', 'link', 'redo', 'undo', 'h2', 'h3'
                                             ])
                                             ->columnSpanFull(),
-                                    ])->columns(2), // ដាក់ Title និង Slug ទន្ទឹមគ្នាជា ២ ជួរ
+                                    ])->columns(2),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
                 
+                        // ==============================================
                         // ផ្នែកខាងស្តាំ (Media)
                         // ==============================================
                         Group::make()
@@ -90,9 +86,13 @@ class PageResource extends Resource
                                         FileUpload::make('image')
                                             ->label('🖼️ Cover Image')
                                             ->image()
-                                            ->disk('cloudinary') 
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 បើក Public URL
                                             ->directory('pages-images')
-                                            ->fetchFileInformation(false) // 📍 ថែមបន្ទាត់នេះ ដើម្បីកុំឲ្យលោតបាត់រូបពេល Edit
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(10240) // 10MB
                                             ->columnSpanFull(),
 
                                         // 📸 Gallery (Multiple)
@@ -100,11 +100,15 @@ class PageResource extends Resource
                                             ->label('📸 Gallery (Multiple)')
                                             ->image()
                                             ->multiple()
-                                            ->disk('cloudinary') 
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 បើក Public URL
                                             ->panelLayout('grid') 
                                             ->directory('pages/gallery')
                                             ->reorderable()
-                                            ->fetchFileInformation(false) // 📍 ថែមបន្ទាត់នេះដូចគ្នា
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(10240) // 10MB ក្នុងមួយរូប
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
@@ -119,7 +123,7 @@ class PageResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Cover')
-                    ->disk('cloudinary')
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular()
                     ->height(50),
 
@@ -135,10 +139,9 @@ class PageResource extends Resource
                     ->searchable()
                     ->color('gray'),
 
-                // 📍 បង្ហាញរូប Gallery ត្រួតៗគ្នាស្អាតក្នុងតារាង
                 ImageColumn::make('gallery')
                     ->label('📸 Gallery')
-                    ->disk('cloudinary')
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular()
                     ->stacked()
                     ->limit(3),

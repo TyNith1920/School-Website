@@ -10,12 +10,12 @@
 @php
     $pageTitle = $page->title ?: 'Academic Program';
 
-    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាព ទោះជា Local ឬ Cloudinary ក៏វាស្គាល់
+    // 📍 មុខងារទាញយករូបភាពពី Cloudflare R2 (s3)
     $getImageUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
         try {
-            return \Storage::disk('cloudinary')->url($path);
+            return \Storage::disk('s3')->url($path);
         } catch (\Exception $e) {
             return asset('storage/' . $path);
         }
@@ -113,7 +113,13 @@
             </div>
         </div>
 
-        <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-16" style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
+        {{-- 📍 បន្ទាត់ Highlight ពណ៌មាស (Metallic Gold Ribbon) --}}
+        <div class="absolute -bottom-px left-0 h-[45px] w-full bg-gradient-to-r from-[#b45309] via-[#fde047] to-[#d97706] shadow-[0_0_18px_rgba(251,191,36,0.6)] md:h-[70px]" 
+             style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
+
+        {{-- ផ្ទៃពណ៌សាច់ខាងក្រោម (Slate-50) កាត់ពីលើ បន្សល់ឆ្នូតមាសកម្រាស់ប្រហែល 5px --}}
+        <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-16" 
+             style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
     </section>
 
     {{-- Content --}}
