@@ -9,7 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
@@ -23,10 +22,12 @@ class ContactResource extends Resource
 
     protected static ?string $navigationGroup = 'Communications';
 
+    protected static ?string $navigationLabel = 'Inquiries & Messages';
     protected static ?string $modelLabel = 'Contact Message';
     protected static ?string $pluralModelLabel = 'Contact Messages';
+    protected static ?int $navigationSort = 1;
 
-    // 📍 បិទមុខងារមិនឱ្យ Admin អាចចុច Create សារថ្មីបានទេ ព្រោះសារត្រូវផ្ញើពីខាងក្រៅ
+    // 📍 បិទមិនឱ្យ Admin បង្កើតសារថ្មីដោយដៃ
     public static function canCreate(): bool
     {
         return false;
@@ -38,50 +39,42 @@ class ContactResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (Message Content)
-                        // ==============================================
+                        // ផ្នែកខាងឆ្វេង: ខ្លឹមសារសារ
                         Group::make()
                             ->schema([
-                                Section::make('Message Content')
-                                    ->description('The inquiry or feedback sent by the user.')
+                                Section::make('Message Details')
                                     ->icon('heroicon-o-chat-bubble-left-ellipsis')
                                     ->schema([
                                         Textarea::make('message')
-                                            ->label('💬 Message')
-                                            ->rows(8)
-                                            ->disabled() // ការពារមិនឱ្យ Admin កែប្រែសារដើម
+                                            ->label('Inquiry Message')
+                                            ->rows(10)
+                                            ->disabled()
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Sender Details)
-                        // ==============================================
+                        // ផ្នែកខាងស្តាំ: ព័ត៌មានអ្នកផ្ញើ
                         Group::make()
                             ->schema([
-                                Section::make('Sender Details')
-                                    ->description('Information about the person who contacted you.')
+                                Section::make('Sender Information')
                                     ->icon('heroicon-o-user-circle')
                                     ->schema([
                                         TextInput::make('name')
-                                            ->label('👤 Full Name')
+                                            ->label('Sender Name')
                                             ->prefixIcon('heroicon-o-user')
                                             ->disabled(),
                                             
                                         TextInput::make('phone')
-                                            ->label('📞 Phone Number')
+                                            ->label('Phone Number')
                                             ->prefixIcon('heroicon-o-phone')
                                             ->disabled(),
                                             
                                         TextInput::make('email')
-                                            ->label('📧 Email Address')
+                                            ->label('Email Address')
                                             ->prefixIcon('heroicon-o-envelope')
                                             ->disabled(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
-                            
                     ]),
             ]);
     }
@@ -91,45 +84,54 @@ class ContactResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('👤 Name')
+                    ->label('Sender')
                     ->searchable()
+                    ->sortable()
                     ->weight('bold')
                     ->color('primary'),
 
                 TextColumn::make('phone')
-                    ->label('📞 Phone')
+                    ->label('Phone')
                     ->searchable()
-                    ->copyable() // 📍 អាចចុច Copy យកទៅតេបានយ៉ាងលឿន
+                    ->icon('heroicon-m-phone')
+                    ->url(fn (?string $state): ?string => filled($state) ? "tel:{$state}" : null)
+                    ->copyable()
                     ->copyMessage('Phone number copied')
-                    ->copyMessageDuration(1500)
-                    ->icon('heroicon-m-phone'),
+                    ->color('gray'),
 
                 TextColumn::make('email')
-                    ->label('📧 Email')
+                    ->label('Email')
                     ->searchable()
-                    ->copyable() // 📍 អាចចុច Copy យកទៅផ្ញើ Mail បានយ៉ាងលឿន
+                    ->icon('heroicon-m-envelope')
+                    ->url(fn (?string $state): ?string => filled($state) ? "mailto:{$state}" : null)
+                    ->copyable()
                     ->copyMessage('Email copied')
-                    ->copyMessageDuration(1500)
-                    ->icon('heroicon-m-envelope'),
+                    ->color('info'),
+
+                TextColumn::make('message')
+                    ->label('Message Snippet')
+                    ->limit(45)
+                    ->color('slate')
+                    ->toggleable(),
 
                 TextColumn::make('created_at')
-                    ->label('⏱️ Received At')
+                    ->label('Received Date')
                     ->dateTime('d M Y, h:i A')
-                    ->timezone('Asia/Phnom_Penh') // រក្សាម៉ោងនៅស្រុកខ្មែរដដែល
+                    ->timezone('Asia/Phnom_Penh')
                     ->sortable()
                     ->badge()
                     ->color('success'),
             ])
-            ->filters([
-                //
-            ])
+            ->defaultSort('created_at', 'desc')
             ->actions([
-                // 📍 ប្រើ EditAction ដដែល តែប្ដូររូបរាងវាឱ្យដូចប៊ូតុង View (ព្រោះចូលទៅក៏កែអត់បានដែរ)
-                Tables\Actions\EditAction::make()
-                    ->label('View')
-                    ->icon('heroicon-m-eye')
-                    ->color('info')
+                // 📍 បើកមើលសារពេញតាមរយៈ Slide-Over លើទំព័រតែមួយយ៉ាងរហ័ស
+                Tables\Actions\ViewAction::make()
+                    ->label('Read')
+                    ->icon('heroicon-m-envelope-open')
+                    ->color('primary')
+                    ->slideOver()
                     ->button(),
+
                 Tables\Actions\DeleteAction::make()->button(),
             ])
             ->bulkActions([
@@ -137,23 +139,20 @@ class ContactResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->emptyStateHeading('No messages yet')
+            ->emptyStateDescription('Customer and parent inquiries will appear here.')
+            ->emptyStateIcon('heroicon-o-inbox');
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
-        // 📍 ត្រឡប់មកប្រើទម្រង់ដើមវិញ ដើម្បីកុំឱ្យលោត Error Class not found
         return [
             'index' => Pages\ListContacts::route('/'),
-            'create' => Pages\CreateContact::route('/create'),
-            'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
     }
 }
