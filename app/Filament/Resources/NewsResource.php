@@ -55,7 +55,7 @@ class NewsResource extends Resource
                                             ->label('📝 Content Details')
                                             ->toolbarButtons([
                                                 'bold', 'italic', 'underline', 'strike',
-                                                'bulletList', 'orderedList', 'link', 'redo', 'undo',
+                                                'bulletList', 'orderedList', 'link', 'redo', 'undo', 'h2', 'h3'
                                             ])
                                             ->columnSpanFull(),
                                     ]),
@@ -69,9 +69,14 @@ class NewsResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Featured Image')
-                                            ->disk('s3') // ប្ដូរទៅ S3 (Cloudflare R2)
+                                            ->disk('s3') // Cloudflare R2
+                                            ->visibility('public') // 📍 បើក Public URL
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->image()
                                             ->directory('news-images')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(15360) // 15MB
                                             ->required()
                                             ->columnSpanFull(),
                                     ]),
@@ -87,7 +92,7 @@ class NewsResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
-                    ->disk('s3') // ប្ដូរទៅ S3 (Cloudflare R2)
+                    ->disk('s3') // Cloudflare R2
                     ->circular(), 
 
                 TextColumn::make('title')
@@ -106,6 +111,7 @@ class NewsResource extends Resource
                 TextColumn::make('created_at')
                     ->label('📅 Posted Date')
                     ->dateTime('d M Y, h:i A') 
+                    ->timezone('Asia/Phnom_Penh')
                     ->sortable()
                     ->badge()
                     ->color('success'), 

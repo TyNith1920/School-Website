@@ -5,22 +5,25 @@
 @section('content')
 
 @php
-    // 📍 មុខងារទាញរូបភាពពី Cloudinary ដោយសុវត្ថិភាព
+    // 📍 មុខងារទាញរូបភាពពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-        try { return \Storage::disk('cloudinary')->url($path); } 
-        catch (\Exception $e) { return asset('storage/' . $path); }
+        try { 
+            return \Storage::disk('s3')->url($path); 
+        } catch (\Exception $e) { 
+            return asset('storage/' . $path); 
+        }
     };
 @endphp
 
 {{-- Hero Banner --}}
-<section class="relative isolate flex min-h-[310px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] md:min-h-[380px]">
-    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
-    <div class="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-400/30 blur-3xl"></div>
-    <div class="absolute -bottom-36 right-0 h-96 w-96 rounded-full bg-orange-400/20 blur-3xl"></div>
+<section class="relative isolate flex min-h-[330px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] md:min-h-[400px]">
+    <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
+    <div class="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-400/30 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-36 right-0 h-96 w-96 rounded-full bg-orange-400/20 blur-3xl pointer-events-none"></div>
 
-    <div class="relative z-10 mx-auto max-w-4xl px-6 py-16 text-center">
+    <div class="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-20 text-center">
         <div data-aos="fade-down" class="mb-5 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-blue-50 backdrop-blur-sm">
             Life International School
         </div>
@@ -34,7 +37,13 @@
         </p>
     </div>
 
-    <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-14" style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
+    {{-- 📍 បន្ទាត់ Highlight ពណ៌មាសអមតាមគែមទ្រេត (Metallic Gold Ribbon) --}}
+    <div class="absolute -bottom-px left-0 h-[45px] w-full bg-gradient-to-r from-[#b45309] via-[#fde047] to-[#d97706] shadow-[0_0_18px_rgba(251,191,36,0.6)] md:h-[65px]" 
+         style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
+
+    {{-- ផ្ទៃពណ៌សាច់ខាងក្រោម (Slate-50) កាត់ពីលើ បន្សល់ឆ្នូតមាសកម្រាស់ប្រហែល 5px --}}
+    <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-14" 
+         style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
 </section>
 
 {{-- News Section --}}
@@ -82,7 +91,6 @@
                         data-date="{{ $news->created_at?->format('F d, Y') ?? '' }}"
                         class="group flex w-full max-w-[390px] flex-col overflow-hidden rounded-[24px] border border-slate-200 bg-white text-left shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-2 hover:border-blue-200 hover:shadow-[0_22px_50px_rgba(30,64,175,0.18)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.4rem)]"
                     >
-                        {{-- 📍 លាក់អត្ថបទពេញកុំឱ្យខូច Form Modal --}}
                         <div class="hidden news-full-description">{!! $news->description !!}</div>
 
                         {{-- Image --}}
@@ -131,7 +139,6 @@
                             </h3>
 
                             @if($news->description)
-                                {{-- 📍 បំបាត់ HTML Tags ចេញ សម្រាប់តែការបង្ហាញត្រួសៗ (Preview) លើកាត --}}
                                 <p class="mb-6 line-clamp-3 text-sm leading-6 text-slate-600">
                                     {!! Str::limit(strip_tags($news->description), 150) !!}
                                 </p>
@@ -156,7 +163,6 @@
                 @endforeach
             </div>
         @else
-            {{-- Empty state --}}
             <div data-aos="fade-up" class="rounded-[28px] border border-dashed border-blue-200 bg-white px-6 py-20 text-center shadow-sm">
                 <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                     <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -193,7 +199,6 @@
 
                 <h2 id="modalTitle" class="text-3xl font-black leading-tight text-[#081747] md:text-4xl"></h2>
 
-                {{-- 📍 ប្តូរពី p ទៅ div វិញ ដើម្បីឱ្យ HTML ដើរស្រួល --}}
                 <div id="modalDesc" class="mt-6 text-base leading-7 text-slate-600"></div>
 
                 <a id="modalLink" href="#" target="_blank" rel="noopener noreferrer" class="mt-9 inline-flex items-center justify-center gap-3 rounded-xl bg-[#173c9c] px-7 py-4 font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-500 hover:shadow-xl">
@@ -241,17 +246,12 @@
         const title = card.dataset.title || 'News & Events';
         const date = card.dataset.date || 'Latest update';
         const link = card.dataset.link || '';
-        
-        // 📍 ទាញយក HTML ពេញលេញពី div លាក់ទុកក្នុង Card មកបង្ហាញក្នុង Modal 
         const descHtml = card.querySelector('.news-full-description').innerHTML;
 
         modalImage.src = image;
         modalImage.alt = title;
         modalTitle.textContent = title;
-        
-        // 📍 ប្រើ innerHTML ជំនួស textContent ដើម្បីរក្សាស្ទាយអក្សរ
         modalDescription.innerHTML = descHtml || 'No additional description is available for this update.';
-        
         modalDate.textContent = date;
         modalLink.href = getSafeExternalUrl(link);
 
