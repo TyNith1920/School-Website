@@ -96,10 +96,23 @@
         </div>
     </div>
 
-    {{-- 📍 Dual-Layer Gold Accent Wave Transition --}}
+    {{-- 📍 Dual-Layer Rich Metallic Gold Wave Transition --}}
     <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-        <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="rgba(251, 191, 36, 0.3)"></path>
+        <svg class="relative block w-full h-16 sm:h-20 md:h-28" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="contactGoldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#b45309" />
+                    <stop offset="25%" stop-color="#f59e0b" />
+                    <stop offset="50%" stop-color="#fde047" />
+                    <stop offset="75%" stop-color="#f59e0b" />
+                    <stop offset="100%" stop-color="#d97706" />
+                </linearGradient>
+            </defs>
+
+            <!-- ស្រទាប់ទី ១: រលកពណ៌មាសច្បាស់ ១០០% -->
+            <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#contactGoldGradient)"></path>
+            
+            <!-- ស្រទាប់ទី ២: រលកពណ៌ផ្ទៃខាងក្រោម (#f8fafc) -->
             <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#f8fafc"></path>
         </svg>
     </div>
