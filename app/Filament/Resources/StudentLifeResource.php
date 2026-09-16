@@ -65,19 +65,29 @@ class StudentLifeResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Cover Image')
-                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 អនុញ្ញាត Public Read
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->image()
                                             ->directory('student-life-images')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(15360) // 15MB
                                             ->required(),
 
                                         FileUpload::make('gallery_images')
                                             ->label('📸 Gallery Images (Multiple)')
-                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 អនុញ្ញាត Public Read
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->image()
                                             ->multiple()
                                             ->panelLayout('grid')
                                             ->directory('student-life-gallery')
-                                            ->reorderable(),
+                                            ->reorderable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(15360), // 15MB ក្នុងមួយរូប
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
                             
@@ -91,7 +101,7 @@ class StudentLifeResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Cover')
-                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular(),
 
                 TextColumn::make('title')
@@ -103,7 +113,7 @@ class StudentLifeResource extends Resource
 
                 ImageColumn::make('gallery_images')
                     ->label('📸 Gallery')
-                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular()
                     ->stacked()
                     ->limit(3),
@@ -111,6 +121,7 @@ class StudentLifeResource extends Resource
                 TextColumn::make('updated_at')
                     ->label('⏱️ Last Updated')
                     ->dateTime('d M Y, h:i A')
+                    ->timezone('Asia/Phnom_Penh')
                     ->sortable()
                     ->badge(),
             ])

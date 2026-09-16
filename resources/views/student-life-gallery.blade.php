@@ -8,12 +8,15 @@
 @section('content')
 
 @php
-    // 📍 មុខងារទាញរូបភាពពី Cloudinary ដោយសុវត្ថិភាព
+    // 📍 មុខងារទាញរូបភាពពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-        try { return \Storage::disk('cloudinary')->url($path); } 
-        catch (\Exception $e) { return asset('storage/' . $path); }
+        try { 
+            return \Storage::disk('s3')->url($path); 
+        } catch (\Exception $e) { 
+            return asset('storage/' . $path); 
+        }
     };
 
     $rawImages = $activity->gallery_images;
@@ -26,7 +29,6 @@
         $storedImages = [];
     }
 
-    // 📍 ប្រើប្រាស់ $getMediaUrl សម្រាប់រូបភាព Gallery នីមួយៗ
     $galleryImages = collect($storedImages)
         ->filter()
         ->map(fn ($image) => $getMediaUrl($image))
@@ -34,205 +36,124 @@
         ->all();
 @endphp
 
-{{-- Detail hero --}}
-<section class="relative isolate min-h-[430px] overflow-hidden bg-slate-950 md:min-h-[500px]">
-    @if($activity->image)
-        <img
-            src="{{ $getMediaUrl($activity->image) }}"
-            alt="{{ $activity->title }}"
-            class="absolute inset-0 h-full w-full object-cover"
-        >
-    @endif
+<div class="min-h-screen bg-[#fcfdfd] text-slate-800">
 
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/20"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent"></div>
-
-    <div class="relative z-10 mx-auto flex min-h-[430px] max-w-7xl items-center px-6 py-16 md:min-h-[500px] md:px-10">
-        <div class="max-w-3xl">
-            {{-- Back link --}}
-            <a
-                data-aos="fade-down"
-                href="{{ url('/student-life') }}"
-                class="mb-7 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-blue-950"
-            >
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+    {{-- 📸 Clean Immersive Gallery Header --}}
+    <header class="border-b border-slate-200/80 bg-white/80 backdrop-blur-md sticky top-0 z-30 py-4 transition-all">
+        <div class="mx-auto max-w-7xl px-5 md:px-8 flex flex-wrap items-center justify-between gap-4">
+            
+            {{-- Back to Student Life --}}
+            <a href="{{ url('/student-life') }}" 
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-[#081747] text-slate-700 hover:text-white text-xs sm:text-sm font-bold transition-all shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path>
                 </svg>
-                Back to Student Life
+                <span>Back to Student Life</span>
             </a>
 
-            <div data-aos="fade-up" data-aos-delay="100" class="mb-4 flex items-center gap-3">
-                <span class="h-1 w-12 rounded-full bg-orange-500"></span>
-                <span class="text-sm font-bold uppercase tracking-[0.2em] text-orange-400">
-                    Student Life Gallery
-                </span>
-            </div>
-
-            <h1 data-aos="fade-up" data-aos-delay="200" class="text-4xl font-black uppercase leading-tight tracking-wide text-white drop-shadow-lg md:text-6xl">
-                {{ $activity->title }}
-            </h1>
-
-            @if($activity->description)
-                <p data-aos="fade-up" data-aos-delay="300" class="mt-5 max-w-2xl text-base leading-7 text-slate-200 md:text-lg">
-                    {{ $activity->description }}
-                </p>
-            @endif
-
-            <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-3">
                 @if($activity->link)
-                    <a
-                        href="{{ $activity->link }}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-3 rounded-xl bg-orange-500 px-7 py-4 text-sm font-bold uppercase tracking-wider text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-600 hover:shadow-xl"
-                    >
-                        View on Facebook
-                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6m0 0v6m0-6L10 16M7 7H5a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-2"></path>
-                        </svg>
+                    <a href="{{ $activity->link }}" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white text-xs sm:text-sm font-bold transition-all">
+                        <span>Original Post</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </a>
                 @endif
 
-                <div class="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/10 px-5 py-4 text-sm font-bold text-white backdrop-blur-sm">
-                    <svg class="h-5 w-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16l4-4a2 2 0 012.8 0l2.2 2.2 2-2a2 2 0 012.8 0L21 15.4M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    {{ count($galleryImages) }}
-                    {{ count($galleryImages) === 1 ? 'Photo' : 'Photos' }}
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-50 text-orange-600 border border-orange-200 text-xs sm:text-sm font-black uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>{{ count($galleryImages) }} Photos</span>
                 </div>
             </div>
+
+        </div>
+    </header>
+
+    {{-- Title & Activity Description --}}
+    <div class="mx-auto max-w-7xl px-5 md:px-8 pt-10 pb-8">
+        <div class="max-w-3xl">
+            <span class="inline-block text-xs font-black uppercase tracking-widest text-orange-500 mb-2">Campus Photo Collection</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-[#081747] uppercase tracking-tight leading-tight">
+                {{ $activity->title }}
+            </h1>
+            @if($activity->description)
+                <p class="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+                    {{ $activity->description }}
+                </p>
+            @endif
         </div>
     </div>
-</section>
 
-{{-- Gallery --}}
-<section class="bg-slate-50 px-5 py-16 md:px-8 md:py-20">
-    <div class="mx-auto max-w-7xl">
-        <div class="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div data-aos="fade-right">
-                <div class="mb-3 flex items-center gap-3">
-                    <span class="h-1 w-10 rounded-full bg-orange-500"></span>
-                    <span class="text-sm font-bold uppercase tracking-[0.18em] text-orange-500">
-                        Memorable Moments
-                    </span>
-                </div>
-
-                <h2 class="text-3xl font-black text-[#081747] md:text-4xl">
-                    Photo Gallery
-                </h2>
-
-                <p class="mt-3 text-slate-600">
-                    Click any photo to view it in full screen.
-                </p>
-            </div>
-
-            <div data-aos="fade-left" class="inline-flex w-fit items-center rounded-full border border-blue-100 bg-white px-5 py-2.5 text-sm font-bold text-blue-900 shadow-sm">
-                {{ count($galleryImages) }}
-                {{ count($galleryImages) === 1 ? 'Image' : 'Images' }}
-            </div>
-        </div>
-
+    {{-- 🖼️ Photo Exhibition Grid (Clean & Non-overlapping Masonry) --}}
+    <main class="mx-auto max-w-7xl px-5 md:px-8 pb-24">
         @if(count($galleryImages) > 0)
-            <div class="columns-1 gap-5 sm:columns-2 lg:columns-3">
+            <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
                 @foreach($galleryImages as $index => $image)
-                    <button
-                        data-aos="zoom-in"
-                        data-aos-delay="{{ ($index % 3) * 150 }}"
-                        type="button"
-                        onclick="openStudentLightbox({{ $index }})"
-                        class="group relative mb-5 block w-full break-inside-avoid overflow-hidden rounded-2xl bg-slate-200 text-left shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
-                    >
-                        <img
-                            src="{{ $image }}"
-                            alt="{{ $activity->title }} photo {{ $index + 1 }}"
-                            loading="lazy"
-                            class="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        >
+                    <figure data-aos="zoom-in" data-aos-delay="{{ ($index % 3) * 100 }}"
+                            onclick="openStudentLightbox({{ $index }})"
+                            class="group relative break-inside-avoid overflow-hidden rounded-[1.75rem] bg-slate-100 border border-slate-200/80 shadow-[0_8px_25px_rgba(15,23,42,0.05)] hover:shadow-[0_20px_45px_rgba(15,23,42,0.12)] transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+                        
+                        <img src="{{ $image }}" 
+                             alt="{{ $activity->title }} photo {{ $index + 1 }}" 
+                             class="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                             loading="lazy">
 
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-                        <div class="absolute bottom-4 left-4 translate-y-3 text-sm font-bold text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                        <div class="absolute bottom-4 left-4 text-white text-xs font-bold tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Photo {{ $index + 1 }}
                         </div>
 
-                        <div class="absolute bottom-4 right-4 flex h-11 w-11 scale-75 items-center justify-center rounded-full bg-orange-500 text-white opacity-0 shadow-lg transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5.2-5.2m2.2-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0zM10.5 7.5v6m-3-3h6"></path>
-                            </svg>
+                        <div class="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#081747] shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-5.2-5.2m2.2-5.3a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0zM10.5 7.5v6m-3-3h6"/></svg>
                         </div>
-                    </button>
+                    </figure>
                 @endforeach
             </div>
         @else
-            <div data-aos="fade-up" class="rounded-[28px] border border-dashed border-blue-200 bg-white px-6 py-20 text-center shadow-sm">
-                <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16l4-4a2 2 0 012.8 0l2.2 2.2 2-2a2 2 0 012.8 0L21 15.4M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
+            <div class="rounded-[2.5rem] border border-dashed border-slate-300 bg-white p-16 text-center shadow-sm">
+                <div class="mx-auto w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
-
-                <h3 class="text-2xl font-bold text-blue-950">
-                    No gallery photos yet
-                </h3>
-
-                <p class="mt-3 text-slate-500">
-                    Photos for this activity will be available soon.
-                </p>
+                <h3 class="text-2xl font-black text-[#081747]">No photos available yet</h3>
+                <p class="text-sm text-slate-500 mt-2">Check back soon for photo updates from this activity.</p>
             </div>
         @endif
-    </div>
-</section>
+    </main>
+</div>
 
-{{-- Lightbox --}}
+{{-- 🔍 Modern Lightbox Modal --}}
 @if(count($galleryImages) > 0)
-    <div
-        id="studentLightbox"
-        class="fixed inset-0 z-[150] hidden items-center justify-center bg-slate-950/95 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300"
-        aria-hidden="true"
-    >
-        <button
-            type="button"
-            onclick="closeStudentLightbox()"
-            aria-label="Close gallery"
-            class="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-red-600 md:right-8 md:top-6"
-        >
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+    <div id="studentLightbox" 
+         class="fixed inset-0 z-[150] hidden items-center justify-center bg-slate-950/95 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300"
+         aria-hidden="true">
+        
+        <button type="button" 
+                onclick="closeStudentLightbox()" 
+                aria-label="Close" 
+                class="absolute right-5 top-5 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 hover:bg-orange-500 text-white transition-colors shadow-lg">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
         @if(count($galleryImages) > 1)
-            <button
-                type="button"
-                onclick="changeStudentPhoto(-1)"
-                aria-label="Previous photo"
-                class="absolute left-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-orange-500 md:left-8 md:h-14 md:w-14"
-            >
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                </svg>
+            <button type="button" 
+                    onclick="changeStudentPhoto(-1)" 
+                    aria-label="Previous" 
+                    class="absolute left-4 md:left-8 z-30 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-white/10 hover:bg-orange-500 text-white transition-colors shadow-lg">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
             </button>
 
-            <button
-                type="button"
-                onclick="changeStudentPhoto(1)"
-                aria-label="Next photo"
-                class="absolute right-3 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-orange-500 md:right-8 md:h-14 md:w-14"
-            >
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
+            <button type="button" 
+                    onclick="changeStudentPhoto(1)" 
+                    aria-label="Next" 
+                    class="absolute right-4 md:right-8 z-30 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-white/10 hover:bg-orange-500 text-white transition-colors shadow-lg">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>
         @endif
 
-        <div id="studentLightboxContent" class="relative flex max-h-[90vh] max-w-[90vw] scale-95 items-center justify-center transition-transform duration-300">
-            <img
-                id="studentLightboxImage"
-                src=""
-                alt="{{ $activity->title }}"
-                class="max-h-[85vh] max-w-full rounded-xl object-contain shadow-2xl"
-            >
-            <div id="studentLightboxCounter" class="absolute bottom-4 right-4 rounded-full bg-slate-950/70 px-4 py-2 text-sm font-bold text-white backdrop-blur-sm"></div>
+        <div id="studentLightboxContent" class="relative flex max-h-[90vh] max-w-[92vw] scale-95 items-center justify-center transition-transform duration-300">
+            <img id="studentLightboxImage" src="" alt="{{ $activity->title }}" class="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-2xl">
+            <div id="studentLightboxCounter" class="absolute bottom-4 right-4 rounded-full bg-slate-900/80 backdrop-blur-md px-4 py-1.5 text-xs font-black tracking-widest text-white shadow-lg"></div>
         </div>
     </div>
 @endif
@@ -248,26 +169,19 @@
     let currentStudentPhoto = 0;
 
     function showStudentPhoto() {
-        if (!studentGalleryImages.length) {
-            return;
-        }
-
+        if (!studentGalleryImages.length) return;
         studentLightboxImage.src = studentGalleryImages[currentStudentPhoto];
         studentLightboxCounter.textContent = `${currentStudentPhoto + 1} / ${studentGalleryImages.length}`;
     }
 
     function openStudentLightbox(index) {
-        if (!studentLightbox) {
-            return;
-        }
-
+        if (!studentLightbox) return;
         currentStudentPhoto = index;
         showStudentPhoto();
 
         studentLightbox.classList.remove('hidden');
         studentLightbox.classList.add('flex');
         studentLightbox.setAttribute('aria-hidden', 'false');
-
         document.body.style.overflow = 'hidden';
 
         requestAnimationFrame(() => {
@@ -278,10 +192,7 @@
     }
 
     function closeStudentLightbox() {
-        if (!studentLightbox) {
-            return;
-        }
-
+        if (!studentLightbox) return;
         studentLightbox.classList.add('opacity-0');
         studentLightboxContent.classList.remove('scale-100');
         studentLightboxContent.classList.add('scale-95');
@@ -300,29 +211,16 @@
     }
 
     if (studentLightbox) {
-        studentLightbox.addEventListener('click', function (event) {
-            if (event.target === studentLightbox) {
-                closeStudentLightbox();
-            }
+        studentLightbox.addEventListener('click', function(e) {
+            if (e.target === studentLightbox) closeStudentLightbox();
         });
     }
 
-    document.addEventListener('keydown', function (event) {
-        if (!studentLightbox || studentLightbox.classList.contains('hidden')) {
-            return;
-        }
-
-        if (event.key === 'Escape') {
-            closeStudentLightbox();
-        }
-
-        if (event.key === 'ArrowLeft') {
-            changeStudentPhoto(-1);
-        }
-
-        if (event.key === 'ArrowRight') {
-            changeStudentPhoto(1);
-        }
+    document.addEventListener('keydown', function(e) {
+        if (!studentLightbox || studentLightbox.classList.contains('hidden')) return;
+        if (e.key === 'Escape') closeStudentLightbox();
+        if (e.key === 'ArrowLeft') changeStudentPhoto(-1);
+        if (e.key === 'ArrowRight') changeStudentPhoto(1);
     });
 </script>
 
