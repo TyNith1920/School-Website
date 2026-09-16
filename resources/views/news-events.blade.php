@@ -75,13 +75,13 @@
                             @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
 
-                            {{-- Calendar Date Stamp --}}
-                            <div class="absolute top-6 left-6 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
+                            {{-- Calendar Date Stamp (រំកិលមកស្តាំដើម្បីកុំឱ្យបាំង Icon) --}}
+                            <div class="absolute top-6 right-6 z-10 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
                                 <span class="text-[11px] font-black uppercase tracking-widest text-orange-600">{{ $featuredNews->created_at?->format('M') ?? 'LIS' }}</span>
                                 <span class="text-2xl font-black text-[#081747] leading-none mt-0.5">{{ $featuredNews->created_at?->format('d') ?? '01' }}</span>
                             </div>
 
-                            <span class="absolute bottom-6 left-6 lg:bottom-auto lg:top-6 lg:left-28 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg">
+                            <span class="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg">
                                 ★ Featured Story
                             </span>
                         </div>
