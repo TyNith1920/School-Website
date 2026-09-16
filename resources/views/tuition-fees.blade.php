@@ -130,13 +130,25 @@
             </div>
         </div>
 
-        {{-- 📍 ជម្រើសទី ១: Dual-Layer Wave ជាមួយស្រទាប់មាស/ទឹកក្រូច --}}
+        {{-- 📍 Dual-Layer Wave ជាមួយពណ៌មាសពិតប្រាកដ (Solid Rich Gold Gradient) --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-            <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <!-- ស្រទាប់ទី ១: រលកពណ៌មាសស្រាលពីក្រោយ -->
-                <path d="M0,0 C150,90 400,-30 650,45 C900,120 1050,20 1200,55 L1200,120 L0,120 Z" fill="rgba(251, 191, 36, 0.28)"></path>
-                <!-- ស្រទាប់ទី ២: រលកពណ៌ផ្ទៃខាងក្រោម (#f8fafc / slate-50) -->
-                <path d="M0,25 C200,80 450,15 700,55 C950,95 1100,25 1200,45 L1200,120 L0,120 Z" fill="#f8fafc"></path>
+            <svg class="relative block w-full h-16 sm:h-20 md:h-28" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <defs>
+                    <!-- កំណត់ពណ៌មាសភ្លឺចែងចាំង (Luxury Gold Gradient) -->
+                    <linearGradient id="tuitionGoldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#b45309" />
+                        <stop offset="25%" stop-color="#f59e0b" />
+                        <stop offset="50%" stop-color="#fde047" />
+                        <stop offset="75%" stop-color="#f59e0b" />
+                        <stop offset="100%" stop-color="#d97706" />
+                    </linearGradient>
+                </defs>
+
+                <!-- ស្រទាប់ទី ១: រលកពណ៌មាសច្បាស់ ១០០% មិនព្រាល (Rich Gold Wave) -->
+                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#tuitionGoldGradient)"></path>
+
+                <!-- ស្រទាប់ទី ២: រលកពណ៌ផ្ទៃខាងក្រោម (#f8fafc / slate-50) កាត់ពីលើ -->
+                <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#f8fafc"></path>
             </svg>
         </div>
     </section>
