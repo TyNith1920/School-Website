@@ -5,7 +5,6 @@
 @section('content')
 
 @php
-    // 📍 មុខងារទាញរូបភាពពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
@@ -15,197 +14,212 @@
             return asset('storage/' . $path); 
         }
     };
+
+    $allNews = collect($newsList ?? []);
+    $featuredNews = $allNews->first();
+    $regularNews = $allNews->slice(1);
 @endphp
 
-{{-- Hero Banner --}}
-<section class="relative isolate flex min-h-[330px] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] md:min-h-[400px]">
-    <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, rgba(255, 255, 255, 0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
-    <div class="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-400/30 blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-36 right-0 h-96 w-96 rounded-full bg-orange-400/20 blur-3xl pointer-events-none"></div>
+<div class="min-h-screen bg-[#f8fafc] text-slate-800">
 
-    <div class="relative z-10 mx-auto max-w-4xl px-6 pt-16 pb-20 text-center">
-        <div data-aos="fade-down" class="mb-5 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-blue-50 backdrop-blur-sm">
-            Life International School
-        </div>
-        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl font-black uppercase tracking-wide text-white drop-shadow-lg sm:text-5xl md:text-6xl">
-            News & Events
-        </h1>
-        <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-6 h-1.5 w-24 rounded-full bg-orange-400 shadow-lg"></div>
-        <p data-aos="fade-up" data-aos-delay="300" class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-blue-50/90 md:text-lg">
-            Discover the latest news, student achievements, school activities,
-            and upcoming events from our community.
-        </p>
-    </div>
-
-    {{-- 📍 បន្ទាត់ Highlight ពណ៌មាសអមតាមគែមទ្រេត (Metallic Gold Ribbon) --}}
-    <div class="absolute -bottom-px left-0 h-[45px] w-full bg-gradient-to-r from-[#b45309] via-[#fde047] to-[#d97706] shadow-[0_0_18px_rgba(251,191,36,0.6)] md:h-[65px]" 
-         style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
-
-    {{-- ផ្ទៃពណ៌សាច់ខាងក្រោម (Slate-50) កាត់ពីលើ បន្សល់ឆ្នូតមាសកម្រាស់ប្រហែល 5px --}}
-    <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-14" 
-         style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
-</section>
-
-{{-- News Section --}}
-<section class="bg-slate-50 px-5 py-16 md:px-8 md:py-20">
-    <div class="mx-auto max-w-7xl">
-
-        {{-- Section heading --}}
-        <div class="mb-12 flex flex-col gap-5 text-center md:flex-row md:items-end md:justify-between md:text-left">
-            <div data-aos="fade-right">
-                <div class="mb-3 flex items-center justify-center gap-3 md:justify-start">
-                    <span class="h-1 w-10 rounded-full bg-orange-500"></span>
-                    <span class="text-sm font-bold uppercase tracking-[0.18em] text-orange-500">
-                        Stay Connected
-                    </span>
+    {{-- Clean Editorial Header --}}
+    <header class="border-b border-slate-200 bg-white pt-12 pb-8">
+        <div class="mx-auto max-w-7xl px-5 md:px-8">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-xs font-black uppercase tracking-widest mb-3">
+                        <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                        LIS Gazette & Newsroom
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#081747]">
+                        News <span class="text-orange-500">&</span> Events
+                    </h1>
+                    <p class="mt-3 text-base sm:text-lg text-slate-500 max-w-xl font-normal leading-relaxed">
+                        Stay connected with daily moments, academic milestones, and inspiring stories from our vibrant school community.
+                    </p>
                 </div>
-                <h2 class="text-3xl font-black text-[#081747] md:text-4xl">
-                    Latest News & Events
-                </h2>
-                <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-600">
-                    Stay informed about achievements, activities and important
-                    updates from Life International School.
-                </p>
+
+                {{-- Live Updates Counter --}}
+                <div class="inline-flex items-center gap-3 self-start md:self-auto rounded-2xl bg-slate-50 border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 shadow-sm">
+                    <span class="flex h-3 w-3 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <span>{{ $allNews->count() }} Published Stories</span>
+                </div>
             </div>
 
-            <div data-aos="fade-left" class="mx-auto inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-5 py-2.5 text-sm font-bold text-blue-900 shadow-sm md:mx-0">
-                <svg class="h-5 w-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m10 0V5a2 2 0 00-2-2H9a2 2 0 00-2 2v2m10 0H7"></path>
-                </svg>
-                {{ count($newsList ?? []) }} {{ count($newsList ?? []) === 1 ? 'Update' : 'Updates' }}
+            {{-- Category Filter Pills --}}
+            <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
+                <span class="text-xs font-black uppercase tracking-wider text-slate-400 mr-2">Filter by:</span>
+                <button type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#081747] text-white shadow-sm transition-all hover:bg-orange-500">All Updates</button>
+                <button type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-orange-400 hover:text-orange-500 transition-all">Academic Highlights</button>
+                <button type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-orange-400 hover:text-orange-500 transition-all">School Activities</button>
+                <button type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:border-orange-400 hover:text-orange-500 transition-all">Official Notices</button>
             </div>
         </div>
+    </header>
 
-        {{-- Cards --}}
-        @if(isset($newsList) && count($newsList) > 0)
-            <div class="flex flex-wrap justify-center gap-8">
-                @foreach($newsList as $index => $news)
-                    <button
-                        data-aos="fade-up"
-                        data-aos-delay="{{ ($index % 3) * 150 }}"
-                        type="button"
-                        onclick="openModal(this)"
-                        data-image="{{ $getMediaUrl($news->image) }}"
-                        data-title="{{ $news->title }}"
-                        data-link="{{ $news->link ?? '' }}"
-                        data-date="{{ $news->created_at?->format('F d, Y') ?? '' }}"
-                        class="group flex w-full max-w-[390px] flex-col overflow-hidden rounded-[24px] border border-slate-200 bg-white text-left shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-2 hover:border-blue-200 hover:shadow-[0_22px_50px_rgba(30,64,175,0.18)] sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.4rem)]"
-                    >
-                        <div class="hidden news-full-description">{!! $news->description !!}</div>
+    <main class="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16">
 
-                        {{-- Image --}}
-                        <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+        @if($featuredNews)
+            {{-- Featured Magazine Lead Story --}}
+            <section data-aos="fade-up" class="mb-16">
+                <div class="group relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(30,64,175,0.12)] transition-all duration-500">
+                    <div class="grid grid-cols-1 lg:grid-cols-12">
+                        
+                        {{-- Featured Image --}}
+                        <div class="relative lg:col-span-7 aspect-[16/10] lg:aspect-auto overflow-hidden bg-slate-100 min-h-[340px]">
+                            @if($featuredNews->image)
+                                <img src="{{ $getMediaUrl($featuredNews->image) }}" alt="{{ $featuredNews->title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            @endif
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
+
+                            {{-- Calendar Date Stamp --}}
+                            <div class="absolute top-6 left-6 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
+                                <span class="text-[11px] font-black uppercase tracking-widest text-orange-600">{{ $featuredNews->created_at?->format('M') ?? 'LIS' }}</span>
+                                <span class="text-2xl font-black text-[#081747] leading-none mt-0.5">{{ $featuredNews->created_at?->format('d') ?? '01' }}</span>
+                            </div>
+
+                            <span class="absolute bottom-6 left-6 lg:bottom-auto lg:top-6 lg:left-28 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg">
+                                ★ Featured Story
+                            </span>
+                        </div>
+
+                        {{-- Featured Content --}}
+                        <div class="lg:col-span-5 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
+                                    <span class="text-orange-500 font-black">Life International School</span>
+                                    <span>•</span>
+                                    <span>{{ $featuredNews->created_at?->format('Y') ?? '2026' }}</span>
+                                </div>
+
+                                <h2 class="text-2xl sm:text-3xl font-black leading-tight text-[#081747] group-hover:text-blue-700 transition-colors">
+                                    {{ $featuredNews->title }}
+                                </h2>
+
+                                <p class="mt-5 text-sm sm:text-base leading-relaxed text-slate-600 line-clamp-4">
+                                    {!! Str::limit(strip_tags($featuredNews->description), 200) !!}
+                                </p>
+                            </div>
+
+                            <div class="pt-8 mt-8 border-t border-slate-100 flex items-center justify-between">
+                                <button type="button" 
+                                    onclick="openModal(this)"
+                                    data-image="{{ $getMediaUrl($featuredNews->image) }}"
+                                    data-title="{{ $featuredNews->title }}"
+                                    data-link="{{ $featuredNews->link ?? '' }}"
+                                    data-date="{{ $featuredNews->created_at?->format('F d, Y') ?? '' }}"
+                                    class="inline-flex items-center gap-3 bg-[#081747] hover:bg-orange-500 text-white text-sm font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-md hover:-translate-y-0.5 transition-all">
+                                    <span>Read Full Article</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                                </button>
+                                
+                                <div class="hidden news-full-description">{!! $featuredNews->description !!}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        @endif
+
+        {{-- Regular News Grid --}}
+        @if($regularNews->count() > 0)
+            <div class="mb-10 flex items-center justify-between">
+                <h3 class="text-2xl font-black uppercase text-[#081747]">More Stories & Happenings</h3>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">{{ $regularNews->count() }} More Updates</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($regularNews as $index => $news)
+                    <article data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}"
+                        class="group flex flex-col overflow-hidden rounded-[2rem] bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+                        
+                        {{-- Card Image & Date Stamp --}}
+                        <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
                             @if($news->image)
-                                <img
-                                    src="{{ $getMediaUrl($news->image) }}"
-                                    alt="{{ $news->title }}"
-                                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    loading="lazy"
-                                >
+                                <img src="{{ $getMediaUrl($news->image) }}" alt="{{ $news->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             @else
-                                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-blue-100 to-slate-100">
-                                    <svg class="h-16 w-16 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11l-7-7-7 7m14 0v8a2 2 0 01-2 2H7a2 2 0 01-2-2v-8m14 0H5"></path>
-                                    </svg>
-                                </div>
+                                <div class="flex h-full w-full items-center justify-center bg-blue-50 text-blue-300 font-bold">LIS Update</div>
                             @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#081747]/70 via-transparent to-transparent opacity-60 transition-opacity duration-300 group-hover:opacity-80"></div>
-                            
-                            @if($news->created_at)
-                                <div class="absolute left-4 top-4 rounded-full border border-white/30 bg-white/90 px-4 py-2 text-xs font-bold text-blue-900 shadow-lg backdrop-blur-md">
-                                    {{ $news->created_at->format('M d, Y') }}
-                                </div>
-                            @endif
-                            
-                            <div class="absolute bottom-4 right-4 flex h-11 w-11 translate-y-3 items-center justify-center rounded-full bg-orange-500 text-white opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 12s3.75-6.75 9.75-6.75S21.75 12 21.75 12 18 18.75 12 18.75 2.25 12 2.25 12Z"></path>
-                                    <circle cx="12" cy="12" r="3" stroke-width="2"></circle>
-                                </svg>
+
+                            {{-- Mini Calendar Stamp --}}
+                            <div class="absolute top-4 left-4 flex flex-col items-center justify-center rounded-xl bg-white/95 backdrop-blur-sm px-3 py-1.5 shadow-md border border-white/50 text-center">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-orange-600 leading-none">{{ $news->created_at?->format('M') ?? 'LIS' }}</span>
+                                <span class="text-lg font-black text-[#081747] leading-none mt-1">{{ $news->created_at?->format('d') ?? '01' }}</span>
                             </div>
                         </div>
 
-                        {{-- Content --}}
-                        <div class="flex flex-grow flex-col p-6">
-                            <div class="mb-3 flex items-center gap-2">
-                                <span class="h-2 w-2 rounded-full bg-orange-500"></span>
-                                <span class="text-xs font-bold uppercase tracking-wider text-blue-700">
-                                    School Update
-                                </span>
+                        {{-- Card Body --}}
+                        <div class="flex flex-1 flex-col p-6 sm:p-7 justify-between">
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600">News Release</span>
+                                <h4 class="mt-2 text-lg sm:text-xl font-black text-[#081747] line-clamp-2 leading-snug group-hover:text-orange-500 transition-colors">
+                                    {{ $news->title }}
+                                </h4>
+                                <p class="mt-3 text-sm text-slate-500 line-clamp-3 leading-relaxed">
+                                    {!! Str::limit(strip_tags($news->description), 120) !!}
+                                </p>
                             </div>
 
-                            <h3 class="mb-3 line-clamp-2 text-xl font-extrabold leading-snug text-[#081747] transition-colors duration-300 group-hover:text-blue-700">
-                                {{ $news->title }}
-                            </h3>
-
-                            @if($news->description)
-                                <p class="mb-6 line-clamp-3 text-sm leading-6 text-slate-600">
-                                    {!! Str::limit(strip_tags($news->description), 150) !!}
-                                </p>
-                            @else
-                                <p class="mb-6 text-sm italic leading-6 text-slate-400">
-                                    Click to view more information about this update.
-                                </p>
-                            @endif
-
-                            <div class="mt-auto flex items-center justify-between border-t border-slate-100 pt-5">
-                                <span class="text-sm font-bold text-blue-800">
-                                    Read full story
-                                </span>
-                                <span class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-blue-800 transition-all duration-300 group-hover:bg-orange-500 group-hover:text-white">
-                                    <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                    </svg>
-                                </span>
+                            <div class="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
+                                <button type="button" 
+                                    onclick="openModal(this)"
+                                    data-image="{{ $getMediaUrl($news->image) }}"
+                                    data-title="{{ $news->title }}"
+                                    data-link="{{ $news->link ?? '' }}"
+                                    data-date="{{ $news->created_at?->format('F d, Y') ?? '' }}"
+                                    class="inline-flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#081747] group-hover:text-orange-500 transition-colors">
+                                    <span>Read Story</span>
+                                    <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </button>
+                                
+                                <div class="hidden news-full-description">{!! $news->description !!}</div>
                             </div>
                         </div>
-                    </button>
+                    </article>
                 @endforeach
             </div>
-        @else
-            <div data-aos="fade-up" class="rounded-[28px] border border-dashed border-blue-200 bg-white px-6 py-20 text-center shadow-sm">
-                <div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 text-blue-700">
-                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"></path>
-                    </svg>
+        @endif
+
+        @if($allNews->isEmpty())
+            <div class="rounded-[2.5rem] border border-dashed border-slate-300 bg-white p-16 text-center shadow-sm">
+                <div class="mx-auto w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v8a2 2 0 01-2 2z"/></svg>
                 </div>
-                <h3 class="text-2xl font-bold text-blue-950">No news available yet</h3>
-                <p class="mt-3 text-slate-500">Please check again later for our latest news and events.</p>
+                <h3 class="text-2xl font-black text-[#081747]">No stories published yet</h3>
+                <p class="text-sm text-slate-500 mt-2">New announcements and events will appear here soon.</p>
             </div>
         @endif
-    </div>
-</section>
 
-{{-- News Modal --}}
+    </main>
+
+</div>
+
+{{-- Dynamic News Modal --}}
 <div id="newsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/80 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300" aria-hidden="true">
-    <div id="modalContent" role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="relative max-h-[92vh] w-full max-w-5xl scale-95 overflow-y-auto rounded-[28px] bg-white shadow-2xl transition-transform duration-300">
-        <button id="modalCloseButton" type="button" onclick="closeModal()" aria-label="Close" class="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-slate-950/70 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-red-600">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
+    <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[90vh] w-full max-w-4xl scale-95 overflow-y-auto rounded-[2rem] bg-white shadow-2xl transition-transform duration-300">
+        
+        <button id="modalCloseButton" type="button" onclick="closeModal()" aria-label="Close" class="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/60 text-white hover:bg-orange-500 transition-colors shadow-md">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
-        <div class="grid min-h-[480px] grid-cols-1 lg:grid-cols-2">
-            <div id="modalImageContainer" class="relative min-h-[300px] overflow-hidden bg-slate-100 lg:min-h-full">
-                <img id="modalImage" src="" alt="" class="absolute inset-0 h-full w-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent"></div>
-            </div>
+        <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-100" id="modalImageContainer">
+            <img id="modalImage" src="" alt="" class="h-full w-full object-cover">
+        </div>
 
-            <div class="flex flex-col justify-center p-7 md:p-10 lg:p-12">
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="h-1 w-10 rounded-full bg-orange-500"></span>
-                    <span id="modalDate" class="text-sm font-bold uppercase tracking-wider text-orange-500"></span>
-                </div>
+        <div class="p-8 sm:p-10">
+            <span id="modalDate" class="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-3"></span>
+            <h2 id="modalTitle" class="text-2xl sm:text-4xl font-black text-[#081747] leading-tight"></h2>
+            
+            <div id="modalDesc" class="mt-6 text-base sm:text-lg leading-relaxed text-slate-600 divide-y divide-slate-100"></div>
 
-                <h2 id="modalTitle" class="text-3xl font-black leading-tight text-[#081747] md:text-4xl"></h2>
-
-                <div id="modalDesc" class="mt-6 text-base leading-7 text-slate-600"></div>
-
-                <a id="modalLink" href="#" target="_blank" rel="noopener noreferrer" class="mt-9 inline-flex items-center justify-center gap-3 rounded-xl bg-[#173c9c] px-7 py-4 font-bold text-white shadow-lg transition-all duration-300 hover:-translate-y-1 hover:bg-orange-500 hover:shadow-xl">
-                    View original post
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h6m0 0v6m0-6L10 16M7 7H5a2 2 0 00-2 2v10a2 2 0 002-2h10a2 2 0 002-2v-2"></path>
-                    </svg>
+            <div class="mt-10 pt-6 border-t border-slate-100 flex items-center justify-between">
+                <a id="modalLink" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-orange-500 transition-colors">
+                    <span>View original source link</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </a>
             </div>
         </div>
@@ -223,37 +237,19 @@
     const modalLink = document.getElementById('modalLink');
     const modalCloseButton = document.getElementById('modalCloseButton');
 
-    let previouslyFocusedElement = null;
-
-    function getSafeExternalUrl(url) {
-        const fallbackUrl = 'https://www.facebook.com/LISOfficialPage';
-        if (!url) return fallbackUrl;
-        try {
-            const parsedUrl = new URL(url, window.location.origin);
-            if (parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:') {
-                return parsedUrl.href;
-            }
-        } catch (error) {
-            return fallbackUrl;
-        }
-        return fallbackUrl;
-    }
-
     function openModal(card) {
-        previouslyFocusedElement = document.activeElement;
-
         const image = card.dataset.image || '';
-        const title = card.dataset.title || 'News & Events';
-        const date = card.dataset.date || 'Latest update';
+        const title = card.dataset.title || 'News Update';
+        const date = card.dataset.date || '';
         const link = card.dataset.link || '';
-        const descHtml = card.querySelector('.news-full-description').innerHTML;
+        const descHtml = card.querySelector('.news-full-description')?.innerHTML || card.parentElement.querySelector('.news-full-description')?.innerHTML || '';
 
         modalImage.src = image;
         modalImage.alt = title;
         modalTitle.textContent = title;
-        modalDescription.innerHTML = descHtml || 'No additional description is available for this update.';
+        modalDescription.innerHTML = descHtml || 'No further description is available.';
         modalDate.textContent = date;
-        modalLink.href = getSafeExternalUrl(link);
+        modalLink.href = link || 'https://www.facebook.com/LISOfficialPage';
 
         if (image) {
             modalImageContainer.classList.remove('hidden');
@@ -263,7 +259,6 @@
 
         newsModal.classList.remove('hidden');
         newsModal.classList.add('flex');
-        newsModal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
 
         requestAnimationFrame(() => {
@@ -278,22 +273,20 @@
         newsModal.classList.add('opacity-0');
         modalContent.classList.remove('scale-100');
         modalContent.classList.add('scale-95');
-        newsModal.setAttribute('aria-hidden', 'true');
 
         setTimeout(() => {
             newsModal.classList.add('hidden');
             newsModal.classList.remove('flex');
             document.body.style.overflow = '';
-            if (previouslyFocusedElement) previouslyFocusedElement.focus();
         }, 300);
     }
 
-    newsModal.addEventListener('click', function (event) {
-        if (event.target === newsModal) closeModal();
+    newsModal.addEventListener('click', function(e) {
+        if (e.target === newsModal) closeModal();
     });
 
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !newsModal.classList.contains('hidden')) {
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !newsModal.classList.contains('hidden')) {
             closeModal();
         }
     });
