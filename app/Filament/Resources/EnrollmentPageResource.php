@@ -73,21 +73,26 @@ class EnrollmentPageResource extends Resource
                                     ->schema([
                                         FileUpload::make('image')
                                             ->label('🖼️ Featured Image')
-                                            ->disk('cloudinary') 
-                                            ->fetchFileInformation(false) 
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 អនុញ្ញាត Public Read
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
                                             ->image()
-                                            ->directory('enrollment')
+                                            ->directory('enrollment/images')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(10240) // 10MB
                                             ->required(),
                                             
-                                        // 📍 កែប្រែត្រង់នេះឱ្យត្រូវ ១០០%
                                         FileUpload::make('pdf_file')
                                             ->label('📄 Enrollment Form (PDF)')
-                                            ->disk('public') // 👈 បង្ខំឱ្យប្រើ public (Local)
+                                            ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
+                                            ->visibility('public') // 📍 អនុញ្ញាត Public Read
+                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
+                                            ->acceptedFileTypes(['application/pdf'])
                                             ->directory('enrollment/pdfs')
-                                            ->preserveFilenames()
                                             ->downloadable()
-                                            ->openable(),
-                                            // 👈 មិនបាច់ដាក់ acceptedFileTypes ទេ ទុកឱ្យវាទទេរបែបនេះមានសុវត្ថិភាពជាង
+                                            ->openable()
+                                            ->maxSize(51200), // 50MB
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
                             
@@ -101,7 +106,7 @@ class EnrollmentPageResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
-                    ->disk('cloudinary') 
+                    ->disk('s3') // 📍 ប្ដូរទៅ Cloudflare R2
                     ->circular(),
 
                 TextColumn::make('hero_title')

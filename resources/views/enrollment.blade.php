@@ -6,24 +6,28 @@
 @section('content')
 
 @php
-    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញរូបភាពពី Cloudinary
+    // 📍 មុខងារទាញយករូបភាព និងឯកសារ PDF ពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-        try { return \Storage::disk('cloudinary')->url($path); } 
-        catch (\Exception $e) { return asset('storage/' . $path); }
+        try { 
+            return \Storage::disk('s3')->url($path); 
+        } catch (\Exception $e) { 
+            return asset('storage/' . $path); 
+        }
     };
 @endphp
 
 {{-- 📍 ផ្នែកខាងលើ (Hero Section) --}}
-<section class="relative w-full py-24 px-6 md:py-32 md:px-20 bg-[#081747] overflow-hidden">
+<section class="relative w-full pt-24 pb-28 px-6 md:pt-32 md:pb-36 md:px-20 bg-[#081747] overflow-hidden">
     
-    <!-- Background Gradients & Patterns (ស៊ីគ្នាជាមួយទំព័រ Contact) -->
+    <!-- Background Gradients & Patterns -->
     <div class="absolute inset-0 bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] opacity-90"></div>
     <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
     
     <!-- ពន្លឺជះពណ៌ទឹកក្រូចពីក្រោម -->
-    <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#e06d64]/40 blur-[100px]"></div>
+    <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#e06d64]/30 blur-[100px] pointer-events-none"></div>
+    <div class="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-cyan-400/20 blur-[90px] pointer-events-none"></div>
     
     <div class="max-w-6xl mx-auto relative z-10 text-center">
         <!-- Badge តូចខាងលើចំណងជើង -->
@@ -31,22 +35,24 @@
             Admissions
         </div>
         
-        <!-- 📍 បន្ថែមសញ្ញា ? ការពារ Error (Nullsafe) -->
-        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 uppercase drop-shadow-2xl" style="line-height: 1.7;">
+        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 uppercase drop-shadow-2xl" style="line-height: 1.3;">
             {!! __($enrollment?->hero_title ?? 'WARMEST WELCOME TO OUR STUDENT!') !!}
         </h1>
         
         <!-- បន្ទាត់ពណ៌ទឹកក្រូចកាត់កណ្តាល -->
         <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-6 mb-8 h-1.5 w-24 rounded-full bg-[#e06d64] shadow-[0_0_15px_rgba(224,109,100,0.5)]"></div>
         
-        <!-- 📍 បន្ថែមសញ្ញា ? ការពារ Error (Nullsafe) -->
-        <p data-aos="fade-up" data-aos-delay="300" class="text-blue-100 text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-medium">
+        <p data-aos="fade-up" data-aos-delay="300" class="text-blue-100 text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed font-light">
             {{ $enrollment?->hero_subtitle ?? 'Let the learning journey begin! We are excited to welcome you to our school community.' }}
         </p>
     </div>
     
-    <!-- គែមរាងបញ្ឆិតនៅខាងក្រោម (Slanted Divider) -->
-    <div class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-16" style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"></div>
+    <!-- Soft Organic Wave Transition ភ្ជាប់ទៅផ្ទៃខាងក្រោម (bg-slate-50) -->
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+        <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+    </div>
 </section>
 
 {{-- 📍 ផ្នែកព័ត៌មាន និងទាញយកឯកសារ (Content Section) --}}
@@ -54,15 +60,14 @@
     <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         
         <!-- រូបភាពខាងឆ្វេង (Image Side) -->
-        <!-- 📍 បន្ថែមសញ្ញា ? ការពារ Error (Nullsafe) -->
         @if($enrollment?->image)
             <div data-aos="fade-right" class="relative group">
                 <!-- ស្រមោលបញ្ចេញពន្លឺពេលយក Mouse ដាក់ពីលើ -->
                 <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#e06d64] to-orange-400 opacity-20 blur-xl transition duration-500 group-hover:opacity-40"></div>
                 
                 <!-- រូបភាព -->
-                <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="{{ $getMediaUrl($enrollment?->image) }}" alt="Student Enrollment" class="w-full h-auto object-cover transform transition duration-700 group-hover:scale-105">
+                <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white bg-gray-100">
+                    <img src="{{ $getMediaUrl($enrollment->image) }}" alt="Student Enrollment" class="w-full h-auto object-cover transform transition duration-700 group-hover:scale-105" loading="lazy">
                 </div>
                 
                 <!-- Icon តុបតែងបន្ថែម -->
@@ -91,15 +96,14 @@
                 {{ $enrollment?->section_description ?? 'Click to download LIS Re-Enrollment Form. Please fill it out and send your completed PDF copy to our school officers.' }}
             </p>
             
-            <!-- 📍 បន្ថែមសញ្ញា ? ការពារ Error (Nullsafe) -->
             @if($enrollment?->pdf_file)
-                <!-- ប៊ូតុង Download ជំនាន់ថ្មី -->
-                <!-- 📍 កែប្រែ Link ទីនេះ ឱ្យវាទាញយកពី Local (public disk) វិញ -->
-                <a href="{{ asset('storage/' . $enrollment->pdf_file) }}" 
-                    target="_blank" class="group inline-flex items-center gap-4 bg-[#e06d64] text-white font-bold px-8 py-4 md:py-5 rounded-full shadow-[0_10px_30px_rgba(224,109,100,0.3)] hover:bg-[#c95b53] hover:shadow-[0_15px_40px_rgba(224,109,100,0.4)] hover:-translate-y-1 transition-all duration-300 uppercase tracking-widest text-sm md:text-base w-full sm:w-auto justify-center">
+                <!-- ប៊ូតុង Download (ទាញយកតាមរយៈ R2 s3 URL) -->
+                <a href="{{ $getMediaUrl($enrollment->pdf_file) }}" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="group inline-flex items-center gap-4 bg-[#e06d64] text-white font-bold px-8 py-4 md:py-5 rounded-full shadow-[0_10px_30px_rgba(224,109,100,0.3)] hover:bg-[#c95b53] hover:shadow-[0_15px_40px_rgba(224,109,100,0.4)] hover:-translate-y-1 transition-all duration-300 uppercase tracking-widest text-sm md:text-base w-full sm:w-auto justify-center">
                     <span>Download Form</span>
                     
-                    <!-- Icon ព្រួញទាញចុះ ដែលមានចលនាពេល Hover -->
                     <span class="bg-white/20 p-2.5 rounded-full transition-transform duration-300 group-hover:translate-y-1">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
