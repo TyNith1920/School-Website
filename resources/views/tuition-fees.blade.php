@@ -74,7 +74,7 @@
 <div class="min-h-screen bg-slate-50">
 
     {{-- Modern High-End Tuition & Fees Hero Banner --}}
-    <section class="relative isolate flex min-h-[440px] md:min-h-[540px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#061238] via-[#0d276b] to-[#1a4a9c]">
+    <section class="relative isolate flex min-h-[460px] md:min-h-[560px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#061238] via-[#0d276b] to-[#1a4a9c]">
         
         {{-- Subtle Luxury Geometric Dot Grid --}}
         <div class="absolute inset-0 opacity-15 pointer-events-none"
@@ -86,7 +86,7 @@
         <div class="absolute -bottom-28 -right-20 h-[420px] w-[420px] rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-blue-500/15 blur-[100px] pointer-events-none"></div>
 
-        <div class="relative z-10 mx-auto max-w-5xl px-6 pt-20 pb-28 text-center">
+        <div class="relative z-10 mx-auto max-w-5xl px-6 pt-20 pb-32 text-center">
             
             {{-- Category Pill --}}
             <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-200 backdrop-blur-md shadow-sm">
@@ -130,10 +130,13 @@
             </div>
         </div>
 
-        {{-- Smooth Organic Wave Transition to Content (bg-slate-50) --}}
+        {{-- 📍 ជម្រើសទី ១: Dual-Layer Wave ជាមួយស្រទាប់មាស/ទឹកក្រូច --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-            <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+            <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <!-- ស្រទាប់ទី ១: រលកពណ៌មាសស្រាលពីក្រោយ -->
+                <path d="M0,0 C150,90 400,-30 650,45 C900,120 1050,20 1200,55 L1200,120 L0,120 Z" fill="rgba(251, 191, 36, 0.28)"></path>
+                <!-- ស្រទាប់ទី ២: រលកពណ៌ផ្ទៃខាងក្រោម (#f8fafc / slate-50) -->
+                <path d="M0,25 C200,80 450,15 700,55 C950,95 1100,25 1200,45 L1200,120 L0,120 Z" fill="#f8fafc"></path>
             </svg>
         </div>
     </section>
