@@ -11,6 +11,46 @@
         border: 0 !important;
         display: block !important;
     }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    /* 🌈 CSS Animation សម្រាប់ដូរពណ៌ Banner មួយៗយ៉ាងរលូន */
+    @keyframes animatedGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes floatOrb {
+        0%, 100% {
+            transform: translateY(0px) scale(1);
+        }
+        50% {
+            transform: translateY(-30px) scale(1.15);
+        }
+    }
+
+    .animated-banner-bg {
+        background: linear-gradient(-45deg, #071b4b, #1e1b4b, #0c4a6e, #1e3a8a, #311042);
+        background-size: 350% 350%;
+        animation: animatedGradient 12s ease infinite;
+    }
+
+    .floating-orb-1 {
+        animation: floatOrb 8s ease-in-out infinite;
+    }
+
+    .floating-orb-2 {
+        animation: floatOrb 10s ease-in-out infinite reverse;
+    }
 </style>
 
 @php
@@ -18,12 +58,15 @@
     $pageTitle = $mainInfo?->title ?: 'Child Safeguarding';
     $pageDescription = $mainInfo?->description ?: 'At Life International School, the safety, protection, and well-being of every child is our highest priority.';
 
-    // 📍 មុខងារឆ្លាតវៃសម្រាប់ទាញឯកសារ និងរូបភាពពី Cloudinary
+    // 📍 មុខងារទាញឯកសារ PDF និងរូបភាពពី Cloudflare R2 (s3)
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
-        try { return \Storage::disk('cloudinary')->url($path); } 
-        catch (\Exception $e) { return asset('storage/' . $path); }
+        try { 
+            return \Storage::disk('s3')->url($path); 
+        } catch (\Exception $e) { 
+            return asset('storage/' . $path); 
+        }
     };
 @endphp
 
@@ -45,56 +88,64 @@
     @keydown.escape.window="closeImage()"
     class="w-full min-h-screen bg-slate-50">
 
-    {{-- Hero Banner --}}
-    <section class="relative min-h-[480px] md:min-h-[600px] flex items-center overflow-hidden bg-gradient-to-br from-[#071b4b] via-[#1746a2] to-[#4f6ee8]">
+    {{-- Hero Banner ជាមួយ Animated Color Shift --}}
+    <section class="relative min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden animated-banner-bg">
         
-        {{-- Background pattern --}}
-        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
+        {{-- Geometric Dot Grid --}}
+        <div class="absolute inset-0 opacity-20 pointer-events-none" 
+             style="background-image: radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px); background-size: 28px 28px;"></div>
 
-        {{-- Decorative lights --}}
-        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-cyan-300/20 blur-3xl"></div>
-        <div class="absolute -bottom-32 -left-20 w-[420px] h-[420px] rounded-full bg-orange-400/15 blur-3xl"></div>
+        {{-- Glowing Orbs ដែលផ្លាស់ប្តូរពន្លឺអណ្តែតចុះឡើង --}}
+        <div class="floating-orb-1 absolute -top-24 -right-24 w-96 h-96 rounded-full bg-cyan-400/25 blur-3xl pointer-events-none"></div>
+        <div class="floating-orb-2 absolute -bottom-32 -left-20 w-[460px] h-[460px] rounded-full bg-orange-400/20 blur-3xl pointer-events-none"></div>
+        <div class="floating-orb-1 absolute top-1/3 right-1/4 w-80 h-80 rounded-full bg-pink-500/15 blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 py-20">
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pt-20 pb-28">
             <div class="max-w-4xl">
 
                 {{-- Breadcrumb --}}
-                <div data-aos="fade-down" class="flex flex-wrap items-center gap-2 text-sm md:text-base font-semibold text-blue-100 mb-8">
-                    <a href="{{ url('/') }}" class="hover:text-orange-400 transition-colors">Home</a>
-                    <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div data-aos="fade-down" class="inline-flex flex-wrap items-center gap-2 text-sm md:text-base font-semibold text-blue-100 mb-8 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md shadow-sm">
+                    <a href="{{ url('/') }}" class="hover:text-orange-300 transition-colors">Home</a>
+                    <svg class="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
-                    <span class="text-orange-400">Child Safeguarding</span>
+                    <span class="text-orange-300">Child Safeguarding</span>
                 </div>
 
-                {{-- Small label --}}
-                <div data-aos="fade-up" data-aos-delay="100" class="inline-flex items-center gap-4 text-orange-300 font-bold uppercase tracking-[0.22em] text-xs md:text-sm mb-6">
-                    <span class="w-12 md:w-20 h-1 bg-orange-400 rounded-full"></span>
+                {{-- Glowing Pill Tag --}}
+                <div data-aos="fade-up" data-aos-delay="100" class="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-orange-500/20 border border-orange-400/40 text-orange-200 text-xs md:text-sm font-bold tracking-widest uppercase mb-6 shadow-sm backdrop-blur-sm">
+                    <span class="w-2.5 h-2.5 rounded-full bg-orange-400 animate-pulse"></span>
                     Safe • Protected • Supported
                 </div>
 
-                <h1 data-aos="fade-up" data-aos-delay="200" class="max-w-4xl text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-wide leading-[1.05] drop-shadow-xl whitespace-pre-line">
+                {{-- Animated Heading --}}
+                <h1 data-aos="fade-up" data-aos-delay="200" class="max-w-4xl text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tight leading-[1.08] drop-shadow-xl whitespace-pre-line">
                     {{ $pageTitle }}
                 </h1>
 
-                <p data-aos="fade-up" data-aos-delay="300" class="max-w-3xl mt-7 text-base md:text-xl text-blue-100 font-medium leading-relaxed">
+                <p data-aos="fade-up" data-aos-delay="300" class="max-w-3xl mt-7 text-base md:text-xl text-blue-100 font-light leading-relaxed drop-shadow">
                     {{ $pageDescription }}
                 </p>
 
                 @if(filled($mainInfo?->pdf_file))
-                    <!-- 📍 កែប្រែការទាញឯកសារ PDF ពី Cloudinary -->
-                    <a data-aos="fade-up" data-aos-delay="400" href="{{ $getMediaUrl($mainInfo->pdf_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 mt-9 bg-orange-500 hover:bg-orange-600 text-white font-bold uppercase tracking-wider px-7 py-4 rounded-xl shadow-xl hover:-translate-y-1 transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Child Protection Policy
-                    </a>
+                    <div data-aos="fade-up" data-aos-delay="400" class="mt-9">
+                        <a href="{{ $getMediaUrl($mainInfo->pdf_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold uppercase tracking-wider px-8 py-4 rounded-xl shadow-xl hover:shadow-orange-500/30 hover:-translate-y-1 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Child Protection Policy (PDF)
+                        </a>
+                    </div>
                 @endif
             </div>
         </div>
 
-        {{-- Bottom shape --}}
-        <div class="absolute bottom-0 left-0 w-full h-12 md:h-20 bg-slate-50" style="clip-path: polygon(0 72%, 48% 100%, 100% 50%, 100% 100%, 0 100%);"></div>
+        {{-- Soft Organic Wave Transition to Content (bg-slate-50) --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+            <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+        </div>
     </section>
 
     {{-- Main Content --}}
@@ -182,7 +233,6 @@
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                         @foreach($images as $index => $imagePath)
-                                            <!-- 📍 កែប្រែការទាញរូបភាពពី Cloudinary -->
                                             <button data-aos="zoom-in" data-aos-delay="{{ ($index % 3) * 150 }}" type="button" @click="openImage(@js($getMediaUrl($imagePath)))" class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-500 group text-left">
                                                 <img src="{{ $getMediaUrl($imagePath) }}" alt="{{ $item->title ?: 'Safeguarding' }} image {{ $index + 1 }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy">
                                                 <div class="absolute inset-0 bg-gradient-to-t from-blue-950/75 via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity"></div>
