@@ -73,43 +73,69 @@
 
 <div class="min-h-screen bg-slate-50">
 
-    {{-- Hero --}}
-    <section class="relative isolate flex min-h-[340px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] md:min-h-[420px]">
-        <div
-            class="absolute inset-0 opacity-20"
-            style="
-                background-image: radial-gradient(
-                    circle,
-                    rgba(255,255,255,0.8) 1px,
-                    transparent 1px
-                );
-                background-size: 24px 24px;
-            "
-        ></div>
-
-        <div class="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-400/30 blur-3xl"></div>
-        <div class="absolute -bottom-36 right-0 h-96 w-96 rounded-full bg-orange-400/20 blur-3xl"></div>
-
-        <div class="relative z-10 mx-auto max-w-4xl px-6 py-16 text-center">
-            <div class="mb-5 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-5 py-2 text-sm font-bold uppercase tracking-wider text-blue-50 backdrop-blur-sm">
-                {{ __('Admissions & Enrollment') }}
-            </div>
-
-            <h1 class="text-4xl font-black uppercase tracking-wide text-white drop-shadow-lg sm:text-5xl md:text-6xl">
-                {{ __('Tuition & Fees') }}
-            </h1>
-
-            <div class="mx-auto mt-6 h-1.5 w-24 rounded-full bg-orange-500 shadow-lg"></div>
-
-            <p class="mx-auto mt-6 max-w-2xl text-base leading-7 text-blue-50/90 md:text-lg">
-                {{ __('A meaningful investment in your child’s education, development and bright future.') }}
-            </p>
+    {{-- Modern High-End Tuition & Fees Hero Banner --}}
+    <section class="relative isolate flex min-h-[440px] md:min-h-[540px] items-center justify-center overflow-hidden bg-gradient-to-br from-[#061238] via-[#0d276b] to-[#1a4a9c]">
+        
+        {{-- Subtle Luxury Geometric Dot Grid --}}
+        <div class="absolute inset-0 opacity-15 pointer-events-none"
+             style="background-image: radial-gradient(circle, rgba(255,255,255,0.85) 1px, transparent 1px); background-size: 26px 26px;">
         </div>
 
-        <div
-            class="absolute -bottom-px left-0 h-10 w-full bg-slate-50 md:h-16"
-            style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"
-        ></div>
+        {{-- Floating Ambient Glow Orbs (Gold & Emerald/Cyan) --}}
+        <div class="absolute -top-24 -left-20 h-96 w-96 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-28 -right-20 h-[420px] w-[420px] rounded-full bg-emerald-400/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-blue-500/15 blur-[100px] pointer-events-none"></div>
+
+        <div class="relative z-10 mx-auto max-w-5xl px-6 pt-20 pb-28 text-center">
+            
+            {{-- Category Pill --}}
+            <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-200 backdrop-blur-md shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                {{ __('Investment in Excellence') }}
+            </div>
+
+            {{-- Main Title with Gradient Text --}}
+            <h1 data-aos="zoom-in" data-aos-delay="100" class="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight text-white drop-shadow-2xl">
+                {{ __('Tuition') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-400">&</span> {{ __('Fees') }}
+            </h1>
+
+            {{-- Small Accent Bar --}}
+            <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-5 mb-6 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]"></div>
+
+            {{-- Subtitle --}}
+            <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl font-light leading-relaxed text-blue-100 drop-shadow">
+                {{ __('Transparent, high-value investment in your child’s holistic education, global character, and bright future.') }}
+            </p>
+
+            {{-- Quick Benefits / Feature Badges --}}
+            <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs md:text-sm text-white/90">
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm shadow-sm">
+                    <svg class="h-4 w-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>{{ __('Transparent Pricing') }}</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm shadow-sm">
+                    <svg class="h-4 w-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>{{ __('Flexible Monthly & Annual Plans') }}</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm shadow-sm">
+                    <svg class="h-4 w-4 text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>{{ __('International Standards') }}</span>
+                </div>
+            </div>
+        </div>
+
+        {{-- Smooth Organic Wave Transition to Content (bg-slate-50) --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+            <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+        </div>
     </section>
 
     {{-- Fee section --}}
@@ -194,8 +220,6 @@
                                 {{-- Schedule --}}
                                 @if(filled($fee->time_schedule))
                                     <div class="mt-5 inline-flex w-fit items-center gap-2 rounded-xl bg-slate-100 px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-slate-700">
-                                        
-                                        <!-- 📍 Icon សៀវភៅ -->
                                         <svg class="h-4 w-4 fee-accent-text" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                                         </svg>
@@ -221,7 +245,6 @@
 
                                 {{-- Additional fees --}}
                                 <div class="mt-6 flex-1 divide-y divide-slate-100 border-y border-slate-100">
-                                    
                                     @if(filled($fee->annual_fee))
                                         <div class="group flex items-center justify-between gap-4 py-4 transition-all duration-300 hover:pl-1.5">
                                             <div class="flex items-center gap-3.5">
@@ -230,7 +253,6 @@
                                                 </div>
                                                 <span class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500">{{ __('Annual Tuition') }}</span>
                                             </div>
-                                            <!-- 📍 text-lg និងប្រើពណ៌ fee-accent-text -->
                                             <span class="text-lg font-black fee-accent-text drop-shadow-sm">{{ $fee->annual_fee }}</span>
                                         </div>
                                     @endif
@@ -243,7 +265,6 @@
                                                 </div>
                                                 <span class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500">{{ __($fee->lunch_fee_label ?: 'Lunch Fee') }}</span>
                                             </div>
-                                            <!-- 📍 text-lg និងប្រើពណ៌ fee-accent-text -->
                                             <span class="text-lg font-black fee-accent-text drop-shadow-sm">{{ $fee->lunch_fee }}</span>
                                         </div>
                                     @endif
@@ -256,11 +277,9 @@
                                                 </div>
                                                 <span class="text-[11px] font-black uppercase tracking-[0.15em] text-slate-500">{{ __('After School') }}</span>
                                             </div>
-                                            <!-- 📍 text-lg និងប្រើពណ៌ fee-accent-text -->
                                             <span class="text-lg font-black fee-accent-text drop-shadow-sm">{{ $fee->after_school_fee }}</span>
                                         </div>
                                     @endif
-
                                 </div>
 
                                 {{-- Apply button --}}
