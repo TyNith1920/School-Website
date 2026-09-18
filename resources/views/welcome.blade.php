@@ -17,8 +17,8 @@
     $defaultImage = 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop';
 @endphp
 
-<!-- ១. ផ្នែក Banner ខាងលើបង្អស់ (Responsive Mobile & Desktop) -->
-<div class="relative w-full min-h-[540px] md:min-h-[650px] overflow-hidden bg-[#0b1240] flex items-center py-12 md:py-0">
+<!-- ១. ផ្នែក Banner ខាងលើបង្អស់ (Responsive & No-Image Centered Video) -->
+<div class="relative w-full min-h-[520px] md:min-h-[650px] overflow-hidden bg-[#0b1240] flex items-center py-12 md:py-0">
 
     <!-- Background Video / Image -->
     @if($bannerVideo)
@@ -31,31 +31,33 @@
         <div class="absolute inset-0 bg-[#0b1240]"></div>
     @endif
 
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-black/60 z-10"></div>
+    <!-- Overlay (ស្រាលជាងមុនបន្តិច ដើម្បីឱ្យឃើញវីដេអូច្បាស់) -->
+    <div class="absolute inset-0 bg-black/45 z-10"></div>
 
     <!-- Content -->
-    <div class="relative z-20 max-w-7xl mx-auto w-full px-6 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 lg:gap-20">
+    <div class="relative z-20 max-w-7xl mx-auto w-full px-6 flex flex-col md:flex-row items-center {{ $bannerImage ? 'justify-between' : 'justify-center text-center' }} gap-8 md:gap-12">
 
-        <!-- Title & Subtitle -->
-        <div data-aos="fade-right" data-aos-duration="1000" class="w-full md:w-3/5 text-left">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-200 text-xs font-bold uppercase tracking-widest mb-4 backdrop-blur-sm">
+        <!-- Title & Subtitle (ពេលគ្មានរូប អក្សររត់មកចំកណ្តាលពេញអេក្រង់) -->
+        <div data-aos="fade-up" data-aos-duration="1000" class="w-full {{ $bannerImage ? 'md:w-3/5 text-left' : 'max-w-4xl mx-auto text-center' }}">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-100 text-xs font-bold uppercase tracking-widest mb-5 backdrop-blur-md">
                 Life International School
             </div>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white drop-shadow-lg tracking-wide uppercase leading-tight">
+            
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white drop-shadow-2xl tracking-wide uppercase leading-tight">
                 {{ __($banner->title ?? 'Truth | Integrity | Love') }}
             </h1>
-            <div class="w-20 h-1.5 bg-[#de8b8b] mt-4 md:mt-6 rounded-full"></div>
+            
+            <div class="h-1.5 w-24 bg-[#de8b8b] mt-6 rounded-full {{ $bannerImage ? '' : 'mx-auto' }}"></div>
         </div>
 
-        <!-- Floating Frame Image (បង្ហាញទាំងលើ Mobile និង Desktop) -->
+        <!-- Floating Frame Image (បង្ហាញតែពេលណាមានរូបភាពប៉ុណ្ណោះ) -->
         @if($bannerImage)
-        <div data-aos="fade-left" data-aos-duration="1200" class="w-full md:w-2/5 flex justify-center md:justify-end shrink-0 mt-4 md:mt-0">
-            <div class="relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-amber-400 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-                <img src="{{ $bannerImage }}" class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-[360px] lg:h-[360px] object-cover rounded-3xl border-4 border-white/20 shadow-2xl md:rotate-3 group-hover:rotate-0 transition-transform duration-500">
+            <div data-aos="fade-left" data-aos-duration="1200" class="w-full md:w-2/5 flex justify-center md:justify-end shrink-0 mt-4 md:mt-0">
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-amber-400 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+                    <img src="{{ $bannerImage }}" class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-[360px] lg:h-[360px] object-cover rounded-3xl border-4 border-white/20 shadow-2xl md:rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                </div>
             </div>
-        </div>
         @endif
     </div>
 </div>

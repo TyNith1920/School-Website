@@ -53,9 +53,9 @@ class BannerResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Feature Image')
                             ->disk('s3')
-                            ->helperText(
-                                'Recommended size: 1200 × 900px. JPG, PNG, or WebP, up to 5MB.'
-                            )
+                            ->visibility('public') // 📍 បើក Public URL សម្រាប់ R2
+                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យវិល Loading គាំងពេលកែប្រែ
+                            ->helperText('Recommended size: 1200 × 900px. JPG, PNG, or WebP, up to 5MB. (Optional - Leave blank to show only video)')
                             ->image()
                             ->acceptedFileTypes([
                                 'image/jpeg',
@@ -69,7 +69,7 @@ class BannerResource extends Resource
                             ->openable()
                             ->downloadable()
                             ->maxSize(5120)
-                            ->required(),
+                            ->nullable(), // 📍 ប្ដូរពី required() ទៅជា nullable() ដើម្បីអនុញ្ញាតឱ្យលុបរូបភាពចោលបាន
 
                         Forms\Components\FileUpload::make('video')
                             ->label('Background Video')
