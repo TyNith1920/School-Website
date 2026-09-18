@@ -1,6 +1,5 @@
 @extends('layout')
 
-<!-- បង្ហាញឈ្មោះនៅលើ Tab Browser -->
 @section('title', 'Enrollment - Life International School')
 
 @section('content')
@@ -18,102 +17,182 @@
     };
 @endphp
 
-{{-- 📍 ផ្នែកខាងលើ (Hero Section) --}}
-<section class="relative w-full pt-24 pb-28 px-6 md:pt-32 md:pb-36 md:px-20 bg-[#081747] overflow-hidden">
-    
-    <!-- Background Gradients & Patterns -->
-    <div class="absolute inset-0 bg-gradient-to-br from-[#081747] via-[#173c9c] to-[#2563eb] opacity-90"></div>
-    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px); background-size: 24px 24px;"></div>
-    
-    <!-- ពន្លឺជះពណ៌ទឹកក្រូចពីក្រោម -->
-    <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-[#e06d64]/30 blur-[100px] pointer-events-none"></div>
-    <div class="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-cyan-400/20 blur-[90px] pointer-events-none"></div>
-    
-    <div class="max-w-6xl mx-auto relative z-10 text-center">
-        <!-- Badge តូចខាងលើចំណងជើង -->
-        <div data-aos="fade-down" class="mb-5 inline-flex items-center rounded-full border border-white/25 bg-white/10 px-6 py-2 text-sm font-bold uppercase tracking-widest text-blue-50 backdrop-blur-md shadow-sm">
-            Admissions
-        </div>
-        
-        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 uppercase drop-shadow-2xl" style="line-height: 1.3;">
-            {!! __($enrollment?->hero_title ?? 'WARMEST WELCOME TO OUR STUDENT!') !!}
-        </h1>
-        
-        <!-- បន្ទាត់ពណ៌ទឹកក្រូចកាត់កណ្តាល -->
-        <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-6 mb-8 h-1.5 w-24 rounded-full bg-[#e06d64] shadow-[0_0_15px_rgba(224,109,100,0.5)]"></div>
-        
-        <p data-aos="fade-up" data-aos-delay="300" class="text-blue-100 text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed font-light">
-            {{ $enrollment?->hero_subtitle ?? 'Let the learning journey begin! We are excited to welcome you to our school community.' }}
-        </p>
-    </div>
-    
-    <!-- Soft Organic Wave Transition ភ្ជាប់ទៅផ្ទៃខាងក្រោម (bg-slate-50) -->
-    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-        <svg class="relative block w-full h-10 sm:h-14 md:h-16 text-slate-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,0 C200,50 450,15 600,35 C800,60 1000,15 1200,40 L1200,120 L0,120 Z" fill="currentColor"></path>
-        </svg>
-    </div>
-</section>
+<div class="w-full min-h-screen bg-[#fcfdfd] text-slate-800">
 
-{{-- 📍 ផ្នែកព័ត៌មាន និងទាញយកឯកសារ (Content Section) --}}
-<section class="bg-slate-50 px-5 py-16 md:py-24">
-    <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    {{-- 🌟 1. Hero Banner with Metallic Gold Wave Transition --}}
+    <section class="relative isolate overflow-hidden bg-gradient-to-br from-[#061238] via-[#0d276b] to-[#173c9c] text-white pt-16 pb-28 md:pb-36">
         
-        <!-- រូបភាពខាងឆ្វេង (Image Side) -->
-        @if($enrollment?->image)
-            <div data-aos="fade-right" class="relative group">
-                <!-- ស្រមោលបញ្ចេញពន្លឺពេលយក Mouse ដាក់ពីលើ -->
-                <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#e06d64] to-orange-400 opacity-20 blur-xl transition duration-500 group-hover:opacity-40"></div>
-                
-                <!-- រូបភាព -->
-                <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white bg-gray-100">
-                    <img src="{{ $getMediaUrl($enrollment->image) }}" alt="Student Enrollment" class="w-full h-auto object-cover transform transition duration-700 group-hover:scale-105" loading="lazy">
-                </div>
-                
-                <!-- Icon តុបតែងបន្ថែម -->
-                <div class="absolute -bottom-6 -left-6 h-20 w-20 md:h-24 md:w-24 rounded-full bg-[#0b1240] flex items-center justify-center shadow-xl border-4 border-white transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-12">
-                    <svg class="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                </div>
-            </div>
-        @endif
+        {{-- Ambient Glow & Grid --}}
+        <div class="absolute inset-0 opacity-15 pointer-events-none" 
+             style="background-image: radial-gradient(circle, rgba(255,255,255,0.85) 1px, transparent 1px); background-size: 26px 26px;"></div>
+        <div class="absolute -top-24 -left-20 h-96 w-96 rounded-full bg-cyan-400/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 right-0 h-96 w-96 rounded-full bg-orange-500/20 blur-3xl pointer-events-none"></div>
 
-        <!-- អត្ថបទ និងប៊ូតុងខាងស្តាំ (Content & Button Side) -->
-        <div data-aos="fade-left" data-aos-delay="200" class="relative">
-            <div class="mb-4 flex items-center gap-3">
-                <span class="h-1 w-10 rounded-full bg-[#e06d64]"></span>
-                <span class="text-sm font-bold uppercase tracking-[0.18em] text-[#e06d64]">
-                    Join Us Today
-                </span>
+        <div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
+            
+            {{-- Badge --}}
+            <div data-aos="fade-down" class="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md mb-6 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                Now Enrolling for Academic Year
             </div>
-            
-            <h2 class="text-4xl md:text-5xl font-black text-[#0b1240] mb-6 leading-tight drop-shadow-sm">
-                {{ $enrollment?->section_title ?? 'Student Enrollment' }}
-            </h2>
-            
-            <p class="text-lg text-slate-600 mb-10 leading-relaxed">
-                {{ $enrollment?->section_description ?? 'Click to download LIS Re-Enrollment Form. Please fill it out and send your completed PDF copy to our school officers.' }}
+
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white leading-tight drop-shadow-2xl">
+                {{ __($enrollment?->hero_title ?? 'Warmest Welcome to Our Students') }}
+            </h1>
+
+            <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_15px_rgba(251,191,36,0.6)]"></div>
+
+            <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl text-blue-100/90 leading-relaxed font-light">
+                {{ $enrollment?->hero_subtitle ?? 'Begin an inspiring educational journey rooted in Truth, Integrity, and Love. Secure your child’s place today.' }}
             </p>
-            
-            @if($enrollment?->pdf_file)
-                <!-- ប៊ូតុង Download (ទាញយកតាមរយៈ R2 s3 URL) -->
-                <a href="{{ $getMediaUrl($enrollment->pdf_file) }}" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="group inline-flex items-center gap-4 bg-[#e06d64] text-white font-bold px-8 py-4 md:py-5 rounded-full shadow-[0_10px_30px_rgba(224,109,100,0.3)] hover:bg-[#c95b53] hover:shadow-[0_15px_40px_rgba(224,109,100,0.4)] hover:-translate-y-1 transition-all duration-300 uppercase tracking-widest text-sm md:text-base w-full sm:w-auto justify-center">
-                    <span>Download Form</span>
-                    
-                    <span class="bg-white/20 p-2.5 rounded-full transition-transform duration-300 group-hover:translate-y-1">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                    </span>
-                </a>
-            @endif
+
+            {{-- Quick Stats Pills --}}
+            <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs md:text-sm">
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>Early Childhood – Grade 12</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span>ACSI Accredited Program</span>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 border border-white/15 backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span>International Curriculum</span>
+                </div>
+            </div>
+
         </div>
-        
-    </div>
-</section>
+
+        {{-- 📍 Dual-Layer Rich Metallic Gold Wave Transition --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+            <svg class="relative block w-full h-16 sm:h-20 md:h-28" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="enrollmentGoldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#b45309" />
+                        <stop offset="25%" stop-color="#f59e0b" />
+                        <stop offset="50%" stop-color="#fde047" />
+                        <stop offset="75%" stop-color="#f59e0b" />
+                        <stop offset="100%" stop-color="#d97706" />
+                    </linearGradient>
+                </defs>
+
+                {{-- ស្រទាប់ទី ១: រលកពណ៌មាស --}}
+                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#enrollmentGoldGradient)"></path>
+                {{-- ស្រទាប់ទី ២: រលកពណ៌ផ្ទៃខាងក្រោម (#fcfdfd) --}}
+                <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#fcfdfd"></path>
+            </svg>
+        </div>
+    </section>
+
+    {{-- 🧭 2. Admissions Roadmap (ជំហានងាយៗទាំង ៤ ក្នុងការចុះឈ្មោះ) --}}
+    <section class="relative -mt-10 md:-mt-14 z-20 max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div data-aos="fade-up" data-aos-delay="100" class="p-6 rounded-[2rem] bg-white border border-slate-200/80 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:-translate-y-1 transition-all">
+                <span class="text-xs font-black text-amber-500 uppercase tracking-widest">Step 01</span>
+                <h4 class="font-black text-[#081747] text-lg mt-1">Submit Form</h4>
+                <p class="mt-2 text-xs text-slate-500 leading-relaxed">Download and complete the registration form with student academic records.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="200" class="p-6 rounded-[2rem] bg-white border border-slate-200/80 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:-translate-y-1 transition-all">
+                <span class="text-xs font-black text-blue-600 uppercase tracking-widest">Step 02</span>
+                <h4 class="font-black text-[#081747] text-lg mt-1">Placement Test</h4>
+                <p class="mt-2 text-xs text-slate-500 leading-relaxed">Age-appropriate academic readiness evaluation in English and Mathematics.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="300" class="p-6 rounded-[2rem] bg-white border border-slate-200/80 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:-translate-y-1 transition-all">
+                <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Step 03</span>
+                <h4 class="font-black text-[#081747] text-lg mt-1">Family Interview</h4>
+                <p class="mt-2 text-xs text-slate-500 leading-relaxed">A brief session with our leadership to discuss curriculum and core values.</p>
+            </div>
+
+            <div data-aos="fade-up" data-aos-delay="400" class="p-6 rounded-[2rem] bg-white border border-slate-200/80 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:-translate-y-1 transition-all">
+                <span class="text-xs font-black text-rose-500 uppercase tracking-widest">Step 04</span>
+                <h4 class="font-black text-[#081747] text-lg mt-1">Welcome Aboard</h4>
+                <p class="mt-2 text-xs text-slate-500 leading-relaxed">Receive formal acceptance, schedule uniforms, and meet teachers.</p>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- 📄 3. Main Download & Showcase Section --}}
+    <main class="max-w-6xl mx-auto px-6 py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {{-- Image Showcase (រូបភាពបែប Framed Studio) --}}
+            <div data-aos="fade-right" class="lg:col-span-6 relative">
+                @if($enrollment?->image)
+                    <div class="relative group">
+                        <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-orange-400 to-amber-300 opacity-20 blur-xl transition duration-500 group-hover:opacity-40"></div>
+                        <div class="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white bg-slate-100">
+                            <img src="{{ $getMediaUrl($enrollment->image) }}" alt="Student Enrollment" class="w-full h-full object-cover transform transition duration-700 group-hover:scale-105" loading="lazy">
+                        </div>
+                    </div>
+                @else
+                    <div class="aspect-[4/3] rounded-[2.5rem] bg-gradient-to-br from-blue-900 to-slate-900 flex items-center justify-center text-white p-8 text-center shadow-xl">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest text-amber-300">Life International School</span>
+                            <h3 class="text-2xl font-black mt-2">Nurturing Leaders for Tomorrow</h3>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Text & Document Action Card --}}
+            <div data-aos="fade-left" class="lg:col-span-6 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-black uppercase tracking-widest text-orange-500">Admissions Package</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-[#081747] uppercase tracking-tight mt-1 mb-4">
+                        {{ $enrollment?->section_title ?? 'Student Enrollment Form' }}
+                    </h2>
+
+                    <p class="text-slate-600 text-base leading-relaxed mb-8">
+                        {{ $enrollment?->section_description ?? 'Download the official enrollment application form. Please complete all sections and submit the signed copy along with previous transcripts to our admissions office.' }}
+                    </p>
+
+                    {{-- Document Box --}}
+                    @if($enrollment?->pdf_file)
+                        <div class="p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm mb-8 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 text-sm">Enrollment_Application_Form.pdf</h4>
+                                    <p class="text-xs text-slate-400 mt-0.5">Official Admission Document • PDF</p>
+                                </div>
+                            </div>
+
+                            <a href="{{ $getMediaUrl($enrollment->pdf_file) }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider shadow-md hover:-translate-y-0.5 transition-all shrink-0">
+                                <span>Download</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            </a>
+                        </div>
+                    @endif
+
+                    {{-- Contact Support Box --}}
+                    <div class="p-6 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <p class="text-xs font-bold text-blue-900 uppercase tracking-wider">Need assistance with your application?</p>
+                            <p class="text-xs text-blue-700 mt-0.5">Our admissions counselors are ready to help walk you through the process.</p>
+                        </div>
+                        <a href="{{ url('/contact-us') }}" class="text-xs font-black text-orange-600 hover:text-orange-700 uppercase tracking-wider inline-flex items-center gap-1 shrink-0">
+                            <span>Contact Office</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</div>
 
 @endsection
