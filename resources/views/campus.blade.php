@@ -196,7 +196,7 @@
 
                         <div class="mt-8 pt-6 border-t border-white/10 flex flex-wrap gap-4">
                             <a href="{{ url('/contact-us') }}" class="inline-flex items-center gap-2 rounded-xl bg-orange-500 hover:bg-orange-600 px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all">
-                                <span>Book a Visit</span>
+                                <span>Contact Us</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
                         </div>
