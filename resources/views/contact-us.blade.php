@@ -73,7 +73,7 @@
     }
 </style>
 
-{{-- 🌟 Contact Hero Banner ជាមួយ Auto-Slide Images & Metallic Gold Wave --}}
+{{-- 🌟 Contact Hero Banner ជាមួយរូបភាពភ្លឺច្បាស់ មិនបាំងពណ៌ខៀវ & Metallic Gold Wave --}}
 <section 
     x-data="{
         current: 0,
@@ -92,9 +92,9 @@
     x-init="start()"
     @mouseenter="stop()"
     @mouseleave="start()"
-    class="relative isolate min-h-[480px] md:min-h-[580px] overflow-hidden bg-[#061238] flex items-center justify-center text-white"
+    class="relative isolate min-h-[480px] md:min-h-[580px] overflow-hidden bg-slate-900 flex items-center justify-center text-white"
 >
-    {{-- 📍 Background Cross-fade Slideshow --}}
+    {{-- 📍 Background Cross-fade Slideshow (រូបភាពភ្លឺច្បាស់ធម្មជាតិ) --}}
     <div class="absolute inset-0 z-0">
         <template x-for="(img, idx) in slides" :key="idx">
             <img :src="img" 
@@ -111,38 +111,33 @@
         </template>
     </div>
 
-    {{-- Dark Vignette Overlay --}}
-    <div class="absolute inset-0 bg-[#061238]/80 backdrop-blur-[1.5px] z-10 pointer-events-none"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#061238] via-transparent to-[#061238]/70 z-10 pointer-events-none"></div>
-
-    {{-- Glowing Orbs --}}
-    <div class="absolute -top-20 left-1/4 h-72 w-72 rounded-full bg-amber-500/20 blur-3xl pointer-events-none z-10"></div>
-    <div class="absolute bottom-12 right-1/4 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl pointer-events-none z-10"></div>
+    {{-- 📍 Overlay ស្រាលកម្រិតស្រទន់ (មិនបាំងរូបភាព ជួយឱ្យអក្សរអានបានច្បាស់) --}}
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-slate-950/50 z-10 pointer-events-none"></div>
 
     <div class="relative z-20 mx-auto max-w-5xl px-6 pt-16 pb-32 md:pb-36 text-center">
         
-        <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-sm">
+        <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-black/40 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-lg">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
             {{ __('WE ARE HERE TO HELP') }}
         </div>
 
-        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-tight drop-shadow-2xl">
+        <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             {{ __('Get In') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-400">{{ __('Touch') }}</span>
         </h1>
 
-        <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-4 mb-6 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]"></div>
+        <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-4 mb-6 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]"></div>
 
-        <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl text-blue-100/90 leading-relaxed font-light drop-shadow">
+        <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-relaxed font-medium">
             {{ __('Whether you have questions about admissions, academic programs, or campus visits, our friendly team is eager to assist you.') }}
         </p>
 
-        {{-- Contact Quick Links --}}
-        <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs md:text-sm text-white/95">
-            <a href="tel:{{ $phoneHref }}" class="inline-flex items-center gap-2.5 rounded-xl bg-white/10 hover:bg-white/20 px-5 py-2.5 border border-white/20 backdrop-blur-md transition-all shadow-sm">
+        {{-- Contact Quick Links (Backdrop ដិតស្រួលមើល) --}}
+        <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs md:text-sm text-white font-bold">
+            <a href="tel:{{ $phoneHref }}" class="inline-flex items-center gap-2.5 rounded-xl bg-black/50 hover:bg-black/70 px-5 py-2.5 border border-white/20 backdrop-blur-md transition-all shadow-lg hover:border-amber-400">
                 <svg class="h-4 w-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.684l1.5 4.493a1 1 0 01-.502 1.21l-2.257 1.128a11.04 11.04 0 005.516 5.516l1.128-2.257a1 1 0 011.21-.502l4.493 1.5a1 1 0 01.684.95V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                 <span>{{ $contactPhone }}</span>
             </a>
-            <a href="mailto:{{ $contactEmail }}" class="inline-flex items-center gap-2.5 rounded-xl bg-white/10 hover:bg-white/20 px-5 py-2.5 border border-white/20 backdrop-blur-md transition-all shadow-sm">
+            <a href="mailto:{{ $contactEmail }}" class="inline-flex items-center gap-2.5 rounded-xl bg-black/50 hover:bg-black/70 px-5 py-2.5 border border-white/20 backdrop-blur-md transition-all shadow-lg hover:border-orange-400">
                 <svg class="h-4 w-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 <span>{{ $contactEmail }}</span>
             </a>
@@ -152,8 +147,8 @@
         <div x-show="slides.length > 1" class="mt-8 flex items-center justify-center gap-2">
             <template x-for="(s, sIdx) in slides" :key="'contact-dot-' + sIdx">
                 <button @click="goTo(sIdx)" 
-                        :class="current === sIdx ? 'w-7 bg-amber-400' : 'w-2 bg-white/40 hover:bg-white/70'" 
-                        class="h-2 rounded-full transition-all duration-300"></button>
+                        :class="current === sIdx ? 'w-7 bg-amber-400' : 'w-2 bg-white/50 hover:bg-white/90'" 
+                        class="h-2 rounded-full transition-all duration-300 shadow-sm"></button>
             </template>
         </div>
 
