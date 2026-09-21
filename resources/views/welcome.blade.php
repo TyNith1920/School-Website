@@ -3,13 +3,34 @@
 @section('content')
 
 @php
-    // Helper function សម្រាប់ពិនិត្យមើល URL រូបភាព (បើជា Full URL ស្រាប់ ឬជា Path ក្នុង R2)
-    $getImageUrl = function($path, $fallback) {
+    // Helper function សម្រាប់ពិនិត្យមើល URL រូបភាព (គាំទ្រទាំង String, Array និង R2 Path)
+    $getImageUrl = function($path, $fallback = null) use (&$getImageUrl) {
         if (!$path) return $fallback;
+
+        // ប្រសិនបើជា Array យកធាតុដំបូង
+        if (is_array($path)) {
+            $first = reset($path);
+            return $getImageUrl($first, $fallback);
+        }
+
+        // ប្រសិនបើជា JSON String
+        if (is_string($path) && (str_starts_with($path, '[') || str_starts_with($path, '{'))) {
+            $decoded = json_decode($path, true);
+            if (is_array($decoded)) {
+                $first = reset($decoded);
+                return $getImageUrl($first, $fallback);
+            }
+        }
+
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
         }
-        return \Storage::disk('s3')->url($path);
+
+        try {
+            return \Storage::disk('s3')->url($path);
+        } catch (\Exception $e) {
+            return asset('storage/' . $path);
+        }
     };
 
     $bannerImage = $banner && $banner->image ? $getImageUrl($banner->image, null) : null;
@@ -31,13 +52,13 @@
         <div class="absolute inset-0 bg-[#0b1240]"></div>
     @endif
 
-    <!-- Overlay (ស្រាលជាងមុនបន្តិច ដើម្បីឱ្យឃើញវីដេអូច្បាស់) -->
+    <!-- Overlay -->
     <div class="absolute inset-0 bg-black/45 z-10"></div>
 
     <!-- Content -->
     <div class="relative z-20 max-w-7xl mx-auto w-full px-6 flex flex-col md:flex-row items-center {{ $bannerImage ? 'justify-between' : 'justify-center text-center' }} gap-8 md:gap-12">
 
-        <!-- Title & Subtitle (ពេលគ្មានរូប អក្សររត់មកចំកណ្តាលពេញអេក្រង់) -->
+        <!-- Title & Subtitle -->
         <div data-aos="fade-up" data-aos-duration="1000" class="w-full {{ $bannerImage ? 'md:w-3/5 text-left' : 'max-w-4xl mx-auto text-center' }}">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-100 text-xs font-bold uppercase tracking-widest mb-5 backdrop-blur-md">
                 Life International School
@@ -50,7 +71,7 @@
             <div class="h-1.5 w-24 bg-[#de8b8b] mt-6 rounded-full {{ $bannerImage ? '' : 'mx-auto' }}"></div>
         </div>
 
-        <!-- Floating Frame Image (បង្ហាញតែពេលណាមានរូបភាពប៉ុណ្ណោះ) -->
+        <!-- Floating Frame Image -->
         @if($bannerImage)
             <div data-aos="fade-left" data-aos-duration="1200" class="w-full md:w-2/5 flex justify-center md:justify-end shrink-0 mt-4 md:mt-0">
                 <div class="relative group">
@@ -62,7 +83,7 @@
     </div>
 </div>
 
-<!-- ២. ផ្នែក ADMISSIONS (Responsive & No Text Cut-off) -->
+<!-- ២. ផ្នែក ADMISSIONS -->
 <div class="py-16 sm:py-20 md:py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #7a76ff 0%, #d4a5d8 50%, #facc15 100%);">
     <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-16 relative z-10">
         
@@ -81,7 +102,7 @@
             </a>
         </div>
 
-        <!-- រូបភាពរាងកោង Blob (ទំហំសមស្របលើ Mobile) -->
+        <!-- រូបភាពរាងកោង Blob -->
         <div data-aos="zoom-in" data-aos-delay="200" class="w-full md:w-1/2 relative flex justify-center items-center">
             <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] overflow-hidden transition-transform duration-700 hover:scale-105" 
                  style="border-radius: 42% 58% 66% 34% / 43% 36% 64% 57%; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
