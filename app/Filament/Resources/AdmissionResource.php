@@ -18,9 +18,6 @@ class AdmissionResource extends Resource
 
     protected static ?string $navigationLabel = 'Admissions';
 
-    // Keep this disabled because the navigation group already has an icon.
-    // protected static ?string $navigationIcon = 'heroicon-o-document-text';
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -33,9 +30,7 @@ class AdmissionResource extends Resource
                 |--------------------------------------------------------------------------
                 */
                 Forms\Components\Section::make('Admission Content')
-                    ->description(
-                        'Manage the title and description displayed in the admissions section.'
-                    )
+                    ->description('Manage the title and description displayed in the admissions section.')
                     ->icon('heroicon-o-academic-cap')
                     ->schema([
                         Forms\Components\TextInput::make('title')
@@ -47,12 +42,8 @@ class AdmissionResource extends Resource
 
                         Forms\Components\Textarea::make('description')
                             ->label('Description')
-                            ->placeholder(
-                                'Describe the admissions process and guide visitors on how to apply.'
-                            )
-                            ->helperText(
-                                'Keep the description short and clear for website visitors.'
-                            )
+                            ->placeholder('Describe the admissions process and guide visitors on how to apply.')
+                            ->helperText('Keep the description short and clear for website visitors.')
                             ->rows(4)
                             ->required()
                             ->maxLength(500)
@@ -62,13 +53,11 @@ class AdmissionResource extends Resource
 
                 /*
                 |--------------------------------------------------------------------------
-                | Application Button and Form
+                | Application Button and Form (PDF)
                 |--------------------------------------------------------------------------
                 */
                 Forms\Components\Section::make('Application Button and Form')
-                    ->description(
-                        'Configure the application button and upload the admission form.'
-                    )
+                    ->description('Configure the application button and upload the admission form.')
                     ->icon('heroicon-o-document-arrow-down')
                     ->schema([
                         Forms\Components\TextInput::make('button_text')
@@ -76,58 +65,47 @@ class AdmissionResource extends Resource
                             ->placeholder('Apply Now')
                             ->default('Apply Now')
                             ->prefixIcon('heroicon-o-cursor-arrow-rays')
-                            ->helperText(
-                                'This text appears on the application button.'
-                            )
+                            ->helperText('This text appears on the application button.')
                             ->required()
                             ->maxLength(50),
 
                         Forms\Components\FileUpload::make('button_link')
                             ->label('Application Form (PDF)')
-                            ->helperText(
-                                'Upload a PDF admission form, up to 10MB.'
-                            )
+                            ->helperText('Upload a PDF admission form, up to 20MB.')
+                            ->disk('s3') // 📍 បញ្ជូនទៅ Cloudflare R2
+                            ->visibility('public')
+                            ->directory('admission-forms')
                             ->acceptedFileTypes([
                                 'application/pdf',
                             ])
-                            ->directory('admission-forms')
                             ->previewable(false)
                             ->openable()
                             ->downloadable()
-                            ->maxSize(10240),
+                            ->maxSize(20480),
                     ])
                     ->columns(2)
                     ->collapsible(),
 
                 /*
                 |--------------------------------------------------------------------------
-                | Feature Image
+                | Feature Image (រូបភាព)
                 |--------------------------------------------------------------------------
                 */
                 Forms\Components\Section::make('Feature Image')
-                    ->description(
-                        'Upload the image displayed on the right side of the admissions section.'
-                    )
+                    ->description('Upload the image displayed on the right side of the admissions section.')
                     ->icon('heroicon-o-photo')
                     ->schema([
                         Forms\Components\FileUpload::make('image')
                             ->label('Admission Feature Image')
-                            ->helperText(
-                                'Recommended: square image, at least 1200 × 1200px. Use JPG, PNG, or WebP. Compress it to less than 2MB for faster loading.'
-                            )
+                            ->helperText('Recommended: square image, at least 1200 × 1200px. JPG, PNG, or WebP.')
+                            ->disk('s3') // 📍 បញ្ជូនទៅ Cloudflare R2
+                            ->visibility('public')
                             ->image()
-                            ->acceptedFileTypes([
-                                'image/jpeg',
-                                'image/png',
-                                'image/webp',
-                            ])
                             ->directory('admissions')
-                            ->imageEditor()
                             ->imagePreviewHeight('280')
-                            ->panelLayout('integrated')
                             ->openable()
                             ->downloadable()
-                            ->maxSize(5120)
+                            ->maxSize(20480)
                             ->required()
                             ->columnSpanFull(),
                     ])
@@ -141,6 +119,7 @@ class AdmissionResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image')
+                    ->disk('s3') // 📍 ទាញយករូបភាពពី Cloudflare R2 មកបង្ហាញ (លែងបាក់រូប)
                     ->height(65)
                     ->extraImgAttributes([
                         'class' => 'object-cover rounded-lg',
