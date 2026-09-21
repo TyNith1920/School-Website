@@ -35,10 +35,10 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-    {{-- 🌟 ១. HERO BANNER (គ្មានស្រទាប់ Overlay ឬស្រទាប់ខ្មៅអ្វីទាំងអស់ រូបភាពច្បាស់ ១០០%) --}}
-    <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center justify-center text-white">
+   {{-- 🌟 ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្សនៅកណ្តាល/ស្តាំ) --}}
+    <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center text-white">
         
-        {{-- Background Video ឬ Image (រូបភាពច្បាស់ធម្មជាតិ គ្មានស្រទាប់បាំង) --}}
+        {{-- Background Video ឬ Image --}}
         @if($bannerVideo)
             <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
                 <source src="{{ $bannerVideo }}" type="video/mp4">
@@ -49,35 +49,37 @@
             <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop" class="absolute inset-0 h-full w-full object-cover">
         @endif
 
-        {{-- ខ្លឹមសារ Banner --}}
-        <div class="relative z-20 mx-auto max-w-4xl px-6 pt-16 pb-32 md:pb-40 text-center">
+        {{-- ខ្លឹមសាររត់មកខាងឆ្វេង ដើម្បីទុកចន្លោះកណ្តាលនិងស្តាំឱ្យឃើញរូបសិស្សច្បាស់ --}}
+        <div class="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-12 pt-16 pb-32 md:pb-36 flex flex-col items-start text-left">
             
-            {{-- Small Badge --}}
-            <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-black/60 px-4 py-1.5 text-xs font-black uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-2xl">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                {{ __('LIFE INTERNATIONAL SCHOOL • SIHANOUKVILLE') }}
-            </div>
+            <div class="max-w-xl md:max-w-2xl">
+                {{-- Small Badge --}}
+                <div data-aos="fade-down" class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-black/60 px-4 py-1.5 text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-2xl">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                    {{ __('LIFE INTERNATIONAL SCHOOL • SIHANOUKVILLE') }}
+                </div>
 
-            {{-- Title --}}
-            <h1 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-wide leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
-                {{ __($banner->title ?? 'TRUTH | INTEGRITY | LOVE') }}
-            </h1>
+                {{-- Title --}}
+                <h1 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
+                    {{ __($banner->title ?? 'TRUTH | INTEGRITY | LOVE') }}
+                </h1>
 
-            <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-4 mb-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_20px_rgba(0,0,0,0.9)]"></div>
+                <div data-aos="zoom-in" data-aos-delay="200" class="mt-3 mb-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_20px_rgba(251,191,36,0.9)]"></div>
 
-            <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-xl text-sm sm:text-base md:text-lg font-bold leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-                {{ __('Equipping future generations with world-class academic excellence, authentic Christian values, and a global perspective.') }}
-            </p>
+                <p data-aos="fade-up" data-aos-delay="300" class="text-sm sm:text-base font-bold leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,1)] max-w-lg">
+                    {{ __('Equipping future generations with world-class academic excellence, authentic Christian values, and a global perspective.') }}
+                </p>
 
-            {{-- Action Buttons --}}
-            <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3.5">
-                <a href="/enrollment" class="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-7 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 shadow-2xl hover:from-amber-300 hover:to-orange-400 hover:-translate-y-0.5 transition-all">
-                    <span>{{ __('ADMISSIONS & ENROLLMENT') }}</span>
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                </a>
-                <a href="/contact-us" class="inline-flex items-center gap-2.5 rounded-xl border border-white/40 bg-black/60 px-7 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md hover:bg-black/80 hover:border-amber-400 transition-all shadow-2xl">
-                    <span>{{ __('CAMPUS TOUR & INQUIRIES') }}</span>
-                </a>
+                {{-- Action Buttons --}}
+                <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center gap-3.5">
+                    <a href="/enrollment" class="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-6 sm:px-7 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 shadow-2xl hover:from-amber-300 hover:to-orange-400 hover:-translate-y-0.5 transition-all">
+                        <span>{{ __('ADMISSIONS & ENROLLMENT') }}</span>
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="/contact-us" class="inline-flex items-center gap-2.5 rounded-xl border border-white/40 bg-black/60 px-6 sm:px-7 py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md hover:bg-black/80 hover:border-amber-400 transition-all shadow-2xl">
+                        <span>{{ __('CAMPUS TOUR & INQUIRIES') }}</span>
+                    </a>
+                </div>
             </div>
 
         </div>
