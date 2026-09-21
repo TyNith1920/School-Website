@@ -5,8 +5,13 @@
 @section('content')
 
 @php
-    $getMediaUrl = function($path) {
+    // 📍 មុខងារទាញយករូបភាពពី R2 ដែលគាំទ្រទាំង String និង Array
+    $getMediaUrl = function($path) use (&$getMediaUrl) {
         if (empty($path)) return null;
+        if (is_array($path)) {
+            $first = reset($path);
+            return $getMediaUrl($first);
+        }
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return$path;
         try { 
             return \Storage::disk('s3')->url($path); 
@@ -15,22 +20,22 @@
         }
     };
 
-    // មុខងារទាញយករូបភាពទាំងអស់របស់ News នីមួយៗ (ទាំង image ទោល និង images array)
+    // មុខងារទាញយករូបភាពទាំងអស់ជា Array សុទ្ធ
     $extractNewsImages = function($item) use ($getMediaUrl) {$images = [];
-        
-        // ពិនិត្យមើល field 'images' បើមាន
-        if (isset($item->images)) {$raw = is_array($item->images) ?$item->images : (is_string($item->images) ? json_decode($item->images, true) : []);
-            if (is_array($raw)) {
-                foreach ($raw as$img) {
+        $rawImages =$item->image ?? null;
+
+        if (is_array($rawImages)) {
+            foreach ($rawImages as$img) {
+                if ($url = $getMediaUrl($img)) $images[] =$url;
+            }
+        } elseif (is_string($rawImages)) {
+            $decoded = json_decode($rawImages, true);
+            if (is_array($decoded)) {
+                foreach ($decoded as$img) {
                     if ($url = $getMediaUrl($img)) $images[] =$url;
                 }
-            }
-        }
-        
-        // បញ្ចូល field 'image' គោលបើមិនទាន់មាន
-        if (isset($item->image) &&$url = $getMediaUrl($item->image)) {
-            if (!in_array($url,$images)) {
-                array_unshift($images,$url);
+            } elseif ($url = $getMediaUrl($rawImages)) {
+                $images[] =$url;
             }
         }
 
@@ -62,7 +67,6 @@
                     </p>
                 </div>
 
-                {{-- Live Updates Counter --}}
                 <div class="inline-flex items-center gap-3 self-start md:self-auto rounded-2xl bg-slate-50 border border-slate-200 px-5 py-3 text-sm font-bold text-slate-700 shadow-sm">
                     <span class="flex h-3 w-3 relative">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -72,7 +76,6 @@
                 </div>
             </div>
 
-            {{-- Category Filter Pills --}}
             <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
                 <span class="text-xs font-black uppercase tracking-wider text-slate-400 mr-2">Filter by:</span>
                 <button type="button" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#081747] text-white shadow-sm transition-all hover:bg-orange-500">All Updates</button>
@@ -86,7 +89,7 @@
     <main class="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16">
 
         @if($featuredNews)
-            {{-- 🌟 Featured Magazine Lead Story (ជាមួយ Auto-Slide Image Gallery) --}}
+            {{-- 🌟 Featured Story ជាមួយ Auto-Slide Carousel --}}
             <section data-aos="fade-up" class="mb-16">
                 <div class="group relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(30,64,175,0.12)] transition-all duration-500">
                     <div class="grid grid-cols-1 lg:grid-cols-12">
@@ -132,7 +135,7 @@
 
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
 
-                            {{-- Calendar Date Stamp --}}
+                            {{-- Date Stamp --}}
                             <div class="absolute top-6 right-6 z-20 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
                                 <span class="text-[11px] font-black uppercase tracking-widest text-orange-600">{{ $featuredNews->created_at?->format('M') ?? 'LIS' }}</span>
                                 <span class="text-2xl font-black text-[#081747] leading-none mt-0.5">{{ $featuredNews->created_at?->format('d') ?? '01' }}</span>
@@ -151,7 +154,7 @@
                                 @endif
                             </div>
 
-                            {{-- Left / Right Slide Navigation Buttons --}}
+                            {{-- Arrows --}}
                             <div x-show="slides.length > 1" class="absolute inset-y-0 inset-x-4 z-20 flex items-center justify-between pointer-events-none">
                                 <button type="button" @click.stop="prev()" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 hover:bg-orange-500 text-white flex items-center justify-center backdrop-blur-sm transition-colors shadow-md">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
@@ -161,7 +164,7 @@
                                 </button>
                             </div>
 
-                            {{-- Dot Indicators --}}
+                            {{-- Dots --}}
                             <div x-show="slides.length > 1" class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
                                 <template x-for="(s, sIdx) in slides" :key="'feat-dot-' + sIdx">
                                     <button @click.stop="current = sIdx" 
@@ -295,7 +298,7 @@
 
 </div>
 
-{{-- 🔍 Dynamic News Modal (គាំទ្ររូបភាពច្រើនសន្លឹក Slideshow) --}}
+{{-- 🔍 Dynamic News Modal ជាមួយ Multi-image Navigation --}}
 <div id="newsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/80 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300" aria-hidden="true">
     <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[92vh] w-full max-w-4xl scale-95 overflow-y-auto rounded-[2.5rem] bg-white shadow-2xl transition-transform duration-300">
         
@@ -307,7 +310,6 @@
         <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-950" id="modalImageContainer">
             <img id="modalImage" src="" alt="" class="h-full w-full object-contain">
             
-            {{-- Prev/Next buttons inside modal --}}
             <button type="button" id="modalPrevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-orange-500 text-white flex items-center justify-center transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
