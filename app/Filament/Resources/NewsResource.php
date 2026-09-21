@@ -63,21 +63,22 @@ class NewsResource extends Resource
 
                         Group::make()
                             ->schema([
-                                Section::make('Media')
-                                    ->description('Upload the featured image')
+                                Section::make('Media Gallery')
+                                    ->description('Upload images (Single or Multiple)')
                                     ->icon('heroicon-o-photo')
                                     ->schema([
                                         FileUpload::make('image')
-                                            ->label('🖼️ Featured Image')
+                                            ->label('🖼️ News Images / Gallery')
                                             ->disk('s3') // Cloudflare R2
-                                            ->visibility('public') // 📍 បើក Public URL
-                                            ->fetchFileInformation(false) // 📍 ការពារកុំឱ្យគាំងពេល Edit
+                                            ->visibility('public')
+                                            ->fetchFileInformation(false)
+                                            ->multiple() // 📍 អនុញ្ញាតឱ្យ Upload រូបភាពបានច្រើនសន្លឹក
+                                            ->reorderable() // 📍 អាចអូសរៀបលំដាប់រូបភាពបាន
                                             ->image()
                                             ->directory('news-images')
                                             ->openable()
                                             ->downloadable()
-                                            ->maxSize(15360) // 15MB
-                                            ->required()
+                                            ->maxSize(15360) // 15MB ក្នុងមួយរូប
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
@@ -92,8 +93,10 @@ class NewsResource extends Resource
             ->columns([
                 ImageColumn::make('image')
                     ->label('🖼️ Image')
-                    ->disk('s3') // Cloudflare R2
-                    ->circular(), 
+                    ->disk('s3')
+                    ->circular()
+                    ->stacked() // 📍 បង្ហាញរូបជាជង់បើមានច្រើនសន្លឹក
+                    ->limit(3), 
 
                 TextColumn::make('title')
                     ->label('🏷️ Title')

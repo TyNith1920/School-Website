@@ -7,7 +7,7 @@
 @php
     $getMediaUrl = function($path) {
         if (empty($path)) return null;
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return$path;
         try { 
             return \Storage::disk('s3')->url($path); 
         } catch (\Exception $e) { 
@@ -15,9 +15,32 @@
         }
     };
 
+    // មុខងារទាញយករូបភាពទាំងអស់របស់ News នីមួយៗ (ទាំង image ទោល និង images array)
+    $extractNewsImages = function($item) use ($getMediaUrl) {$images = [];
+        
+        // ពិនិត្យមើល field 'images' បើមាន
+        if (isset($item->images)) {$raw = is_array($item->images) ?$item->images : (is_string($item->images) ? json_decode($item->images, true) : []);
+            if (is_array($raw)) {
+                foreach ($raw as$img) {
+                    if ($url = $getMediaUrl($img)) $images[] =$url;
+                }
+            }
+        }
+        
+        // បញ្ចូល field 'image' គោលបើមិនទាន់មាន
+        if (isset($item->image) &&$url = $getMediaUrl($item->image)) {
+            if (!in_array($url,$images)) {
+                array_unshift($images,$url);
+            }
+        }
+
+        return array_values(array_filter($images));
+    };
+
     $allNews = collect($newsList ?? []);
-    $featuredNews = $allNews->first();
-    $regularNews = $allNews->slice(1);
+    $featuredNews =$allNews->first();
+    $featuredImages =$featuredNews ? $extractNewsImages($featuredNews) : [];
+    $regularNews =$allNews->slice(1);
 @endphp
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800">
@@ -63,27 +86,90 @@
     <main class="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16">
 
         @if($featuredNews)
-            {{-- Featured Magazine Lead Story --}}
+            {{-- 🌟 Featured Magazine Lead Story (ជាមួយ Auto-Slide Image Gallery) --}}
             <section data-aos="fade-up" class="mb-16">
                 <div class="group relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(30,64,175,0.12)] transition-all duration-500">
                     <div class="grid grid-cols-1 lg:grid-cols-12">
                         
-                        {{-- Featured Image --}}
-                        <div class="relative lg:col-span-7 aspect-[16/10] lg:aspect-auto overflow-hidden bg-slate-100 min-h-[340px]">
-                            @if($featuredNews->image)
-                                <img src="{{ $getMediaUrl($featuredNews->image) }}" alt="{{ $featuredNews->title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
-                            @endif
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent lg:hidden"></div>
+                        {{-- Featured Image Slider --}}
+                        <div class="relative lg:col-span-7 aspect-[16/10] lg:aspect-auto overflow-hidden bg-slate-900 min-h-[360px] sm:min-h-[440px]"
+                             x-data="{ 
+                                current: 0, 
+                                slides: @js($featuredImages),
+                                timer: null,
+                                start() {
+                                    if (this.slides.length > 1) {
+                                        this.timer = setInterval(() => {
+                                            this.current = (this.current + 1) % this.slides.length;
+                                        }, 4000);
+                                    }
+                                },
+                                stop() { clearInterval(this.timer); },
+                                prev() { this.current = (this.current - 1 + this.slides.length) % this.slides.length; },
+                                next() { this.current = (this.current + 1) % this.slides.length; }
+                             }"
+                             x-init="start()"
+                             @mouseenter="stop()"
+                             @mouseleave="start()">
 
-                            {{-- Calendar Date Stamp (រំកិលមកស្តាំដើម្បីកុំឱ្យបាំង Icon) --}}
-                            <div class="absolute top-6 right-6 z-10 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
+                            @if(count($featuredImages) > 0)
+                                <template x-for="(img, idx) in slides" :key="idx">
+                                    <img :src="img" 
+                                         :alt="'{{ addslashes($featuredNews->title) }} photo ' + (idx + 1)"
+                                         x-show="current === idx"
+                                         x-transition:enter="transition ease-out duration-700"
+                                         x-transition:enter-start="opacity-0 scale-105"
+                                         x-transition:enter-end="opacity-100 scale-100"
+                                         x-transition:leave="transition ease-in duration-700 absolute inset-0"
+                                         x-transition:leave-start="opacity-100 scale-100"
+                                         x-transition:leave-end="opacity-0 scale-95"
+                                         class="h-full w-full object-cover" 
+                                         loading="lazy">
+                                </template>
+                            @else
+                                <div class="flex h-full w-full items-center justify-center bg-blue-900 text-blue-200">Featured Story</div>
+                            @endif
+
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+
+                            {{-- Calendar Date Stamp --}}
+                            <div class="absolute top-6 right-6 z-20 flex flex-col items-center justify-center rounded-2xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl border border-white/40 text-center">
                                 <span class="text-[11px] font-black uppercase tracking-widest text-orange-600">{{ $featuredNews->created_at?->format('M') ?? 'LIS' }}</span>
                                 <span class="text-2xl font-black text-[#081747] leading-none mt-0.5">{{ $featuredNews->created_at?->format('d') ?? '01' }}</span>
                             </div>
 
-                            <span class="absolute top-6 left-6 inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg">
-                                ★ Featured Story
-                            </span>
+                            {{-- Badge & Multi-Image Count --}}
+                            <div class="absolute top-6 left-6 z-20 flex items-center gap-2">
+                                <span class="inline-flex items-center gap-2 rounded-full bg-orange-500 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg">
+                                    ★ Featured Story
+                                </span>
+                                @if(count($featuredImages) > 1)
+                                    <span class="inline-flex items-center gap-1.5 rounded-full bg-black/60 backdrop-blur-md px-3.5 py-1.5 text-xs font-bold text-white border border-white/20">
+                                        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        <span x-text="(current + 1) + '/' + slides.length"></span>
+                                    </span>
+                                @endif
+                            </div>
+
+                            {{-- Left / Right Slide Navigation Buttons --}}
+                            <div x-show="slides.length > 1" class="absolute inset-y-0 inset-x-4 z-20 flex items-center justify-between pointer-events-none">
+                                <button type="button" @click.stop="prev()" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 hover:bg-orange-500 text-white flex items-center justify-center backdrop-blur-sm transition-colors shadow-md">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                                </button>
+                                <button type="button" @click.stop="next()" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 hover:bg-orange-500 text-white flex items-center justify-center backdrop-blur-sm transition-colors shadow-md">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+
+                            {{-- Dot Indicators --}}
+                            <div x-show="slides.length > 1" class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+                                <template x-for="(s, sIdx) in slides" :key="'feat-dot-' + sIdx">
+                                    <button @click.stop="current = sIdx" 
+                                            :class="current === sIdx ? 'w-7 bg-amber-400' : 'w-2 bg-white/50 hover:bg-white'" 
+                                            class="h-2 rounded-full transition-all duration-300"></button>
+                                </template>
+                            </div>
+
                         </div>
 
                         {{-- Featured Content --}}
@@ -107,7 +193,7 @@
                             <div class="pt-8 mt-8 border-t border-slate-100 flex items-center justify-between">
                                 <button type="button" 
                                     onclick="openModal(this)"
-                                    data-image="{{ $getMediaUrl($featuredNews->image) }}"
+                                    data-images='@json($featuredImages)'
                                     data-title="{{ $featuredNews->title }}"
                                     data-link="{{ $featuredNews->link ?? '' }}"
                                     data-date="{{ $featuredNews->created_at?->format('F d, Y') ?? '' }}"
@@ -133,14 +219,18 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($regularNews as $index => $news)
+                @foreach($regularNews as $index =>$news)
+                    @php
+                        $itemImages = $extractNewsImages($news);
+                        $thumbImage =$itemImages[0] ?? null;
+                    @endphp
                     <article data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}"
                         class="group flex flex-col overflow-hidden rounded-[2rem] bg-white border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
                         
                         {{-- Card Image & Date Stamp --}}
                         <div class="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                            @if($news->image)
-                                <img src="{{ $getMediaUrl($news->image) }}" alt="{{ $news->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+                            @if($thumbImage)
+                                <img src="{{ $thumbImage }}" alt="{{ $news->title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                             @else
                                 <div class="flex h-full w-full items-center justify-center bg-blue-50 text-blue-300 font-bold">LIS Update</div>
                             @endif
@@ -150,6 +240,13 @@
                                 <span class="text-[9px] font-black uppercase tracking-widest text-orange-600 leading-none">{{ $news->created_at?->format('M') ?? 'LIS' }}</span>
                                 <span class="text-lg font-black text-[#081747] leading-none mt-1">{{ $news->created_at?->format('d') ?? '01' }}</span>
                             </div>
+
+                            @if(count($itemImages) > 1)
+                                <div class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-white text-[11px] font-bold flex items-center gap-1 border border-white/20">
+                                    <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    <span>{{ count($itemImages) }} Photos</span>
+                                </div>
+                            @endif
                         </div>
 
                         {{-- Card Body --}}
@@ -167,7 +264,7 @@
                             <div class="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
                                 <button type="button" 
                                     onclick="openModal(this)"
-                                    data-image="{{ $getMediaUrl($news->image) }}"
+                                    data-images='@json($itemImages)'
                                     data-title="{{ $news->title }}"
                                     data-link="{{ $news->link ?? '' }}"
                                     data-date="{{ $news->created_at?->format('F d, Y') ?? '' }}"
@@ -198,16 +295,27 @@
 
 </div>
 
-{{-- Dynamic News Modal --}}
+{{-- 🔍 Dynamic News Modal (គាំទ្ររូបភាពច្រើនសន្លឹក Slideshow) --}}
 <div id="newsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/80 p-4 opacity-0 backdrop-blur-md transition-opacity duration-300" aria-hidden="true">
-    <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[90vh] w-full max-w-4xl scale-95 overflow-y-auto rounded-[2rem] bg-white shadow-2xl transition-transform duration-300">
+    <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[92vh] w-full max-w-4xl scale-95 overflow-y-auto rounded-[2.5rem] bg-white shadow-2xl transition-transform duration-300">
         
-        <button id="modalCloseButton" type="button" onclick="closeModal()" aria-label="Close" class="absolute right-5 top-5 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/60 text-white hover:bg-orange-500 transition-colors shadow-md">
+        <button id="modalCloseButton" type="button" onclick="closeModal()" aria-label="Close" class="absolute right-5 top-5 z-30 flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/60 text-white hover:bg-orange-500 transition-colors shadow-md">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
-        <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-100" id="modalImageContainer">
-            <img id="modalImage" src="" alt="" class="h-full w-full object-cover">
+        {{-- Modal Image Slider --}}
+        <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-950" id="modalImageContainer">
+            <img id="modalImage" src="" alt="" class="h-full w-full object-contain">
+            
+            {{-- Prev/Next buttons inside modal --}}
+            <button type="button" id="modalPrevBtn" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-orange-500 text-white flex items-center justify-center transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button type="button" id="modalNextBtn" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-orange-500 text-white flex items-center justify-center transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+
+            <div id="modalCounter" class="absolute bottom-4 right-4 bg-black/70 px-3.5 py-1 rounded-full text-white text-xs font-bold backdrop-blur-sm"></div>
         </div>
 
         <div class="p-8 sm:p-10">
@@ -236,26 +344,66 @@
     const modalDate = document.getElementById('modalDate');
     const modalLink = document.getElementById('modalLink');
     const modalCloseButton = document.getElementById('modalCloseButton');
+    const modalPrevBtn = document.getElementById('modalPrevBtn');
+    const modalNextBtn = document.getElementById('modalNextBtn');
+    const modalCounter = document.getElementById('modalCounter');
+
+    let currentModalImages = [];
+    let currentModalIndex = 0;
+
+    function renderModalImage() {
+        if (currentModalImages.length > 0) {
+            modalImage.src = currentModalImages[currentModalIndex];
+            modalImageContainer.classList.remove('hidden');
+            
+            if (currentModalImages.length > 1) {
+                modalPrevBtn.classList.remove('hidden');
+                modalNextBtn.classList.remove('hidden');
+                modalCounter.classList.remove('hidden');
+                modalCounter.textContent = `${currentModalIndex + 1} / ${currentModalImages.length}`;
+            } else {
+                modalPrevBtn.classList.add('hidden');
+                modalNextBtn.classList.add('hidden');
+                modalCounter.classList.add('hidden');
+            }
+        } else {
+            modalImageContainer.classList.add('hidden');
+        }
+    }
+
+    modalPrevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentModalImages.length <= 1) return;
+        currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
+        renderModalImage();
+    });
+
+    modalNextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (currentModalImages.length <= 1) return;
+        currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
+        renderModalImage();
+    });
 
     function openModal(card) {
-        const image = card.dataset.image || '';
+        try {
+            currentModalImages = JSON.parse(card.dataset.images || '[]');
+        } catch (e) {
+            currentModalImages = card.dataset.image ? [card.dataset.image] : [];
+        }
+
+        currentModalIndex = 0;
         const title = card.dataset.title || 'News Update';
         const date = card.dataset.date || '';
         const link = card.dataset.link || '';
         const descHtml = card.querySelector('.news-full-description')?.innerHTML || card.parentElement.querySelector('.news-full-description')?.innerHTML || '';
 
-        modalImage.src = image;
-        modalImage.alt = title;
         modalTitle.textContent = title;
         modalDescription.innerHTML = descHtml || 'No further description is available.';
         modalDate.textContent = date;
         modalLink.href = link || 'https://www.facebook.com/LISOfficialPage';
 
-        if (image) {
-            modalImageContainer.classList.remove('hidden');
-        } else {
-            modalImageContainer.classList.add('hidden');
-        }
+        renderModalImage();
 
         newsModal.classList.remove('hidden');
         newsModal.classList.add('flex');
@@ -288,6 +436,12 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && !newsModal.classList.contains('hidden')) {
             closeModal();
+        }
+        if (e.key === 'ArrowLeft' && !newsModal.classList.contains('hidden')) {
+            modalPrevBtn.click();
+        }
+        if (e.key === 'ArrowRight' && !newsModal.classList.contains('hidden')) {
+            modalNextBtn.click();
         }
     });
 </script>

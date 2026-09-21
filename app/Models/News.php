@@ -9,11 +9,15 @@ class News extends Model
 {
     use HasFactory;
 
-    // បន្ថែមបន្ទាត់នេះ
     protected $fillable = [
         'title',
         'description',
         'image',
         'link',
+    ];
+
+    // 📍 បន្ថែមនេះដើម្បីឱ្យ Laravel បំប្លែងរូបភាពច្រើនសន្លឹកជា Array / JSON ដោយស្វ័យប្រវត្តិ
+    protected $casts = [
+        'image' => 'array',
     ];
 }
