@@ -32,6 +32,14 @@
         ->values()
         ->all();
 
+    // 📍 បញ្ចូលរូប Cover និង Gallery ចូលគ្នាសម្រាប់ធ្វើ Slide ក្នុង Banner
+    $bannerSlides = collect([$coverImageUrl])
+        ->merge($galleryImages)
+        ->filter()
+        ->unique()
+        ->values()
+        ->all();
+
     $hasContent = filled(trim(strip_tags($page->content ?? '')));
 @endphp
 
@@ -66,21 +74,55 @@
     @keydown.arrow-right.window="lightboxOpen && nextImage()"
     class="min-h-screen bg-[#f8fafc]"
 >
-    {{-- 🌟 1. Cinema Academic Hero Banner (ទូលាយ ភ្លឺស្អាត មិនអាប់អួរ) --}}
-    <section class="relative isolate min-h-[500px] md:min-h-[600px] flex items-center overflow-hidden bg-[#061238]">
+    {{-- 🌟 1. Cinema Academic Hero Banner ជាមួយ Auto Slideshow (លោតរូបម្តងមួយៗ) --}}
+    <section 
+        x-data="{
+            currentSlide: 0,
+            slides: @js($bannerSlides),
+            timer: null,
+            start() {
+                if (this.slides.length > 1) {
+                    this.timer = setInterval(() => {
+                        this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+                    }, 4000);
+                }
+            },
+            stop() { clearInterval(this.timer); },
+            goTo(index) {
+                this.currentSlide = index;
+            }
+        }"
+        x-init="start()"
+        @mouseenter="stop()"
+        @mouseleave="start()"
+        class="relative isolate min-h-[540px] md:min-h-[640px] flex items-center overflow-hidden bg-[#061238]"
+    >
         
-        {{-- Cover Image --}}
-        @if($coverImageUrl)
-            <img src="{{ $coverImageUrl }}" alt="{{ $pageTitle }}" class="absolute inset-0 h-full w-full object-cover object-center scale-100 hover:scale-105 transition-transform duration-1000">
+        {{-- 📍 កន្លែងបង្ហាញរូបភាព Slide ម្តងមួយៗ (Smooth Cross-Fade) --}}
+        @if(count($bannerSlides) > 0)
+            <div class="absolute inset-0 z-0">
+                <template x-for="(img, idx) in slides" :key="idx">
+                    <img :src="img" 
+                         :alt="'{{ addslashes($pageTitle) }} slide ' + (idx + 1)"
+                         x-show="currentSlide === idx"
+                         x-transition:enter="transition ease-out duration-1000"
+                         x-transition:enter-start="opacity-0 scale-105"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-1000 absolute inset-0"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="absolute inset-0 h-full w-full object-cover object-center">
+                </template>
+            </div>
         @else
             <div class="absolute inset-0 bg-gradient-to-br from-[#081747] via-[#102c74] to-[#1d4ed8]"></div>
         @endif
 
-        {{-- Cinematic Vignette Overlay (ស្រាល ជួយឱ្យអក្សរច្បាស់តែមិនបាំងរូបភាព) --}}
-        <div class="absolute inset-0 bg-gradient-to-r from-[#061238]/90 via-[#061238]/60 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-[#061238]/85 via-transparent to-black/30"></div>
+        {{-- Cinematic Vignette Overlay (ជួយឱ្យអក្សរច្បាស់ត្រជាក់ភ្នែក មិនបាំងរូបភាព) --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-[#061238]/90 via-[#061238]/50 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#061238]/90 via-transparent to-black/30 z-10 pointer-events-none"></div>
 
-        <div class="relative z-10 mx-auto w-full max-w-7xl px-6 pt-16 pb-28 md:px-12 md:pb-36">
+        <div class="relative z-20 mx-auto w-full max-w-7xl px-6 pt-16 pb-28 md:px-12 md:pb-36">
             <div class="max-w-3xl">
                 
                 {{-- Breadcrumb --}}
@@ -109,18 +151,21 @@
                     Inspiring students through Christ-centered quality education, meaningful experiences, and a caring learning community.
                 </p>
 
-                {{-- Quick Meta Strip --}}
-                <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center gap-3">
-                    @if(count($galleryImages) > 0)
-                        <span class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md">
-                            <svg class="h-4 w-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            {{ count($galleryImages) }} Photos
-                        </span>
-                    @endif
+                {{-- Quick Meta & Slide Control Dots --}}
+                <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center gap-4">
                     <span class="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2 text-xs font-bold text-white backdrop-blur-md">
                         <svg class="h-4 w-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         ACSI Accredited
                     </span>
+
+                    {{-- 📍 គ្រាប់ចុចបង្ហាញ Slide Index ក្នុង Banner --}}
+                    <div x-show="slides.length > 1" class="inline-flex items-center gap-2 bg-black/40 border border-white/15 px-3 py-2 rounded-xl backdrop-blur-md">
+                        <template x-for="(s, sIdx) in slides" :key="'dot-' + sIdx">
+                            <button @click="goTo(sIdx)"
+                                    :class="currentSlide === sIdx ? 'w-6 bg-amber-400' : 'w-2 bg-white/40 hover:bg-white/75'"
+                                    class="h-2 rounded-full transition-all duration-300"></button>
+                        </template>
+                    </div>
                 </div>
 
             </div>
