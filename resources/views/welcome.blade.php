@@ -1,19 +1,16 @@
 @extends('layout')
+
 @section('title', __('Home - Life International School'))
+
 @section('content')
 
 @php
-    // Helper function សម្រាប់ពិនិត្យមើល URL រូបភាព (គាំទ្រទាំង String, Array និង R2 Path)
     $getImageUrl = function($path, $fallback = null) use (&$getImageUrl) {
         if (!$path) return $fallback;
-
-        // ប្រសិនបើជា Array យកធាតុដំបូង
         if (is_array($path)) {
             $first = reset($path);
             return $getImageUrl($first, $fallback);
         }
-
-        // ប្រសិនបើជា JSON String
         if (is_string($path) && (str_starts_with($path, '[') || str_starts_with($path, '{'))) {
             $decoded = json_decode($path, true);
             if (is_array($decoded)) {
@@ -21,11 +18,9 @@
                 return $getImageUrl($first, $fallback);
             }
         }
-
         if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
             return $path;
         }
-
         try {
             return \Storage::disk('s3')->url($path);
         } catch (\Exception $e) {
@@ -35,206 +30,311 @@
 
     $bannerImage = $banner && $banner->image ? $getImageUrl($banner->image, null) : null;
     $bannerVideo = $banner && $banner->video ? $getImageUrl($banner->video, null) : null;
-    $defaultImage = 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=2022&auto=format&fit=crop';
+    $defaultImage = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop';
 @endphp
 
-<!-- ១. ផ្នែក Banner ខាងលើបង្អស់ (Responsive & No-Image Centered Video) -->
-<div class="relative w-full min-h-[520px] md:min-h-[650px] overflow-hidden bg-[#0b1240] flex items-center py-12 md:py-0">
+<div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-    <!-- Background Video / Image -->
-    @if($bannerVideo)
-        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
-            <source src="{{ $bannerVideo }}" type="video/mp4">
-        </video>
-    @elseif($bannerImage)
-        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ $bannerImage }}');"></div>
-    @else
-        <div class="absolute inset-0 bg-[#0b1240]"></div>
-    @endif
-
-    <!-- Overlay -->
-    <div class="absolute inset-0 bg-black/45 z-10"></div>
-
-    <!-- Content -->
-    <div class="relative z-20 max-w-7xl mx-auto w-full px-6 flex flex-col md:flex-row items-center {{ $bannerImage ? 'justify-between' : 'justify-center text-center' }} gap-8 md:gap-12">
-
-        <!-- Title & Subtitle -->
-        <div data-aos="fade-up" data-aos-duration="1000" class="w-full {{ $bannerImage ? 'md:w-3/5 text-left' : 'max-w-4xl mx-auto text-center' }}">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-blue-100 text-xs font-bold uppercase tracking-widest mb-5 backdrop-blur-md">
-                Life International School
-            </div>
-            
-            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-white drop-shadow-2xl tracking-wide uppercase leading-tight">
-                {{ __($banner->title ?? 'Truth | Integrity | Love') }}
-            </h1>
-            
-            <div class="h-1.5 w-24 bg-[#de8b8b] mt-6 rounded-full {{ $bannerImage ? '' : 'mx-auto' }}"></div>
-        </div>
-
-        <!-- Floating Frame Image -->
-        @if($bannerImage)
-            <div data-aos="fade-left" data-aos-duration="1200" class="w-full md:w-2/5 flex justify-center md:justify-end shrink-0 mt-4 md:mt-0">
-                <div class="relative group">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-amber-400 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-                    <img src="{{ $bannerImage }}" class="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-[360px] lg:h-[360px] object-cover rounded-3xl border-4 border-white/20 shadow-2xl md:rotate-3 group-hover:rotate-0 transition-transform duration-500">
-                </div>
-            </div>
-        @endif
-    </div>
-</div>
-
-<!-- ២. ផ្នែក ADMISSIONS -->
-<div class="py-16 sm:py-20 md:py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #7a76ff 0%, #d4a5d8 50%, #facc15 100%);">
-    <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-16 relative z-10">
+    {{-- 🌟 ១. CINEMATIC HERO GATEWAY WITH METALLIC GOLD WAVE --}}
+    <section class="relative isolate min-h-[580px] md:min-h-[720px] overflow-hidden bg-[#061238] flex items-center justify-center text-white">
         
-        <!-- អត្ថបទ -->
-        <div data-aos="fade-up" class="w-full md:w-1/2 text-white text-left">
-            <div class="inline-block text-xs font-black uppercase tracking-widest text-yellow-200 mb-2">Join Our Family</div>
-            <h2 class="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 uppercase tracking-wider drop-shadow-md">
-                {{ __($admission->title ?? 'ADMISSIONS') }}
-            </h2>
-            <p class="text-base sm:text-lg md:text-xl mb-8 leading-relaxed font-medium text-white/95 max-w-xl">
-                {{ __($admission->description ?? 'Explore our admissions process, and let us guide you as you begin your transition into Life international school.') }}
+        {{-- Background Video / Image --}}
+        @if($bannerVideo)
+            <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
+                <source src="{{ $bannerVideo }}" type="video/mp4">
+            </video>
+        @elseif($bannerImage)
+            <img src="{{ $bannerImage }}" alt="LIS Banner" class="absolute inset-0 h-full w-full object-cover object-center scale-105 transition-transform duration-1000">
+        @else
+            <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop" class="absolute inset-0 h-full w-full object-cover">
+        @endif
+
+        {{-- Cinematic Vignette Overlay --}}
+        <div class="absolute inset-0 bg-[#061238]/75 backdrop-blur-[1px] z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#061238] via-transparent to-[#061238]/80 z-10"></div>
+
+        {{-- Glowing Orbs --}}
+        <div class="absolute -top-20 left-1/4 h-80 w-80 rounded-full bg-amber-500/20 blur-3xl pointer-events-none z-10"></div>
+        <div class="absolute bottom-20 right-1/4 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl pointer-events-none z-10"></div>
+
+        {{-- Hero Content --}}
+        <div class="relative z-20 mx-auto max-w-5xl px-6 pt-20 pb-36 md:pb-44 text-center">
+            
+            <div data-aos="fade-down" class="mb-6 inline-flex items-center gap-2.5 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-2 text-xs md:text-sm font-black uppercase tracking-[0.25em] text-amber-300 backdrop-blur-md shadow-lg">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                {{ __('Life International School • Sihanoukville') }}
+            </div>
+
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[1.05] drop-shadow-2xl">
+                {{ __($banner->title ?? 'Truth • Integrity • Love') }}
+            </h1>
+
+            <div data-aos="zoom-in" data-aos-delay="200" class="mx-auto mt-5 mb-6 h-1.5 w-24 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_20px_rgba(251,191,36,0.8)]"></div>
+
+            <p data-aos="fade-up" data-aos-delay="300" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl font-light leading-relaxed text-blue-100/95 drop-shadow">
+                {{ __('Equipping future generations with world-class academic excellence, authentic Christian values, and a global perspective.') }}
             </p>
-            <a href="/enrollment" class="inline-flex items-center gap-3 bg-white text-[#7a76ff] hover:bg-[#0b1240] hover:text-white px-8 py-3.5 text-xs sm:text-sm font-black uppercase tracking-widest rounded-xl transition-all duration-300 shadow-xl hover:-translate-y-0.5">
-                <span>{{ __($admission->button_text ?? 'APPLY NOW') }}</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-        </div>
 
-        <!-- រូបភាពរាងកោង Blob -->
-        <div data-aos="zoom-in" data-aos-delay="200" class="w-full md:w-1/2 relative flex justify-center items-center">
-            <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[420px] md:h-[420px] overflow-hidden transition-transform duration-700 hover:scale-105" 
-                 style="border-radius: 42% 58% 66% 34% / 43% 36% 64% 57%; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
-                <img src="{{ $getImageUrl($admission->image ?? null, $defaultImage) }}" class="w-full h-full object-cover">
+            {{-- Action CTAs --}}
+            <div data-aos="fade-up" data-aos-delay="400" class="mt-10 flex flex-wrap items-center justify-center gap-4">
+                <a href="/enrollment" class="inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-8 py-4 text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 shadow-xl hover:from-amber-300 hover:to-orange-400 hover:-translate-y-1 transition-all duration-300">
+                    <span>{{ __('Admissions & Enrollment') }}</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+                <a href="/contact-us" class="inline-flex items-center gap-2.5 rounded-xl border border-white/25 bg-white/10 px-8 py-4 text-xs sm:text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md hover:bg-white/20 transition-all">
+                    <span>{{ __('Campus Tour & Inquiries') }}</span>
+                </a>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- ៣. ផ្នែក Recent News -->
-<div class="bg-[#fdf4eb] py-20 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
-    <div class="max-w-7xl mx-auto text-center">
-        <h2 data-aos="fade-up" class="text-3xl sm:text-4xl md:text-5xl font-black text-[#e87c75] mb-12 uppercase tracking-wide">{{ __('Recent News') }}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-            @if(isset($news) && count($news) > 0)
-                @foreach($news as $index => $item)
-                @php
-                    $newsImg = $getImageUrl($item->image, $defaultImage);
-                    $cleanDesc = strip_tags($item->description ?? '');
-                @endphp
-                <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 150 }}" 
-                     class="bg-white p-4 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group rounded-2xl overflow-hidden flex flex-col justify-between border border-orange-100"
-                     @click="imgModalSrc = '{{ $newsImg }}'; 
-                             modalTitle = {{ json_encode(__($item->title)) }}; 
-                             modalDesc = {{ json_encode($cleanDesc) }}; 
-                             imgModal = true">
-
-                    <div>
-                        <div class="w-full h-48 overflow-hidden rounded-xl mb-4 bg-slate-100">
-                            <img src="{{ $newsImg }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        </div>
-                        <h3 class="font-black text-[#081747] group-hover:text-[#e87c75] text-base sm:text-lg mb-2 line-clamp-2 transition-colors">{{ __($item->title) }}</h3>
-                    </div>
-                    <p class="text-xs text-slate-500 line-clamp-3 mt-2 leading-relaxed">{{ $cleanDesc }}</p>
-                </div>
-                @endforeach
-            @endif
         </div>
-        <div data-aos="fade-up" data-aos-offset="50" class="mt-12">
-            <a href="https://www.facebook.com/LISOfficialPage" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 border-2 border-[#e87c75] text-[#e87c75] font-black px-8 py-3 text-xs sm:text-sm uppercase tracking-wider hover:bg-[#e87c75] hover:text-white rounded-xl transition-all shadow-sm">
-                <span>{{ __('VISIT OUR FACEBOOK') }}</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-        </div>
-    </div>
 
-    <!-- ផ្ទាំង Modal -->
-    <template x-teleport="body">
-        <div x-show="imgModal" x-transition.opacity.duration.300ms class="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 md:p-10" @click="imgModal = false" style="display: none;">
-            <button @click="imgModal = false" class="absolute top-4 right-4 md:top-8 md:right-8 text-white hover:text-[#e87c75] transition z-50">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
-            <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden relative" @click.stop>
-                <div class="w-full h-60 sm:h-80 md:h-[400px] bg-gray-100 flex-shrink-0">
-                    <img :src="imgModalSrc" class="w-full h-full object-cover">
-                </div>
-                <div class="p-6 md:p-8 overflow-y-auto">
-                    <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-[#081747] mb-4" x-text="modalTitle"></h3>
-                    <p class="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-wrap" x-text="modalDesc"></p>
-                </div>
+        {{-- Metallic Gold Wave Transition --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+            <svg class="relative block w-full h-16 sm:h-20 md:h-28" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="homeGoldWave" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#b45309" />
+                        <stop offset="25%" stop-color="#f59e0b" />
+                        <stop offset="50%" stop-color="#fde047" />
+                        <stop offset="75%" stop-color="#f59e0b" />
+                        <stop offset="100%" stop-color="#d97706" />
+                    </linearGradient>
+                </defs>
+                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#homeGoldWave)"></path>
+                <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#f8fafc"></path>
+            </svg>
+        </div>
+    </section>
+
+    {{-- 🌟 ២. INSTITUTIONAL HIGHLIGHTS & WHY CHOOSE US BENTO --}}
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        
+        <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
+                {{ __('Distinction & Values') }}
             </div>
+            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#081747]">
+                {{ __('Why Choose LIS') }}
+            </h2>
+            <p class="mt-4 text-base sm:text-lg text-slate-600 font-normal leading-relaxed">
+                {{ __('An inspiring educational environment where every student is challenged, nurtured, and empowered to reach their highest potential.') }}
+            </p>
         </div>
-    </template>
-</div>
 
-<!-- ៤. ផ្នែក Why Choose LIS -->
-<div class="bg-[#ebebeb] py-20 px-6">
-    <div class="max-w-6xl mx-auto text-center">
-        <h2 data-aos="fade-down" class="text-3xl sm:text-4xl md:text-5xl font-black text-[#081747] uppercase tracking-wide mb-16">{{ __('Why Choose LIS') }}</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
                 @foreach($whyChooseUs as $index => $feature)
-                <div data-aos="zoom-in" data-aos-delay="{{ ($index % 4) * 150 }}" class="flex flex-col items-center text-center p-6 rounded-2xl bg-white/50 border border-white/60 shadow-sm">
-                    @if($feature->image)
-                        <img src="{{ $getImageUrl($feature->image, $defaultImage) }}" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-4">
-                    @else
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-200 rounded-full mb-4 flex items-center justify-center text-gray-500 text-xs">No Icon</div>
-                    @endif
+                    <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}"
+                         class="group relative overflow-hidden rounded-[2rem] bg-white border border-slate-200/90 p-8 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                        
+                        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-                    <h3 class="font-black text-[#081747] text-sm sm:text-base mb-2 uppercase">{{ __($feature->title) }}</h3>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">{{ __($feature->description) }}</p>
-                </div>
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-amber-50 group-hover:bg-[#081747] text-[#081747] group-hover:text-amber-400 flex items-center justify-center mb-6 transition-colors shadow-sm">
+                                @if($feature->image)
+                                    <img src="{{ $getImageUrl($feature->image, $defaultImage) }}" class="w-9 h-9 object-contain">
+                                @else
+                                    <span class="text-xl font-black">LIS</span>
+                                @endif
+                            </div>
+
+                            <h3 class="text-lg font-black text-[#081747] uppercase tracking-wide group-hover:text-orange-500 transition-colors">
+                                {{ __($feature->title) }}
+                            </h3>
+
+                            <p class="mt-3 text-sm text-slate-500 leading-relaxed font-normal">
+                                {{ __($feature->description) }}
+                            </p>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-bold text-amber-600 uppercase tracking-widest">
+                            LIS Standard
+                        </div>
+                    </div>
                 @endforeach
             @else
-                <p class="col-span-4 text-gray-500">{{ __('Please add "Why Choose Us" features from the Dashboard.') }}</p>
+                <div class="col-span-4 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center text-slate-500">
+                    {{ __('Please configure "Why Choose Us" features in the admin dashboard.') }}
+                </div>
             @endif
         </div>
-    </div>
-</div>
 
-<!-- ៥. ផ្នែក STUDENT LIFE Banner -->
-<div class="py-24 sm:py-28 px-6 text-center text-white relative overflow-hidden" style="background: linear-gradient(135deg, #f6b382 0%, #e2c0c5 100%);">
-    <div class="max-w-3xl mx-auto relative z-10">
-        <h2 data-aos="fade-up" class="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider mb-6 drop-shadow-sm">{{ __('STUDENT LIFE') }}</h2>
-        <p data-aos="fade-up" data-aos-delay="150" class="text-sm sm:text-base font-semibold leading-relaxed mb-10 text-white/95">
-            {{ __('Life International School offers amazing classes in a variety of subjects with teachers from many countries all over the world. Our teachers teach their students to be full of love and joy.') }}
-        </p>
-        <div data-aos="fade-up" data-aos-delay="300">
-            <a href="/student-life" class="inline-flex items-center gap-2 border-2 border-white px-8 py-3.5 text-xs font-black uppercase tracking-widest hover:bg-white hover:text-[#f6b382] rounded-xl transition-all shadow-md">
-                <span>{{ __('MORE ABOUT STUDENT LIFE') }}</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
+    </section>
+
+    {{-- 🌟 ៣. ADMISSIONS CALLOUT BANNER (LUXURY CONTRAST) --}}
+    <section class="max-w-7xl mx-auto px-6 mb-20">
+        <div class="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#081747] via-[#0d276b] to-[#122e7a] text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
+            
+            {{-- Background Decors --}}
+            <div class="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-amber-400/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-blue-400/20 blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-black uppercase tracking-widest mb-5">
+                        {{ __('Admissions Open') }}
+                    </div>
+
+                    <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight">
+                        {{ __($admission->title ?? 'Begin Your Journey at LIS') }}
+                    </h2>
+
+                    <p class="mt-5 text-base sm:text-lg text-blue-100/90 leading-relaxed font-light max-w-xl">
+                        {{ __($admission->description ?? 'Explore our admissions process and let us guide you through joining our international school family in Sihanoukville.') }}
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap items-center gap-4">
+                        <a href="/enrollment" class="inline-flex items-center gap-3 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 px-8 py-4 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider shadow-lg hover:-translate-y-0.5 transition-all">
+                            <span>{{ __($admission->button_text ?? 'Apply Now') }}</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                        <a href="/tuition-fees" class="inline-flex items-center gap-2 border border-white/30 bg-white/10 hover:bg-white/20 text-white px-7 py-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider backdrop-blur-sm transition-all">
+                            <span>{{ __('Tuition & Fees') }}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-[2.5rem] overflow-hidden border-4 border-white/20 shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+                        <img src="{{ $getImageUrl($admission->image ?? null, $defaultImage) }}" class="h-full w-full object-cover">
+                    </div>
+                </div>
+
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<!-- ៦. ផ្នែក FAQs -->
-<div class="bg-[#f9f5f0] py-20 px-6">
-    <div class="max-w-4xl mx-auto">
-        <h2 data-aos="fade-up" class="text-3xl sm:text-4xl md:text-5xl font-black text-center text-[#081747] uppercase tracking-wide mb-12">{{ __('FAQs') }}</h2>
+    {{-- 🌟 ៤. RECENT NEWS & HAPPENINGS --}}
+    <section class="bg-white border-y border-slate-200 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div>
+                    <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Campus Stories') }}</span>
+                    <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight text-[#081747] mt-1">
+                        {{ __('Recent News & Events') }}
+                    </h2>
+                </div>
+                <a href="/news-events" class="inline-flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-wider text-[#081747] hover:text-orange-500 transition-colors">
+                    <span>{{ __('View All Stories') }}</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @if(isset($news) && count($news) > 0)
+                    @foreach($news as $index => $item)
+                        @php
+                            $newsImg = $getImageUrl($item->image, $defaultImage);
+                            $cleanDesc = strip_tags($item->description ?? '');
+                        @endphp
+                        <article data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}"
+                                 class="group flex flex-col justify-between overflow-hidden rounded-[2rem] bg-slate-50 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
+                                 @click="imgModalSrc = '{{ $newsImg }}'; 
+                                         modalTitle = {{ json_encode(__($item->title)) }}; 
+                                         modalDesc = {{ json_encode($cleanDesc) }}; 
+                                         imgModal = true">
+
+                            <div>
+                                <div class="relative aspect-[16/10] overflow-hidden bg-slate-200">
+                                    <img src="{{ $newsImg }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                </div>
+
+                                <div class="p-6">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-amber-600">{{ __('Article') }}</span>
+                                    <h3 class="font-black text-[#081747] group-hover:text-orange-500 text-base sm:text-lg mt-1 mb-2 line-clamp-2 transition-colors">
+                                        {{ __($item->title) }}
+                                    </h3>
+                                    <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed font-normal">
+                                        {{ $cleanDesc }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="px-6 pb-6 pt-2">
+                                <span class="text-xs font-black uppercase tracking-wider text-[#081747] group-hover:text-orange-500 inline-flex items-center gap-1.5">
+                                    {{ __('Read Story') }} →
+                                </span>
+                            </div>
+
+                        </article>
+                    @endforeach
+                @endif
+            </div>
+
+        </div>
+
+        {{-- News Modal --}}
+        <template x-teleport="body">
+            <div x-show="imgModal" x-transition.opacity.duration.300ms class="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center p-4 md:p-10" @click="imgModal = false" style="display: none;">
+                <button @click="imgModal = false" class="absolute top-5 right-5 text-white hover:text-amber-400 transition z-50">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <div class="bg-white rounded-[2.5rem] shadow-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden relative" @click.stop>
+                    <div class="w-full h-64 sm:h-80 md:h-[400px] bg-slate-900 shrink-0">
+                        <img :src="imgModalSrc" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8 overflow-y-auto">
+                        <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-[#081747] mb-4" x-text="modalTitle"></h3>
+                        <p class="text-slate-600 text-sm md:text-base leading-relaxed whitespace-pre-wrap" x-text="modalDesc"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </section>
+
+    {{-- 🌟 ៥. STUDENT LIFE IMMERSIVE STRIP --}}
+    <section class="relative overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 py-20 px-6 text-white text-center">
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <span class="inline-block text-xs font-black uppercase tracking-[0.25em] text-amber-100 mb-3">
+                {{ __('Beyond Academics') }}
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight leading-tight">
+                {{ __('Discover Student Life at LIS') }}
+            </h2>
+            <p class="mt-4 text-base sm:text-lg text-amber-50 max-w-2xl mx-auto leading-relaxed font-light">
+                {{ __('Life International School offers amazing classes and enrichment activities with teachers from across the globe, nurturing love, joy, and lifelong character.') }}
+            </p>
+            <div class="mt-8">
+                <a href="/student-life" class="inline-flex items-center gap-3 bg-[#081747] hover:bg-slate-950 text-white px-8 py-4 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider shadow-xl transition-all hover:-translate-y-0.5">
+                    <span>{{ __('Explore Student Life') }}</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- 🌟 ៦. MODERN MINIMALIST FAQS --}}
+    <section class="max-w-4xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
+            <h2 class="text-3xl sm:text-4xl font-black uppercase text-[#081747] mt-1">{{ __('Frequently Asked Questions') }}</h2>
+        </div>
+
         <div class="space-y-4">
             @if(isset($faqs) && count($faqs) > 0)
                 @foreach($faqs as $index => $faq)
-                <details data-aos="fade-left" data-aos-delay="{{ ($index % 5) * 100 }}" class="group bg-white rounded-2xl border border-slate-200/80 p-5 cursor-pointer shadow-sm">
-                    <summary class="flex justify-between items-center font-bold text-base sm:text-lg text-[#081747] list-none">
-                        <span>{{ __($faq->question) }}</span>
-                        <span class="ml-4 transition group-open:rotate-180 shrink-0 text-orange-500">
-                            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><polyline points="6 9 12 15 18 9"/></svg>
-                        </span>
-                    </summary>
-                    <div class="text-slate-600 mt-4 text-sm leading-relaxed prose prose-sm max-w-none pt-3 border-t border-slate-100">
-                        {!! $faq->answer !!}
-                    </div>
-                </details>
+                    <details data-aos="fade-up" data-aos-delay="{{ ($index % 5) * 80 }}"
+                             class="group rounded-2xl bg-white border border-slate-200/90 p-6 cursor-pointer shadow-xs transition-shadow hover:shadow-md">
+                        <summary class="flex justify-between items-center font-black text-base sm:text-lg text-[#081747] list-none">
+                            <span>{{ __($faq->question) }}</span>
+                            <span class="ml-4 transition-transform group-open:rotate-180 text-amber-500 shrink-0">
+                                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><polyline points="6 9 12 15 18 9"/></svg>
+                            </span>
+                        </summary>
+                        <div class="mt-4 pt-4 border-t border-slate-100 text-sm text-slate-600 leading-relaxed font-normal prose prose-slate max-w-none">
+                            {!! $faq->answer !!}
+                        </div>
+                    </details>
                 @endforeach
             @else
-                <p class="text-center text-gray-500">{{ __('Please add FAQs from the Dashboard.') }}</p>
+                <p class="text-center text-slate-400 text-sm">{{ __('Please add FAQs from the Dashboard.') }}</p>
             @endif
         </div>
-    </div>
+    </section>
+
 </div>
 
 @endsection
