@@ -23,19 +23,27 @@
         }
     };
 
-    // បណ្តុំរូបភាព Slider
-    $sliderImages = [
-        'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2064&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2064&auto=format&fit=crop',
-    ];
-
+    // ទាញយករូបភាពពី Database មកធ្វើជា Slider
+    $sliderImages = [];
     if ($banner && $banner->image_path) {
-        $dbUrl = $getImageUrl($banner->image_path);
-        if ($dbUrl) {
-            array_unshift($sliderImages, $dbUrl);
+        $raw = is_array($banner->image_path) 
+            ? $banner->image_path 
+            : (is_string($banner->image_path) ? json_decode($banner->image_path, true) ?? [$banner->image_path] : []);
+
+        foreach ((array)$raw as $img) {
+            if ($url = $getImageUrl($img)) {
+                $sliderImages[] = $url;
+            }
         }
+    }
+
+    // Fallback ប្រសិនបើមិនទាន់បាន Upload
+    if (empty($sliderImages)) {
+        $sliderImages = [
+            'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=2064&auto=format&fit=crop',
+        ];
     }
 
     $contactSetting = \App\Models\SiteSetting::first();
@@ -65,16 +73,18 @@
     }
 </style>
 
-{{-- 🌟 Contact Hero Banner ជាមួយ Auto-Slide Images & Rich Gold Wave --}}
+{{-- 🌟 Contact Hero Banner ជាមួយ Auto-Slide Images & Metallic Gold Wave --}}
 <section 
     x-data="{
         current: 0,
         slides: @js($sliderImages),
         timer: null,
         start() {
-            this.timer = setInterval(() => {
-                this.current = (this.current + 1) % this.slides.length;
-            }, 4500);
+            if (this.slides.length > 1) {
+                this.timer = setInterval(() => {
+                    this.current = (this.current + 1) % this.slides.length;
+                }, 4500);
+            }
         },
         stop() { clearInterval(this.timer); },
         goTo(index) { this.current = index; }
@@ -84,7 +94,7 @@
     @mouseleave="start()"
     class="relative isolate min-h-[480px] md:min-h-[580px] overflow-hidden bg-[#061238] flex items-center justify-center text-white"
 >
-    {{-- 📍 Background Cross-fade Image Slideshow --}}
+    {{-- 📍 Background Cross-fade Slideshow --}}
     <div class="absolute inset-0 z-0">
         <template x-for="(img, idx) in slides" :key="idx">
             <img :src="img" 
@@ -111,13 +121,11 @@
 
     <div class="relative z-20 mx-auto max-w-5xl px-6 pt-16 pb-32 md:pb-36 text-center">
         
-        {{-- Category Pill --}}
         <div data-aos="fade-down" class="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-300/30 bg-amber-400/10 px-5 py-1.5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-sm">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
             {{ __('WE ARE HERE TO HELP') }}
         </div>
 
-        {{-- Main Title --}}
         <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white leading-tight drop-shadow-2xl">
             {{ __('Get In') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-300 to-amber-400">{{ __('Touch') }}</span>
         </h1>
@@ -128,7 +136,7 @@
             {{ __('Whether you have questions about admissions, academic programs, or campus visits, our friendly team is eager to assist you.') }}
         </p>
 
-        {{-- Quick Contact Pills --}}
+        {{-- Contact Quick Links --}}
         <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs md:text-sm text-white/95">
             <a href="tel:{{ $phoneHref }}" class="inline-flex items-center gap-2.5 rounded-xl bg-white/10 hover:bg-white/20 px-5 py-2.5 border border-white/20 backdrop-blur-md transition-all shadow-sm">
                 <svg class="h-4 w-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.95.684l1.5 4.493a1 1 0 01-.502 1.21l-2.257 1.128a11.04 11.04 0 005.516 5.516l1.128-2.257a1 1 0 011.21-.502l4.493 1.5a1 1 0 01.684.95V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -140,7 +148,7 @@
             </a>
         </div>
 
-        {{-- Slide Dots Indicator --}}
+        {{-- Dots Indicator --}}
         <div x-show="slides.length > 1" class="mt-8 flex items-center justify-center gap-2">
             <template x-for="(s, sIdx) in slides" :key="'contact-dot-' + sIdx">
                 <button @click="goTo(sIdx)" 
@@ -169,7 +177,7 @@
     </div>
 </section>
 
-{{-- Contact section --}}
+{{-- Contact Section --}}
 <section class="bg-slate-50 px-5 pb-20 pt-8 md:px-8 md:pb-24">
     <div class="relative z-20 mx-auto max-w-7xl">
         <div data-aos="fade-up" class="mb-12 text-center">
@@ -192,7 +200,7 @@
 
         <div class="grid overflow-hidden rounded-[30px] border border-slate-200 bg-white shadow-[0_20px_60px_rgba(15,23,42,0.08)] lg:grid-cols-[0.85fr_1.15fr]">
 
-            {{-- Contact information panel --}}
+            {{-- Contact Information Panel --}}
             <div data-aos="fade-right" data-aos-delay="100" class="relative overflow-hidden bg-gradient-to-br from-[#081747] via-[#0d276b] to-[#173c9c] p-7 text-white md:p-10 lg:p-12 flex flex-col justify-between">
                 <div
                     class="absolute inset-0 opacity-10 pointer-events-none"
@@ -292,14 +300,13 @@
                     </div>
                 </div>
 
-                {{-- Office Hours Footer --}}
                 <div class="mt-8 pt-6 border-t border-white/15 flex items-center justify-between text-xs text-blue-200">
                     <span>{{ __('Mon – Fri: 7:30 AM – 4:30 PM') }}</span>
                     <span>{{ __('Closed on Weekends & Holidays') }}</span>
                 </div>
             </div>
 
-            {{-- Contact form panel --}}
+            {{-- Form Panel --}}
             <div data-aos="fade-left" data-aos-delay="200" class="p-6 md:p-10 lg:p-12">
                 <div class="mb-8">
                     <span class="text-xs font-black uppercase tracking-[0.18em] text-orange-500">
@@ -315,7 +322,6 @@
                     </p>
                 </div>
 
-                {{-- Success alert --}}
                 @if(session('success'))
                     <div
                         x-data="{ show: true }"
@@ -351,7 +357,6 @@
                     </div>
                 @endif
 
-                {{-- Validation summary --}}
                 @if($errors->any())
                     <div class="mb-7 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
                         <p class="font-bold">
@@ -376,7 +381,6 @@
                     @csrf
 
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        {{-- Name --}}
                         <div>
                             <label for="contact-name" class="mb-2 block text-xs font-black uppercase tracking-wider text-slate-700">
                                 {{ __('Your Full Name') }}
@@ -400,7 +404,6 @@
                             @enderror
                         </div>
 
-                        {{-- Phone --}}
                         <div>
                             <label for="contact-phone" class="mb-2 block text-xs font-black uppercase tracking-wider text-slate-700">
                                 {{ __('Phone Number') }}
@@ -425,7 +428,6 @@
                         </div>
                     </div>
 
-                    {{-- Email --}}
                     <div>
                         <label for="contact-email" class="mb-2 block text-xs font-black uppercase tracking-wider text-slate-700">
                             {{ __('Email Address') }}
@@ -450,7 +452,6 @@
                         @enderror
                     </div>
 
-                    {{-- Message --}}
                     <div>
                         <label for="contact-message" class="mb-2 block text-xs font-black uppercase tracking-wider text-slate-700">
                             {{ __('Inquiry / Message') }}
@@ -494,7 +495,7 @@
     </div>
 </section>
 
-{{-- Map section --}}
+{{-- Map Section --}}
 <section class="bg-white px-5 pb-20 pt-6 md:px-8 md:pb-24">
     <div class="mx-auto max-w-7xl">
         <div class="mb-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">

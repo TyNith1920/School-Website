@@ -14,7 +14,7 @@ class SiteBanner extends Model
         'image_path',
     ];
 
-    // 📍 បន្ថែមនេះដើម្បីឱ្យ Laravel បំប្លែងរូបភាពច្រើនសន្លឹកជា Array / JSON ដោយស្វ័យប្រវត្តិ
+    // 📍 បម្លែង Array ទៅជា JSON ចូលទៅក្នុង Database ដោយស្វ័យប្រវត្តិ
     protected $casts = [
         'image_path' => 'array',
     ];

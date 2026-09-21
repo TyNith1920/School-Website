@@ -32,10 +32,7 @@ class SiteBannerResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
-                        // ==============================================
-                        // ផ្នែកខាងឆ្វេង (Banner Info)
-                        // ==============================================
+                        // ផ្នែកខាងឆ្វេង (Banner Information)
                         Group::make()
                             ->schema([
                                 Section::make('Banner Information')
@@ -44,32 +41,36 @@ class SiteBannerResource extends Resource
                                     ->schema([
                                         TextInput::make('page_name')
                                             ->label('📄 Page Name')
-                                            ->placeholder('e.g., Contact Us, Admissions...')
+                                            ->placeholder('e.g., Contact, Admissions, Home...')
                                             ->prefixIcon('heroicon-o-document-text')
                                             ->required()
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 2]),
 
-                        // ==============================================
-                        // ផ្នែកខាងស្តាំ (Media Upload)
-                        // ==============================================
+                        // ផ្នែកខាងស្តាំ (Media Upload - Cloudflare R2)
                         Group::make()
                             ->schema([
-                                Section::make('Banner Image')
-                                    ->description('Upload a high-quality banner image')
+                                Section::make('Banner Images / Slideshow')
+                                    ->description('Upload high-quality banner images for slider')
                                     ->icon('heroicon-o-photo')
                                     ->schema([
                                         FileUpload::make('image_path')
-                                            ->label('🖼️ Upload Banner')
-                                            ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ Upload រូបភាព Banner
+                                            ->label('🖼️ Upload Banners')
+                                            ->disk('s3') // 📍 បញ្ជូនទៅ Cloudflare R2
+                                            ->visibility('public')
+                                            ->fetchFileInformation(false)
+                                            ->multiple() // 📍 Upload បានច្រើនសន្លឹក
+                                            ->reorderable() // 📍 អូសរៀបលំដាប់រូបភាពបាន
                                             ->image()
-                                            ->directory('banners')
+                                            ->directory('site-banners')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->maxSize(51200) // 50MB ក្នុងមួយរូប
                                             ->required()
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
-                            
                     ]),
             ]);
     }
@@ -79,10 +80,11 @@ class SiteBannerResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image_path')
-                    ->label('🖼️ Banner')
-                    ->disk('cloudinary') // 📍 បន្ថែម Cloudinary សម្រាប់ទាញរូបមកបង្ហាញក្នុងតារាង
-                    ->height(50) 
-                    ->extraImgAttributes(['class' => 'object-cover rounded-md']), 
+                    ->label('🖼️ Banners')
+                    ->disk('s3')
+                    ->circular()
+                    ->stacked()
+                    ->limit(3),
 
                 TextColumn::make('page_name')
                     ->label('📄 Page Name')
@@ -93,9 +95,11 @@ class SiteBannerResource extends Resource
 
                 TextColumn::make('created_at')
                     ->label('📅 Created Date')
-                    ->dateTime('d M Y') 
+                    ->dateTime('d M Y, h:i A')
+                    ->timezone('Asia/Phnom_Penh')
                     ->sortable()
-                    ->badge(),
+                    ->badge()
+                    ->color('success'),
             ])
             ->filters([
                 //
