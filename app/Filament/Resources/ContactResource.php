@@ -14,6 +14,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Columns\TextColumn;
 
 class ContactResource extends Resource
@@ -73,6 +74,10 @@ class ContactResource extends Resource
                                             ->label('Email Address')
                                             ->prefixIcon('heroicon-o-envelope')
                                             ->disabled(),
+
+                                        Placeholder::make('created_at')
+                                            ->label('Received On')
+                                            ->content(fn (?Contact $record): string => $record?->created_at?->timezone('Asia/Phnom_Penh')->format('d M Y, h:i A') ?? '-'),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
                     ]),
@@ -130,6 +135,16 @@ class ContactResource extends Resource
                     ->icon('heroicon-m-envelope-open')
                     ->color('primary')
                     ->slideOver()
+                    ->button(),
+
+                // 📍 ប៊ូតុង Reply ផ្ទាល់តាម Email
+                Tables\Actions\Action::make('reply_email')
+                    ->label('Reply')
+                    ->icon('heroicon-m-arrow-uturn-left')
+                    ->color('info')
+                    ->url(fn (Contact $record): ?string => filled($record->email) ? "mailto:{$record->email}?subject=RE: Life International School Inquiry" : null)
+                    ->openUrlInNewTab()
+                    ->visible(fn (Contact $record): bool => filled($record->email))
                     ->button(),
 
                 Tables\Actions\DeleteAction::make()->button(),
