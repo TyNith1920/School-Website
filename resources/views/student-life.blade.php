@@ -26,76 +26,76 @@
 
 <div class="min-h-screen bg-[#fafbfc] text-slate-800" x-data="{ activeTab: 'all' }">
 
-    {{-- 🎨 ១. Hero Section: Campus Life Scrapbook & Magazine Banner --}}
-    <section class="relative overflow-hidden bg-[#061238] pt-14 pb-24 md:pt-20 md:pb-32 text-white">
-        {{-- Background Kinetic Glows --}}
-        <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-orange-500/20 blur-[120px] pointer-events-none"></div>
-        <div class="absolute bottom-10 right-0 w-[500px] h-[500px] rounded-full bg-blue-600/15 blur-[140px] pointer-events-none"></div>
+    {{-- 🌟 ស្ទីលថ្មី៖ Editorial Student Mosaic Showcase Hero Banner --}}
+    <section class="relative isolate overflow-hidden bg-[#071330] py-24 md:py-36 text-white">
         
-        <div class="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
-            <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
-                
-                {{-- Left Text Info --}}
-                <div class="max-w-2xl text-center lg:text-left">
-                    <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-black uppercase tracking-[0.25em] backdrop-blur-md mb-6">
-                        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-                        Campus Vibe & Community
+        {{-- ១. ផ្ទៃខាងក្រោយជារូបភាព Mosaic Collage នៃសកម្មភាពសិស្ស (លែងទទេពណ៌ខៀវ) --}}
+        <div class="absolute inset-0 grid grid-cols-2 md:grid-cols-4 gap-3 p-3 opacity-25 filter blur-[1px] scale-105 pointer-events-none">
+            @if($allActivities->count() > 0)
+                @foreach($allActivities->take(8) as $act)
+                    <div class="relative h-full min-h-[160px] md:min-h-[220px] rounded-3xl overflow-hidden bg-slate-800">
+                        @if($act->image)
+                            <img src="{{ $getMediaUrl($act->image) }}" class="w-full h-full object-cover">
+                        @endif
                     </div>
-
-                    <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight leading-[1.05]">
-                        Beyond <br class="hidden sm:inline">
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-200">The Classroom</span>
-                    </h1>
-
-                    <p data-aos="fade-up" data-aos-delay="200" class="mt-6 text-base sm:text-lg md:text-xl text-blue-100/90 leading-relaxed font-light">
-                        Building faith, leadership, lifelong friendships, and creative passion through our dynamic school traditions and holistic student experiences.
-                    </p>
-
-                    {{-- Quick Pill Filter --}}
-                    <div data-aos="fade-up" data-aos-delay="300" class="mt-8 flex flex-wrap justify-center lg:justify-start gap-2.5">
-                        <button @click="activeTab = 'all'" :class="activeTab === 'all' ? 'bg-amber-400 text-slate-950 font-black shadow-lg scale-105' : 'bg-white/10 text-white hover:bg-white/20'" class="px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition-all duration-300">
-                            🌟 All Moments
-                        </button>
-                        <button @click="activeTab = 'sports'" :class="activeTab === 'sports' ? 'bg-amber-400 text-slate-950 font-black shadow-lg scale-105' : 'bg-white/10 text-white hover:bg-white/20'" class="px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition-all duration-300">
-                            ⚽ Sports & House League
-                        </button>
-                        <button @click="activeTab = 'arts'" :class="activeTab === 'arts' ? 'bg-amber-400 text-slate-950 font-black shadow-lg scale-105' : 'bg-white/10 text-white hover:bg-white/20'" class="px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition-all duration-300">
-                            🎨 Arts & Culture
-                        </button>
-                    </div>
-                </div>
-
-                {{-- Right Scrapbook Polaroids (រូបថតជង់គ្នាទ្រេតបែប Scrapbook យុវវ័យ) --}}
-                <div data-aos="zoom-in" data-aos-delay="250" class="relative w-full max-w-sm h-80 flex items-center justify-center">
-                    {{-- Polaroid 1 (Back) --}}
-                    <div class="absolute w-60 bg-white p-3 pb-6 rounded-2xl shadow-2xl transform -rotate-12 -translate-x-8 -translate-y-4 hover:rotate-0 transition-transform duration-500 z-10">
-                        <div class="h-44 bg-slate-200 rounded-xl overflow-hidden">
-                            @if($leadActivity && $leadActivity->image)
-                                <img src="{{ $getMediaUrl($leadActivity->image) }}" class="w-full h-full object-cover">
-                            @endif
-                        </div>
-                        <p class="mt-2 text-center font-bold text-xs text-slate-700 font-mono">Memories #01</p>
-                    </div>
-
-                    {{-- Polaroid 2 (Front Accent) --}}
-                    <div class="absolute w-64 bg-white p-3 pb-6 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform rotate-6 translate-x-6 translate-y-6 hover:rotate-0 transition-transform duration-500 z-20 border-t-8 border-amber-400">
-                        <div class="h-48 bg-gradient-to-br from-[#081747] to-[#1a3a8f] rounded-xl flex flex-col items-center justify-center text-white p-4 text-center">
-                            <span class="text-4xl font-black text-amber-300">{{ $allActivities->count() }}+</span>
-                            <span class="text-xs uppercase tracking-widest font-black mt-1">Campus Events</span>
-                            <span class="text-[10px] text-blue-200 mt-2">Every Student Has a Story</span>
-                        </div>
-                        <p class="mt-2 text-center font-bold text-xs text-slate-700 font-mono">Life At LIS ✨</p>
-                    </div>
-                </div>
-
-            </div>
+                @endforeach
+            @else
+                <div class="h-full rounded-3xl bg-blue-900/40"></div>
+                <div class="h-full rounded-3xl bg-amber-500/20"></div>
+                <div class="h-full rounded-3xl bg-blue-800/30"></div>
+                <div class="h-full rounded-3xl bg-orange-500/20"></div>
+            @endif
         </div>
 
-        {{-- 📍 Metallic Gold Curve Divider --}}
+        {{-- ២. Dark Cinema Vignette & Glowing Lights --}}
+        <div class="absolute inset-0 bg-gradient-to-t from-[#071330] via-[#071330]/80 to-[#071330]/90 z-10"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-amber-500/20 blur-[130px] rounded-full pointer-events-none z-10"></div>
+
+        {{-- ៣. ខ្លឹមសារកណ្តាលបែប Magazine Editorial --}}
+        <div class="relative z-20 mx-auto max-w-5xl px-6 text-center">
+            
+            {{-- Floating Pill Tag --}}
+            <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-black uppercase tracking-[0.25em] backdrop-blur-md mb-8 shadow-2xl">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                </span>
+                Life International School • Student Life
+            </div>
+
+            {{-- Big Typography --}}
+            <h1 data-aos="fade-up" data-aos-delay="100" class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-[1.02] drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)]">
+                EXPERIENCE <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-orange-400 to-amber-200">CAMPUS SPIRIT</span>
+            </h1>
+
+            <p data-aos="fade-up" data-aos-delay="200" class="mx-auto mt-6 max-w-2xl text-base sm:text-lg md:text-xl text-blue-100/90 font-light leading-relaxed drop-shadow">
+                ការលូតលាស់ខាងចំណេះដឹង សីលធម៌ ជំនឿគ្រីស្ទាន និងមិត្តភាពយូរអង្វែង តាមរយៈក្លឹបសិក្សា កីឡា សិល្បៈ និងដំណើរកម្សាន្តនានា។
+            </p>
+
+            {{-- ៤. Interactive Stats & Activity Filter Capsules --}}
+            <div data-aos="fade-up" data-aos-delay="300" class="mt-10 flex flex-wrap items-center justify-center gap-3 md:gap-4">
+                <div class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg transition-all">
+                    <span class="text-2xl font-black text-amber-300 leading-none">{{ $allActivities->count() }}+</span>
+                    <span class="text-xs uppercase tracking-wider font-bold text-white text-left">Active<br>Programs</span>
+                </div>
+
+                <div class="inline-flex items-center gap-2.5 bg-black/40 border border-white/15 backdrop-blur-md px-5 py-3.5 rounded-2xl text-xs font-bold uppercase tracking-wider text-slate-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> House League & Sports
+                </div>
+
+                <div class="inline-flex items-center gap-2.5 bg-black/40 border border-white/15 backdrop-blur-md px-5 py-3.5 rounded-2xl text-xs font-bold uppercase tracking-wider text-slate-200">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> Arts, Chapel & Music
+                </div>
+            </div>
+
+        </div>
+
+        {{-- ៥. Metallic Gold Wave Divider --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-            <svg class="relative block w-full h-12 sm:h-16 md:h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <defs>
-                    <linearGradient id="studentGoldWave" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient id="studentWaveNew" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#b45309" />
                         <stop offset="25%" stop-color="#f59e0b" />
                         <stop offset="50%" stop-color="#fde047" />
@@ -103,7 +103,7 @@
                         <stop offset="100%" stop-color="#d97706" />
                     </linearGradient>
                 </defs>
-                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#studentGoldWave)"></path>
+                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#studentWaveNew)"></path>
                 <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#fafbfc"></path>
             </svg>
         </div>
