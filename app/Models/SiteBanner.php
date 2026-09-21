@@ -9,9 +9,13 @@ class SiteBanner extends Model
 {
     use HasFactory;
 
-    // ត្រូវបន្ថែមបន្ទាត់នេះ ដើម្បីអនុញ្ញាតឱ្យប្រព័ន្ធអាច Save ទិន្នន័យចូល Database បាន
     protected $fillable = [
         'page_name', 
-        'image_path'
+        'image_path',
+    ];
+
+    // 📍 បន្ថែមនេះដើម្បីឱ្យ Laravel បំប្លែងរូបភាពច្រើនសន្លឹកជា Array / JSON ដោយស្វ័យប្រវត្តិ
+    protected $casts = [
+        'image_path' => 'array',
     ];
 }
