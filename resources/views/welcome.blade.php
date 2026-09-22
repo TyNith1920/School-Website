@@ -182,7 +182,7 @@
         </div>
     </section>
 
-    {{-- ៣. ផ្នែក RECENT NEWS --}}
+    {{-- ៣. ផ្នែក RECENT NEWS (Pure PHP foreach) --}}
     <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -200,11 +200,11 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @if(isset($news) && count($news) > 0)
-                    @php foreach ($news as $index => $item) { @endphp
-                        @php
+                    @php
+                        foreach ($news as $index => $item):
                             $newsImg = $getImageUrl($item->image, $defaultImage);
                             $cleanDesc = strip_tags($item->description ?? '');
-                        @endphp
+                    @endphp
                         <article data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" 
                                  class="group flex flex-col justify-between overflow-hidden rounded-[2rem] bg-slate-50 border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
                                  @click="imgModalSrc = '{{ $newsImg }}'; 
@@ -236,7 +236,7 @@
                             </div>
 
                         </article>
-                    @php } @endphp
+                    @php endforeach; @endphp
                 @endif
             </div>
         </div>
@@ -259,7 +259,7 @@
         </template>
     </section>
 
-    {{-- ៤. ផ្នែក WHY CHOOSE LIS --}}
+    {{-- ៤. ផ្នែក WHY CHOOSE LIS (Pure PHP foreach) --}}
     <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
@@ -275,7 +275,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
-                @php foreach ($whyChooseUs as $index => $feature) { @endphp
+                @php foreach ($whyChooseUs as $index => $feature): @endphp
                     <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" class="group flex flex-col items-center">
                         <div class="mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-slate-50 border border-slate-100 p-4 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:border-amber-200">
                             @if($feature->image)
@@ -293,7 +293,7 @@
                             {{ __($feature->description) }}
                         </p>
                     </div>
-                @php } @endphp
+                @php endforeach; @endphp
             @else
                 <div class="col-span-4 rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-400">
                     {{ __('Please add "Why Choose Us" features from the Dashboard.') }}
@@ -323,7 +323,7 @@
         </div>
     </section>
 
-    {{-- ៦. ផ្នែក FAQS --}}
+    {{-- ៦. ផ្នែក FAQS (Pure PHP foreach) --}}
     <section class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
@@ -332,7 +332,7 @@
 
         <div class="space-y-4">
             @if(isset($faqs) && count($faqs) > 0)
-                @php foreach ($faqs as $index => $faq) { @endphp
+                @php foreach ($faqs as $index => $faq): @endphp
                     <details data-aos="fade-up" data-aos-delay="{{ ($index % 5) * 80 }}"
                              class="group rounded-2xl bg-white border border-slate-200/90 p-6 cursor-pointer shadow-xs transition-shadow hover:shadow-md">
                         <summary class="flex justify-between items-center font-black text-base sm:text-lg text-[#081747] list-none">
@@ -345,7 +345,7 @@
                             {!! $faq->answer !!}
                         </div>
                     </details>
-                @php } @endphp
+                @php endforeach; @endphp
             @else
                 <p class="text-center text-slate-400 text-sm">{{ __('Please add FAQs from the Dashboard.') }}</p>
             @endif

@@ -187,10 +187,10 @@
                 <span>{{ __('Latest') }}</span>
             </div>
 
-            {{-- ផ្នែកអក្សររត់ (Smooth Auto-scroll) --}}
+            {{-- ផ្នែកអក្សររត់ --}}
             <div class="relative w-full overflow-hidden ml-4 group">
                 <div class="flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused] gap-10 items-center">
-                    @foreach($tickerNews as$newsItem)
+                    @php foreach ($tickerNews as $newsItem): @endphp
                         <a href="/news-events" class="inline-flex items-center gap-2 text-blue-100 hover:text-amber-300 transition-colors">
                             <span class="text-amber-400 font-bold">✦</span>
                             <span class="font-semibold tracking-wide">{{ __($newsItem->title) }}</span>
@@ -198,10 +198,9 @@
                                 {{ $newsItem->created_at ? $newsItem->created_at->format('d M') : '' }}
                             </span>
                         </a>
-                    @endforeach
+                    @php endforeach; @endphp
 
-                    {{-- ចម្លងជួរទី ២ ដើម្បីឱ្យរត់បន្តកន្ទុយគ្នាជាប់រហូត --}}
-                    @foreach($tickerNews as$newsItem)
+                    @php foreach ($tickerNews as $newsItem): @endphp
                         <a href="/news-events" class="inline-flex items-center gap-2 text-blue-100 hover:text-amber-300 transition-colors" aria-hidden="true">
                             <span class="text-amber-400 font-bold">✦</span>
                             <span class="font-semibold tracking-wide">{{ __($newsItem->title) }}</span>
@@ -209,7 +208,7 @@
                                 {{ $newsItem->created_at ? $newsItem->created_at->format('d M') : '' }}
                             </span>
                         </a>
-                    @endforeach
+                    @php endforeach; @endphp
                 </div>
             </div>
 
