@@ -35,9 +35,8 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-    {{-- 🌟 ១. HERO BANNER --}}
+    {{-- ១. HERO BANNER --}}
     <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center text-white">
-        
         @if($bannerVideo)
             <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
                 <source src="{{ $bannerVideo }}" type="video/mp4">
@@ -77,7 +76,6 @@
             </div>
         </div>
 
-        {{-- Metallic Gold Wave --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
             <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <defs>
@@ -95,7 +93,7 @@
         </div>
     </section>
 
-    {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
+    {{-- ២. ផ្នែក ADMISSIONS --}}
     @php
         $rawAdmMedia = $admission->image ?? null;
         $admMediaUrl = $getImageUrl($rawAdmMedia, null);
@@ -184,10 +182,9 @@
         </div>
     </section>
 
-    {{-- 🌟 ៣. ផ្នែក RECENT NEWS --}}
+    {{-- ៣. ផ្នែក RECENT NEWS --}}
     <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
         <div class="max-w-7xl mx-auto">
-            
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
                 <div>
                     <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Campus Stories') }}</span>
@@ -242,10 +239,8 @@
                     @endforeach
                 @endif
             </div>
-
         </div>
 
-        {{-- Modal Lightbox --}}
         <template x-teleport="body">
             <div x-show="imgModal" x-transition.opacity.duration.300ms class="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center p-4 md:p-10" @click="imgModal = false" style="display: none;">
                 <button @click="imgModal = false" class="absolute top-5 right-5 text-white hover:text-amber-400 transition z-50">
@@ -264,9 +259,8 @@
         </template>
     </section>
 
-    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS --}}
+    {{-- ៤. ផ្នែក WHY CHOOSE LIS --}}
     <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
-        
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
                 {{ __('Distinction & Values') }}
@@ -306,10 +300,9 @@
                 </div>
             @endif
         </div>
-
     </section>
 
-    {{-- 🌟 ៥. ផ្នែក STUDENT LIFE BANNER --}}
+    {{-- ៥. ផ្នែក STUDENT LIFE BANNER --}}
     <section class="relative overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 py-20 px-6 text-white text-center">
         <div class="relative z-10 max-w-4xl mx-auto">
             <span class="inline-block text-xs font-black uppercase tracking-[0.25em] text-amber-100 mb-3">
@@ -330,7 +323,7 @@
         </div>
     </section>
 
-    {{-- 🌟 ៦. ផ្នែក FAQS --}}
+    {{-- ៦. ផ្នែក FAQS --}}
     <section class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
