@@ -25,16 +25,6 @@
         .goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
         #google_translate_element { display: none !important; }
         .skiptranslate { display: none !important; }
-
-        /* 📍 Animation សម្រាប់បន្ទាត់អក្សររត់ */
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-            display: inline-flex;
-            animation: marquee 30s linear infinite;
-        }
     </style>
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -44,10 +34,9 @@
     @php
         $siteSetting = \App\Models\SiteSetting::first();
         $footer = \App\Models\Footer::first();
-        $tickerNews = \App\Models\News::latest()->take(6)->get();
     @endphp
 
-<!-- MASTER NAVBAR -->
+   <!-- MASTER NAVBAR -->
 <nav x-data="{ mobileMenuOpen: false }" class="notranslate flex items-center justify-between px-6 py-4 bg-[#e8e6e1] shadow-md sticky top-0 z-[100] transition-all duration-300">
     
     <!-- ផ្នែកខាងឆ្វេង: Logo -->
@@ -143,7 +132,7 @@
 
         <div class="hidden lg:block h-6 w-px bg-gray-400 mx-2 xl:mx-4"></div>
 
-        <!-- 📍 ប៊ូតុងប្តូរភាសា -->
+        <!-- 📍 ប៊ូតុងប្តូរភាសា (វាយប្រហារទាំង ២ ព្រមគ្នា៖ ប្តូរ Session Laravel ផង និង ប្តូរ Cookie Google ផង) -->
         <div class="relative py-4 lg:py-0 lg:ml-6 notranslate" x-data="{ langOpen: false }" @click.away="langOpen = false">
             <button @click="langOpen = !langOpen" class="flex items-center gap-2 text-[#0b1240] hover:text-[#e06d64] font-bold text-xs lg:text-sm uppercase transition-colors duration-300 cursor-pointer">
                 @if(session('locale') == 'km')
@@ -176,46 +165,6 @@
         </div>
     </div>
 </nav>
-
-{{-- 🌟 ដំណឹងទាន់ហេតុការណ៍ (Announcement Marquee Ticker) នៅក្រោម Navbar --}}
-@if($tickerNews && $tickerNews->isNotEmpty())
-    <div class="relative z-40 bg-[#081747] text-white border-b border-amber-400/30 overflow-hidden shadow-inner select-none">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-10 text-xs">
-            
-            {{-- Badge ស្លាកពាក្យដំណឹង --}}
-            <div class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black px-3 py-1 rounded-md uppercase tracking-wider shrink-0 shadow-sm z-10">
-                <span class="w-2 h-2 rounded-full bg-slate-950 animate-ping"></span>
-                <span>{{ __('Latest') }}</span>
-            </div>
-
-            {{-- ផ្នែកអក្សររត់ --}}
-            <div class="relative w-full overflow-hidden ml-4 group">
-                <div class="flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused] gap-10 items-center">
-                    @php foreach ($tickerNews as $newsItem): @endphp
-                        <a href="/news-events" class="inline-flex items-center gap-2 text-blue-100 hover:text-amber-300 transition-colors">
-                            <span class="text-amber-400 font-bold">✦</span>
-                            <span class="font-semibold tracking-wide">{{ __($newsItem->title) }}</span>
-                            <span class="text-[10px] text-slate-300 bg-white/10 px-2 py-0.5 rounded-full ml-1">
-                                {{ $newsItem->created_at ? $newsItem->created_at->format('d M') : '' }}
-                            </span>
-                        </a>
-                    @php endforeach; @endphp
-
-                    @php foreach ($tickerNews as $newsItem): @endphp
-                        <a href="/news-events" class="inline-flex items-center gap-2 text-blue-100 hover:text-amber-300 transition-colors" aria-hidden="true">
-                            <span class="text-amber-400 font-bold">✦</span>
-                            <span class="font-semibold tracking-wide">{{ __($newsItem->title) }}</span>
-                            <span class="text-[10px] text-slate-300 bg-white/10 px-2 py-0.5 rounded-full ml-1">
-                                {{ $newsItem->created_at ? $newsItem->created_at->format('d M') : '' }}
-                            </span>
-                        </a>
-                    @php endforeach; @endphp
-                </div>
-            </div>
-
-        </div>
-    </div>
-@endif
 
 <!-- CONTENT -->
 <main class="flex-grow">
@@ -253,7 +202,7 @@
                     <h3 class="font-black text-lg tracking-wide text-[#e06d64] uppercase">{{ __('Truth | Integrity | Love') }}</h3>
                 </div>
                 
-                {{-- 📍 បានកែសម្រួលដកឃ្លាត្រង់ foreach ($logos as $logo) ឱ្យត្រឹមត្រូវ ១០០% --}}
+                <!-- 📍 បង្ខំឲ្យនៅតែមួយជួរ (flex) និងបន្ថយកម្ពស់រូបភាពបន្តិច (h-8 md:h-10) -->
                 <div class="flex items-center gap-4 mt-5">
                     @if(isset($footer) && !empty($footer->logos_image))
                         @php
@@ -311,7 +260,7 @@
     </div>
 </footer>
 
-<!-- 📍 Google Translate Script -->
+<!-- 📍 Google Translate Script សម្រាប់បកប្រែអត្ថបទ Dynamic ដែលលាក់ពីក្រោយ -->
 <div id="google_translate_element"></div>
 <script type="text/javascript">
     function googleTranslateElementInit() {
@@ -322,6 +271,7 @@
         }, 'google_translate_element');
     }
 
+    // មុខងារនេះជួយដាក់ Cookie ប្រាប់ Google ឱ្យដឹងថា User ចង់បានភាសាអី មុនពេលទំព័រលោត
     function setGoogleTranslateCookie(lang) {
         document.cookie = `googtrans=/en/${lang}; path=/`;
         document.cookie = `googtrans=/en/${lang}; path=/; domain=${window.location.hostname}`;
@@ -347,7 +297,7 @@
 </script>
 
 <!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.css"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });</script>
 
 </body> 

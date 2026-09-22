@@ -35,8 +35,10 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-    {{-- ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្ស) --}}
+   {{-- 🌟 ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្សនៅកណ្តាល/ស្តាំ) --}}
     <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center text-white">
+        
+        {{-- Background Video ឬ Image --}}
         @if($bannerVideo)
             <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
                 <source src="{{ $bannerVideo }}" type="video/mp4">
@@ -47,13 +49,17 @@
             <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop" class="absolute inset-0 h-full w-full object-cover">
         @endif
 
+        {{-- ខ្លឹមសាររត់មកខាងឆ្វេង ដើម្បីទុកចន្លោះកណ្តាលនិងស្តាំឱ្យឃើញរូបសិស្សច្បាស់ --}}
         <div class="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-12 pt-16 pb-32 md:pb-36 flex flex-col items-start text-left">
+            
             <div class="max-w-xl md:max-w-2xl">
+                {{-- Small Badge --}}
                 <div data-aos="fade-down" class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-300/60 bg-black/60 px-4 py-1.5 text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-amber-300 backdrop-blur-md shadow-2xl">
                     <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
                     {{ __('LIFE INTERNATIONAL SCHOOL • SIHANOUKVILLE') }}
                 </div>
 
+                {{-- Title --}}
                 <h1 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
                     {{ __($banner->title ?? 'TRUTH | INTEGRITY | LOVE') }}
                 </h1>
@@ -64,6 +70,7 @@
                     {{ __('Equipping future generations with world-class academic excellence, authentic Christian values, and a global perspective.') }}
                 </p>
 
+                {{-- Action Buttons --}}
                 <div data-aos="fade-up" data-aos-delay="400" class="mt-8 flex flex-wrap items-center gap-3.5">
                     <a href="/enrollment" class="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-6 sm:px-7 py-3.5 text-xs sm:text-sm font-black uppercase tracking-wider text-slate-950 shadow-2xl hover:from-amber-300 hover:to-orange-400 hover:-translate-y-0.5 transition-all">
                         <span>{{ __('ADMISSIONS & ENROLLMENT') }}</span>
@@ -74,8 +81,10 @@
                     </a>
                 </div>
             </div>
+
         </div>
 
+        {{-- Metallic Gold Wave Divider --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
             <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <defs>
@@ -93,11 +102,12 @@
         </div>
     </section>
 
-    {{-- ២. ផ្នែក ADMISSIONS --}}
+    {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
     <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
         <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.06)] p-8 sm:p-12 lg:p-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
+                {{-- Text Content --}}
                 <div class="lg:col-span-7">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-4">
                         <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
@@ -125,8 +135,9 @@
                     </div>
                 </div>
 
+                {{-- Clean Frame Image --}}
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[380px] md:h-[380px] overflow-hidden rounded-[2.5rem] border-4 border-slate-100 shadow-2xl transition-transform duration-700 hover:scale-105 bg-slate-100">
+                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[380px] md:h-[380px] overflow-hidden rounded-[2.5rem] border-4 border-slate-100 shadow-2xl transition-transform duration-700 hover:scale-105">
                         <img src="{{ $getImageUrl($admission->image ?? null, $defaultImage) }}" class="h-full w-full object-cover">
                     </div>
                 </div>
@@ -135,9 +146,10 @@
         </div>
     </section>
 
-    {{-- ៣. ផ្នែក RECENT NEWS --}}
+    {{-- 🌟 ៣. ផ្នែក RECENT NEWS --}}
     <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
         <div class="max-w-7xl mx-auto">
+            
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
                 <div>
                     <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Campus Stories') }}</span>
@@ -192,8 +204,10 @@
                     @endforeach
                 @endif
             </div>
+
         </div>
 
+        {{-- Modal Lightbox --}}
         <template x-teleport="body">
             <div x-show="imgModal" x-transition.opacity.duration.300ms class="fixed inset-0 z-[9999] bg-black/85 flex items-center justify-center p-4 md:p-10" @click="imgModal = false" style="display: none;">
                 <button @click="imgModal = false" class="absolute top-5 right-5 text-white hover:text-amber-400 transition z-50">
@@ -212,8 +226,9 @@
         </template>
     </section>
 
-    {{-- ៤. ផ្នែក WHY CHOOSE LIS (Icon ធំច្បាស់ គ្មានប្រអប់ស៊ុម) --}}
+    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS (ដក Box ចេញ ដាក់ Icon ឱ្យធំច្បាស់ស្អាតដូចមុន តែ Style ថ្មី) --}}
     <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
+        
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
                 {{ __('Distinction & Values') }}
@@ -226,10 +241,13 @@
             </p>
         </div>
 
+        {{-- 📍 Grid គ្មាន Box ស៊ុមជុំវិញ Icon ធំច្បាស់បែប Minimalist ទំនើប --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
                 @foreach($whyChooseUs as $index => $feature)
                     <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" class="group flex flex-col items-center">
+                        
+                        {{-- Icon ធំច្បាស់ និងមានចលនា Zoom តិចៗ --}}
                         <div class="mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-slate-50 border border-slate-100 p-4 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:border-amber-200">
                             @if($feature->image)
                                 <img src="{{ $getImageUrl($feature->image, $defaultImage) }}" class="h-16 w-16 sm:h-20 sm:w-20 object-contain">
@@ -238,13 +256,16 @@
                             @endif
                         </div>
 
+                        {{-- Title --}}
                         <h3 class="text-base sm:text-lg font-black uppercase tracking-wide text-[#081747] transition-colors group-hover:text-orange-500">
                             {{ __($feature->title) }}
                         </h3>
 
+                        {{-- Description --}}
                         <p class="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-500 font-normal max-w-xs">
                             {{ __($feature->description) }}
                         </p>
+
                     </div>
                 @endforeach
             @else
@@ -253,9 +274,10 @@
                 </div>
             @endif
         </div>
+
     </section>
 
-    {{-- ៥. ផ្នែក STUDENT LIFE BANNER --}}
+    {{-- 🌟 ៥. ផ្នែក STUDENT LIFE BANNER --}}
     <section class="relative overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 py-20 px-6 text-white text-center">
         <div class="relative z-10 max-w-4xl mx-auto">
             <span class="inline-block text-xs font-black uppercase tracking-[0.25em] text-amber-100 mb-3">
@@ -276,7 +298,7 @@
         </div>
     </section>
 
-    {{-- ៦. ផ្នែក FAQS --}}
+    {{-- 🌟 ៦. ផ្នែក FAQS --}}
     <section class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
