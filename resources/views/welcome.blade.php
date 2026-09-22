@@ -28,8 +28,8 @@
         }
     };
 
-    $bannerImage = $banner && $banner->image ? $getImageUrl($banner->image, null) : null;
-    $bannerVideo = $banner && $banner->video ? $getImageUrl($banner->video, null) : null;
+    $bannerImage = ($banner && $banner->image) ? $getImageUrl($banner->image, null) : null;
+    $bannerVideo = ($banner && $banner->video) ? $getImageUrl($banner->video, null) : null;
     $defaultImage = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop';
 @endphp
 
@@ -94,6 +94,16 @@
     </section>
 
     {{-- ២. ផ្នែក ADMISSIONS --}}
+    @php
+        $rawAdmMedia = $admission->image ?? null;
+        $admMediaUrl = $getImageUrl($rawAdmMedia, null);
+        $isPdf = $rawAdmMedia && (
+            str_ends_with(strtolower($rawAdmMedia), '.pdf') || 
+            str_contains(strtolower($admMediaUrl ?? ''), '.pdf')
+        );
+        $admissionFallbackImg = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=1200&auto=format&fit=crop';
+    @endphp
+
     <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
         <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.06)] p-8 sm:p-12 lg:p-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
@@ -122,13 +132,50 @@
                         <a href="/tuition-fees" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 px-6 py-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all">
                             <span>{{ __('Tuition & Fees') }}</span>
                         </a>
+
+                        @if($isPdf && $admMediaUrl)
+                            <a href="{{ $admMediaUrl }}" target="_blank" class="inline-flex items-center gap-2 border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 px-6 py-4 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-xs">
+                                <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+                                <span>{{ __('View Admissions PDF') }}</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
 
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[380px] md:h-[380px] overflow-hidden rounded-[2.5rem] border-4 border-slate-100 shadow-2xl transition-transform duration-700 hover:scale-105 bg-slate-100">
-                        <img src="{{ $getImageUrl($admission->image ?? null, $defaultImage) }}" class="h-full w-full object-cover">
-                    </div>
+                    @if($isPdf)
+                        <div class="relative w-full max-w-[360px] h-[360px] rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-[#081747] p-8 text-white flex flex-col justify-between shadow-2xl border-4 border-slate-100 group">
+                            <div class="flex items-center justify-between">
+                                <div class="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-xl shadow-lg">
+                                    PDF
+                                </div>
+                                <span class="text-xs font-bold uppercase tracking-widest text-amber-300 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                                    Document
+                                </span>
+                            </div>
+
+                            <div>
+                                <h4 class="text-2xl font-black uppercase text-white tracking-wide">
+                                    Admissions Guide & Form
+                                </h4>
+                                <p class="text-xs text-blue-200 mt-2 leading-relaxed">
+                                    Click below to open or download the complete PDF admissions package.
+                                </p>
+                            </div>
+
+                            <a href="{{ $admMediaUrl }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3.5 rounded-xl uppercase tracking-wider text-xs shadow-lg transition-transform group-hover:scale-105">
+                                <span>Open PDF Document</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    @else
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-[380px] md:h-[380px] overflow-hidden rounded-[2.5rem] border-4 border-slate-100 shadow-2xl transition-transform duration-700 hover:scale-105 bg-slate-100">
+                            <img src="{{ $admMediaUrl ?: $admissionFallbackImg }}" 
+                                 alt="Admissions" 
+                                 class="h-full w-full object-cover"
+                                 onerror="this.onerror=null;this.src='{{ $admissionFallbackImg }}';">
+                        </div>
+                    @endif
                 </div>
 
             </div>
@@ -153,7 +200,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @if(isset($news) && count($news) > 0)
-                    @foreach($news as $index => $item)
+                    @php foreach ($news as $index => $item) { @endphp
                         @php
                             $newsImg = $getImageUrl($item->image, $defaultImage);
                             $cleanDesc = strip_tags($item->description ?? '');
@@ -189,7 +236,7 @@
                             </div>
 
                         </article>
-                    @endforeach
+                    @php } @endphp
                 @endif
             </div>
         </div>
@@ -228,7 +275,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
-                @foreach($whyChooseUs as $index => $feature)
+                @php foreach ($whyChooseUs as $index => $feature) { @endphp
                     <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" class="group flex flex-col items-center">
                         <div class="mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-slate-50 border border-slate-100 p-4 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:border-amber-200">
                             @if($feature->image)
@@ -246,7 +293,7 @@
                             {{ __($feature->description) }}
                         </p>
                     </div>
-                @endforeach
+                @php } @endphp
             @else
                 <div class="col-span-4 rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-400">
                     {{ __('Please add "Why Choose Us" features from the Dashboard.') }}
@@ -285,7 +332,7 @@
 
         <div class="space-y-4">
             @if(isset($faqs) && count($faqs) > 0)
-                @foreach($faqs as $index => $faq)
+                @php foreach ($faqs as $index => $faq) { @endphp
                     <details data-aos="fade-up" data-aos-delay="{{ ($index % 5) * 80 }}"
                              class="group rounded-2xl bg-white border border-slate-200/90 p-6 cursor-pointer shadow-xs transition-shadow hover:shadow-md">
                         <summary class="flex justify-between items-center font-black text-base sm:text-lg text-[#081747] list-none">
@@ -298,7 +345,7 @@
                             {!! $faq->answer !!}
                         </div>
                     </details>
-                @endforeach
+                @php } @endphp
             @else
                 <p class="text-center text-slate-400 text-sm">{{ __('Please add FAQs from the Dashboard.') }}</p>
             @endif
