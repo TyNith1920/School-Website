@@ -43,7 +43,8 @@
 
     @php
         $siteSetting = \App\Models\SiteSetting::first();
-        $footer = \App\Models\Footer::first();$tickerNews = \App\Models\News::latest()->take(6)->get();
+        $footer = \App\Models\Footer::first();
+        $tickerNews = \App\Models\News::latest()->take(6)->get();
     @endphp
 
 <!-- MASTER NAVBAR -->
@@ -177,7 +178,7 @@
 </nav>
 
 {{-- 🌟 ដំណឹងទាន់ហេតុការណ៍ (Announcement Marquee Ticker) នៅក្រោម Navbar --}}
-@if($tickerNews &&$tickerNews->isNotEmpty())
+@if($tickerNews && $tickerNews->isNotEmpty())
     <div class="relative z-40 bg-[#081747] text-white border-b border-amber-400/30 overflow-hidden shadow-inner select-none">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-10 text-xs">
             
@@ -225,7 +226,7 @@
 @php
     $getFooterImg = function($path) {
         if (empty($path)) return null;
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return$path;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return $path;
         try {
             return \Storage::disk('s3')->url($path);
         } catch (\Exception $e) {
@@ -252,14 +253,15 @@
                     <h3 class="font-black text-lg tracking-wide text-[#e06d64] uppercase">{{ __('Truth | Integrity | Love') }}</h3>
                 </div>
                 
+                {{-- 📍 បានកែសម្រួលដកឃ្លាត្រង់ foreach ($logos as $logo) ឱ្យត្រឹមត្រូវ ១០០% --}}
                 <div class="flex items-center gap-4 mt-5">
                     @if(isset($footer) && !empty($footer->logos_image))
                         @php
-                            $rawLogos =$footer->logos_image;
+                            $rawLogos = $footer->logos_image;
                             $logos = is_array($rawLogos) ? $rawLogos : (is_string($rawLogos) ? json_decode($rawLogos, true) ?? [$rawLogos] : []);
                         @endphp
                         
-                        @foreach($logos as$logo)
+                        @foreach($logos as $logo)
                             @if($logo)
                                 <img src="{{ $getFooterImg($logo) }}" alt="Logo" class="h-8 md:h-10 w-auto shrink-0 object-contain hover:scale-110 transition-transform duration-300">
                             @endif
@@ -287,7 +289,7 @@
 
             <div class="flex flex-col items-start lg:items-center">
                 <h3 class="font-bold text-[#e06d64] mb-3">{{ __('Scan to Telegram') }}</h3>
-                @if(isset($footer) &&$footer->telegram_qr)
+                @if(isset($footer) && $footer->telegram_qr)
                     <div class="bg-white p-2 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
                         <img src="{{ $getFooterImg($footer->telegram_qr) }}" alt="Telegram QR" class="w-24 h-24 md:w-28 md:h-28 object-contain">
                     </div>
@@ -345,7 +347,7 @@
 </script>
 
 <!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.css"></script>
 <script>AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });</script>
 
 </body> 
