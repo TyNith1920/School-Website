@@ -28,8 +28,8 @@
         }
     };
 
-    $bannerImage = $banner && $banner->image ? $getImageUrl($banner->image, null) : null;
-    $bannerVideo = $banner && $banner->video ? $getImageUrl($banner->video, null) : null;
+    $bannerImage = ($banner && $banner->image) ? $getImageUrl($banner->image, null) : null;
+    $bannerVideo = ($banner && $banner->video) ? $getImageUrl($banner->video, null) : null;
     $defaultImage = 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop';
 @endphp
 
@@ -182,7 +182,7 @@
         </div>
     </section>
 
-    {{-- ៣. ផ្នែក RECENT NEWS --}}
+    {{-- ៣. ផ្នែក RECENT NEWS (ប្រើ Pure PHP Loop ជៀសវាងបញ្ហា Blade Compiler Error ទាំងស្រុង) --}}
     <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -200,7 +200,7 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @if(isset($news) && count($news) > 0)
-                    @foreach($news as $index => $item)
+                    <?php foreach ($news as $index => $item): ?>
                         @php
                             $newsImg = $getImageUrl($item->image, $defaultImage);
                             $cleanDesc = strip_tags($item->description ?? '');
@@ -236,7 +236,7 @@
                             </div>
 
                         </article>
-                    @endforeach
+                    <?php endforeach; ?>
                 @endif
             </div>
         </div>
@@ -259,7 +259,7 @@
         </template>
     </section>
 
-    {{-- ៤. ផ្នែក WHY CHOOSE LIS --}}
+    {{-- ៤. ផ្នែក WHY CHOOSE LIS (ប្រើ Pure PHP Loop ជៀសវាងបញ្ហា Blade Compiler Error ទាំងស្រុង) --}}
     <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
@@ -275,7 +275,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
-                @foreach($whyChooseUs as $index => $feature)
+                <?php foreach ($whyChooseUs as $index => $feature): ?>
                     <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" class="group flex flex-col items-center">
                         <div class="mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-slate-50 border border-slate-100 p-4 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:border-amber-200">
                             @if($feature->image)
@@ -293,7 +293,7 @@
                             {{ __($feature->description) }}
                         </p>
                     </div>
-                @endforeach
+                <?php endforeach; ?>
             @else
                 <div class="col-span-4 rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-400">
                     {{ __('Please add "Why Choose Us" features from the Dashboard.') }}
@@ -323,7 +323,7 @@
         </div>
     </section>
 
-    {{-- ៦. ផ្នែក FAQS --}}
+    {{-- ៦. ផ្នែក FAQS (ប្រើ Pure PHP Loop ជៀសវាងបញ្ហា Blade Compiler Error ទាំងស្រុង) --}}
     <section class="max-w-4xl mx-auto px-6 py-20">
         <div class="text-center mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
@@ -332,7 +332,7 @@
 
         <div class="space-y-4">
             @if(isset($faqs) && count($faqs) > 0)
-                @foreach($faqs as $index => $faq)
+                <?php foreach ($faqs as $index => $faq): ?>
                     <details data-aos="fade-up" data-aos-delay="{{ ($index % 5) * 80 }}"
                              class="group rounded-2xl bg-white border border-slate-200/90 p-6 cursor-pointer shadow-xs transition-shadow hover:shadow-md">
                         <summary class="flex justify-between items-center font-black text-base sm:text-lg text-[#081747] list-none">
@@ -345,7 +345,7 @@
                             {!! $faq->answer !!}
                         </div>
                     </details>
-                @endforeach
+                <?php endforeach; ?>
             @else
                 <p class="text-center text-slate-400 text-sm">{{ __('Please add FAQs from the Dashboard.') }}</p>
             @endif
