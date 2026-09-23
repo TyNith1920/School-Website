@@ -31,58 +31,59 @@ class NewsResource extends Resource
     {
         return $form
             ->schema([
-                Grid::make(3)
+                Grid::make(1)
                     ->schema([
-                        Group::make()
+                        // ==============================================
+                        // ផ្នែកទី ១៖ Article Information (ព័ត៌មានអត្ថបទ)
+                        // ==============================================
+                        Section::make('Article Information')
+                            ->description('Enter the title and full details of the news or event')
+                            ->icon('heroicon-o-newspaper')
                             ->schema([
-                                Section::make('Article Information')
-                                    ->description('Enter the title and full details of the news or event')
-                                    ->icon('heroicon-o-newspaper')
-                                    ->schema([
-                                        TextInput::make('title')
-                                            ->label('🏷️ Title')
-                                            ->prefixIcon('heroicon-o-bookmark')
-                                            ->required()
-                                            ->maxLength(255),
+                                TextInput::make('title')
+                                    ->label('🏷️ Title')
+                                    ->prefixIcon('heroicon-o-bookmark')
+                                    ->required()
+                                    ->maxLength(255),
 
-                                        TextInput::make('link')
-                                            ->label('🔗 Facebook / Reference Link')
-                                            ->prefixIcon('heroicon-o-link')
-                                            ->placeholder('https://facebook.com/...')
-                                            ->url(),
+                                TextInput::make('link')
+                                    ->label('🔗 Facebook / Reference Link')
+                                    ->prefixIcon('heroicon-o-link')
+                                    ->placeholder('https://facebook.com/...')
+                                    ->url(),
 
-                                        RichEditor::make('description')
-                                            ->label('📝 Content Details')
-                                            ->toolbarButtons([
-                                                'bold', 'italic', 'underline', 'strike',
-                                                'bulletList', 'orderedList', 'link', 'redo', 'undo', 'h2', 'h3'
-                                            ])
-                                            ->columnSpanFull(),
-                                    ]),
-                            ])->columnSpan(['sm' => 3, 'md' => 2]),
+                                RichEditor::make('description')
+                                    ->label('📝 Content Details')
+                                    ->toolbarButtons([
+                                        'bold', 'italic', 'underline', 'strike',
+                                        'bulletList', 'orderedList', 'link', 'redo', 'undo', 'h2', 'h3'
+                                    ])
+                                    ->columnSpanFull(),
+                            ]),
 
-                        Group::make()
+                        // ==============================================
+                        // ផ្នែកទី ២៖ Media Gallery (រៀបជា Grid Thumbnail ស្អាត)
+                        // ==============================================
+                        Section::make('Media Gallery')
+                            ->description('Upload images (Single or Multiple) - Automatically organized in grid thumbnails')
+                            ->icon('heroicon-o-photo')
                             ->schema([
-                                Section::make('Media Gallery')
-                                    ->description('Upload images (Single or Multiple)')
-                                    ->icon('heroicon-o-photo')
-                                    ->schema([
-                                        FileUpload::make('image')
-                                            ->label('🖼️ News Images / Gallery')
-                                            ->disk('s3') // Cloudflare R2
-                                            ->visibility('public')
-                                            ->fetchFileInformation(false)
-                                            ->multiple() // 📍 អនុញ្ញាតឱ្យ Upload រូបភាពបានច្រើនសន្លឹក
-                                            ->reorderable() // 📍 អាចអូសរៀបលំដាប់រូបភាពបាន
-                                            ->image()
-                                            ->directory('news-images')
-                                            ->openable()
-                                            ->downloadable()
-                                            ->maxSize(15360) // 15MB ក្នុងមួយរូប
-                                            ->columnSpanFull(),
-                                    ]),
-                            ])->columnSpan(['sm' => 3, 'md' => 1]),
-                            
+                                FileUpload::make('image')
+                                    ->label('🖼️ News Images / Gallery')
+                                    ->disk('s3') // Cloudflare R2
+                                    ->visibility('public')
+                                    ->fetchFileInformation(false)
+                                    ->multiple() // 📍 Upload រូបភាពបានច្រើនសន្លឹក
+                                    ->reorderable() // 📍 អូសរៀបលំដាប់រូបភាពបាន
+                                    ->image()
+                                    ->panelLayout('grid') // 📍 បង្ខំឱ្យរៀបជា Grid មិនធ្លាក់ចុះក្រោមវែងអន្លាយ
+                                    ->imagePreviewHeight('150') // 📍 កម្រិតកម្ពស់រូប Thumbnail ឱ្យតូចល្មមស្អាត
+                                    ->directory('news-images')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->maxSize(15360) // 15MB ក្នុងមួយរូប
+                                    ->columnSpanFull(),
+                            ]),
                     ]),
             ]);
     }
@@ -95,7 +96,7 @@ class NewsResource extends Resource
                     ->label('🖼️ Image')
                     ->disk('s3')
                     ->circular()
-                    ->stacked() // 📍 បង្ហាញរូបជាជង់បើមានច្រើនសន្លឹក
+                    ->stacked()
                     ->limit(3), 
 
                 TextColumn::make('title')
