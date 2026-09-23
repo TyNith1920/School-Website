@@ -33,7 +33,7 @@
         }
         .animate-marquee {
             display: inline-flex;
-            animation: marquee 32s linear infinite;
+            animation: marquee 20s linear infinite;
         }
     </style>
 
