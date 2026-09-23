@@ -243,7 +243,7 @@
                         <h3 class="font-black text-lg tracking-wide text-[#e06d64] uppercase">{{ __('Truth | Integrity | Love') }}</h3>
                     </div>
                     
-                    {{-- 📍 Foreach logos ដែលមាន space ត្រឹមត្រូវ --}}
+                    {{-- 📍 បានកែសម្រួលដកឃ្លាត្រង់ as $logo រួចរាល់ --}}
                     <div class="flex items-center gap-4 mt-5">
                         @if(isset($footer) && !empty($footer->logos_image))
                             @php
