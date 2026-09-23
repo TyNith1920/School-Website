@@ -35,7 +35,7 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-   {{-- 🌟 ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្សនៅកណ្តាល/ស្តាំ) --}}
+    {{-- 🌟 ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្សនៅកណ្តាល/ស្តាំ) --}}
     <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center text-white">
         
         {{-- Background Video ឬ Image --}}
