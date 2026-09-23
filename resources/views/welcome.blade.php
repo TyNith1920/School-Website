@@ -307,8 +307,8 @@
 
         <div class="space-y-4">
             @if(isset($faqs) && count($faqs) > 0)
-                @foreach($faqs as $index => $faq)
-                    <details data-aos="fade-up" data-aos-delay="{{ ($index % 5) * 80 }}"
+                @foreach($faqs as $faq)
+                    <details data-aos="fade-up" data-aos-delay="{{ ($loop->index % 5) * 80 }}"
                              class="group rounded-2xl bg-white border border-slate-200/90 p-6 cursor-pointer shadow-xs transition-shadow hover:shadow-md">
                         <summary class="flex justify-between items-center font-black text-base sm:text-lg text-[#081747] list-none">
                             <span>{{ __($faq->question) }}</span>
