@@ -9,12 +9,16 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-// 📍 Import មុខងារ Layout និង Components ថ្មីៗ
+
+// 📍 Import Components
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
 
 class SiteSettingResource extends Resource
 {
@@ -22,7 +26,6 @@ class SiteSettingResource extends Resource
 
     protected static ?string $navigationGroup = 'Website Content';
 
-    // 📍 កំណត់ឈ្មោះនៅលើ Menu ឱ្យចេញជាភាសាអង់គ្លេសស្អាត
     protected static ?string $modelLabel = 'Global Setting';
     protected static ?string $pluralModelLabel = 'Global Settings';
 
@@ -32,7 +35,36 @@ class SiteSettingResource extends Resource
             ->schema([
                 Grid::make(3)
                     ->schema([
-                        
+
+                        // ==============================================
+                        // ផ្នែកខាងលើ៖ Top Announcement Marquee Bar (អក្សររត់ខាងលើបង្អស់)
+                        // ==============================================
+                        Section::make('📢 Top Announcement Bar (ខ្សែបន្ទាត់អក្សររត់ខាងលើបង្អស់)')
+                            ->description('កំណត់ និងគ្រប់គ្រងអក្សររត់ផ្ដល់ដំណឹងបន្ទាន់នៅពីលើ Header គេហទំព័រ')
+                            ->icon('heroicon-o-megaphone')
+                            ->schema([
+                                Toggle::make('show_announcement')
+                                    ->label('បង្ហាញខ្សែបន្ទាត់អក្សររត់ (Show/Hide Marquee)')
+                                    ->helperText('បើកដើម្បីបង្ហាញនៅលើគេហទំព័រ ឬបិទនៅពេលគ្មានដំណឹង')
+                                    ->default(true),
+
+                                Grid::make(2)
+                                    ->schema([
+                                        TextInput::make('announcement_badge')
+                                            ->label('🏷️ ស្លាកពាក្យ (Badge Label)')
+                                            ->placeholder('ANNOUNCEMENT ឬ FLASH NEWS')
+                                            ->default('ANNOUNCEMENT')
+                                            ->maxLength(50),
+
+                                        TextInput::make('announcement_text')
+                                            ->label('📝 ខ្លឹមសារអក្សររត់ (Marquee Text)')
+                                            ->placeholder('Welcome to Life International School! Admissions are now open...')
+                                            ->required()
+                                            ->columnSpanFull(),
+                                    ]),
+                            ])
+                            ->columnSpanFull(),
+
                         // ==============================================
                         // ផ្នែកខាងឆ្វេង (Social Media Links)
                         // ==============================================
@@ -48,7 +80,7 @@ class SiteSettingResource extends Resource
                                             ->url()
                                             ->placeholder('https://facebook.com/...')
                                             ->columnSpanFull(),
-                                            
+
                                         TextInput::make('instagram')
                                             ->label('📸 Instagram Link')
                                             ->prefixIcon('heroicon-o-link')
@@ -75,7 +107,7 @@ class SiteSettingResource extends Resource
                                             ->columnSpanFull(),
                                     ]),
                             ])->columnSpan(['sm' => 3, 'md' => 1]),
-                            
+
                     ]),
             ]);
     }
@@ -84,19 +116,28 @@ class SiteSettingResource extends Resource
     {
         return $table
             ->columns([
+                IconColumn::make('show_announcement')
+                    ->label('Marquee Active')
+                    ->boolean(),
+
+                TextColumn::make('announcement_text')
+                    ->label('📢 Announcement Text')
+                    ->limit(45)
+                    ->tooltip(fn ($record) => $record->announcement_text),
+
                 TextColumn::make('email')
                     ->label('📧 Email Address')
                     ->searchable()
                     ->weight('bold'),
-                    
+
                 TextColumn::make('facebook')
                     ->label('📘 Facebook')
-                    ->limit(35)
-                    ->color('primary'), 
-                    
+                    ->limit(25)
+                    ->color('primary'),
+
                 TextColumn::make('instagram')
                     ->label('📸 Instagram')
-                    ->limit(35)
+                    ->limit(25)
                     ->color('primary'),
             ])
             ->filters([
