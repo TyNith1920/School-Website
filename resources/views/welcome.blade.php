@@ -35,22 +35,25 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-amber-400 selection:text-slate-950">
 
-    {{-- 🌟 ១. HERO BANNER (អក្សររត់ទៅឆ្វេង មិនបាំងមុខសិស្សនៅកណ្តាល/ស្តាំ) --}}
-    <section class="relative isolate min-h-[520px] md:min-h-[620px] overflow-hidden bg-black flex items-center text-white">
+    {{-- 🌟 ១. HERO BANNER (វីដេអូបង្ហាញពេញលេញ Full Cover & អក្សររត់ឆ្វេងមិនបាំងមុខសិស្ស) --}}
+    <section class="relative isolate w-full h-[75vh] min-h-[560px] md:h-[88vh] md:min-h-[640px] overflow-hidden bg-black flex items-center text-white">
         
-        {{-- Background Video ឬ Image --}}
+        {{-- Background Video ឬ Image (លាតពេញផ្ទៃ ១០០%) --}}
         @if($bannerVideo)
-            <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
+            <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover object-center pointer-events-none">
                 <source src="{{ $bannerVideo }}" type="video/mp4">
             </video>
         @elseif($bannerImage)
-            <img src="{{ $bannerImage }}" alt="LIS Banner" class="absolute inset-0 h-full w-full object-cover object-center">
+            <img src="{{ $bannerImage }}" alt="LIS Banner" class="absolute inset-0 h-full w-full object-cover object-center pointer-events-none">
         @else
-            <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop" class="absolute inset-0 h-full w-full object-cover">
+            <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop" class="absolute inset-0 h-full w-full object-cover pointer-events-none">
         @endif
 
+        {{-- Dark Gradient Overlay បាំងបន្តិចដើម្បីឱ្យអក្សរច្បាស់ស្អាត --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none z-10"></div>
+
         {{-- ខ្លឹមសាររត់មកខាងឆ្វេង ដើម្បីទុកចន្លោះកណ្តាលនិងស្តាំឱ្យឃើញរូបសិស្សច្បាស់ --}}
-        <div class="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-12 pt-16 pb-32 md:pb-36 flex flex-col items-start text-left">
+        <div class="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-12 pt-16 pb-28 md:pb-32 flex flex-col items-start text-left">
             
             <div class="max-w-xl md:max-w-2xl">
                 {{-- Small Badge --}}
@@ -226,7 +229,7 @@
         </template>
     </section>
 
-    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS (ដក Box ចេញ ដាក់ Icon ឱ្យធំច្បាស់ស្អាតដូចមុន តែ Style ថ្មី) --}}
+    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS --}}
     <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
         
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
@@ -241,13 +244,10 @@
             </p>
         </div>
 
-        {{-- 📍 Grid គ្មាន Box ស៊ុមជុំវិញ Icon ធំច្បាស់បែប Minimalist ទំនើប --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 text-center">
             @if(isset($whyChooseUs) && count($whyChooseUs) > 0)
                 @foreach($whyChooseUs as $index => $feature)
                     <div data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}" class="group flex flex-col items-center">
-                        
-                        {{-- Icon ធំច្បាស់ និងមានចលនា Zoom តិចៗ --}}
                         <div class="mb-5 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-3xl bg-slate-50 border border-slate-100 p-4 shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:border-amber-200">
                             @if($feature->image)
                                 <img src="{{ $getImageUrl($feature->image, $defaultImage) }}" class="h-16 w-16 sm:h-20 sm:w-20 object-contain">
@@ -256,16 +256,13 @@
                             @endif
                         </div>
 
-                        {{-- Title --}}
                         <h3 class="text-base sm:text-lg font-black uppercase tracking-wide text-[#081747] transition-colors group-hover:text-orange-500">
                             {{ __($feature->title) }}
                         </h3>
 
-                        {{-- Description --}}
                         <p class="mt-2.5 text-xs sm:text-sm leading-relaxed text-slate-500 font-normal max-w-xs">
                             {{ __($feature->description) }}
                         </p>
-
                     </div>
                 @endforeach
             @else
