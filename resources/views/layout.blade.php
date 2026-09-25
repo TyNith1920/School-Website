@@ -45,7 +45,7 @@
         $siteSetting = \App\Models\SiteSetting::first();$footer = \App\Models\Footer::first();
     @endphp
 
-    {{-- 🌟 Top Announcement Marquee Bar (មានតែមួយគត់ ពេញទទឹង និងរត់រលូន) --}}
+    {{-- 🌟 Top Announcement Marquee Bar (មានតែមួយជួរ ពេញទទឹងស្អាត) --}}
     @if(isset($siteSetting) && $siteSetting->show_announcement && !empty($siteSetting->announcement_text))
         <div class="relative z-[120] w-full bg-[#081747] text-white border-b border-amber-400/20 overflow-hidden select-none">
             <div class="w-full px-3 sm:px-6 flex items-center h-8 sm:h-9 text-[11px] sm:text-xs">
@@ -247,7 +247,7 @@
                         <h3 class="font-black text-lg tracking-wide text-[#e06d64] uppercase">{{ __('Truth | Integrity | Love') }}</h3>
                     </div>
                     
-                    {{-- 📍 Foreach logos ដែលមាន space ត្រឹមត្រូវ --}}
+                    {{-- 📍 Foreach logos --}}
                     <div class="flex items-center gap-4 mt-5">
                         @if(isset($footer) && !empty($footer->logos_image))
                             @php
@@ -255,11 +255,13 @@
                                 $logos = is_array($rawLogos) ? $rawLogos : (is_string($rawLogos) ? json_decode($rawLogos, true) ?? [$rawLogos] : []);
                             @endphp
                             
-                            @foreach($logos as$logo)
-                                @if($logo)
-                                    <img src="{{ $getFooterImg($logo) }}" alt="Logo" class="h-8 md:h-10 w-auto shrink-0 object-contain hover:scale-110 transition-transform duration-300">
-                                @endif
-                            @endforeach
+                            @if(is_array($logos))
+                                @foreach($logos as$logo)
+                                    @if($logo)
+                                        <img src="{{ $getFooterImg($logo) }}" alt="Logo" class="h-8 md:h-10 w-auto shrink-0 object-contain hover:scale-110 transition-transform duration-300">
+                                    @endif
+                                @endforeach
+                            @endif
                         @endif
                     </div>
                 </div>
