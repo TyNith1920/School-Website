@@ -52,8 +52,9 @@
         {{-- Dark Gradient Overlay បាំងបន្តិចដើម្បីឱ្យអក្សរច្បាស់ស្អាត --}}
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent pointer-events-none z-10"></div>
 
-        {{-- ខ្លឹមសាររត់មកខាងឆ្វេង ដើម្បីទុកចន្លោះកណ្តាលនិងស្តាំឱ្យឃើញរូបសិស្សច្បាស់ --}}
-        <div class="relative z-20 mx-auto max-w-7xl w-full px-6 sm:px-10 lg:px-12 pt-16 pb-28 md:pb-32 flex flex-col items-start text-left">
+        {{-- ខ្លឹមសាររត់មកខាងឆ្វេងពេញអេក្រង់ មិនគាបមកកណ្តាល --}}
+        <div class="relative z-20 w-full px-6 sm:px-10 lg:px-16 pt-16 pb-28 md:pb-32 flex flex-col items-start text-left">
+            <div class="max-w-xl md:max-w-2xl">
             
             <div class="max-w-xl md:max-w-2xl">
                 {{-- Small Badge --}}
@@ -105,8 +106,8 @@
         </div>
     </section>
 
-    {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
-    <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
+   {{-- 🌟 ២. ផ្នែក ADMISSIONS (រីកធំទូលាយតាមអេក្រង់ធំ) --}}
+    <section class="max-w-[1600px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-16">
         <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.06)] p-8 sm:p-12 lg:p-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
@@ -151,7 +152,7 @@
 
     {{-- 🌟 ៣. ផ្នែក RECENT NEWS --}}
     <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
-        <div class="max-w-7xl mx-auto">
+        <div class="max-w-[1600px] mx-auto">
             
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
                 <div>
@@ -229,8 +230,8 @@
         </template>
     </section>
 
-    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS --}}
-    <section class="max-w-7xl mx-auto px-6 py-20 md:py-28">
+    {{-- 🌟 ៤. ផ្នែក WHY CHOOSE LIS (ទូលាយតាមអេក្រង់ធំ) --}}
+    <section class="max-w-[1600px] w-full mx-auto px-6 sm:px-10 lg:px-16 py-20 md:py-28">
         
         <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 md:mb-20">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-3">
