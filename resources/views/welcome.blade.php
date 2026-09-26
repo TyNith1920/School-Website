@@ -88,9 +88,9 @@
 
         </div>
 
-        {{-- Metallic Gold Wave Divider --}}
-        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-            <svg class="relative block w-full h-12 sm:h-16 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        {{-- Metallic Gold Straight Line Divider --}}
+        <div class="absolute bottom-0 left-0 right-0 w-full h-2 sm:h-2.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-20 shadow-[0_0_15px_rgba(245,158,11,0.6)]"></div>
+            <svg class="relative block w-full h-8 sm:h-12 md:h-14" viewBox="0 0 1200 60" preserveAspectRatio="none">
                 <defs>
                     <linearGradient id="welcomeGoldWave" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#b45309" />
@@ -100,7 +100,7 @@
                         <stop offset="100%" stop-color="#d97706" />
                     </linearGradient>
                 </defs>
-                <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#welcomeGoldWave)"></path>
+                <path d="M0,25 C300,50 900,10 1200,30 L1200,60 L0,60 Z" fill="url(#welcomeGoldWave)"></path>
             </svg>
         </div>
     </section>
