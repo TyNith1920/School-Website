@@ -45,31 +45,27 @@
         $siteSetting = \App\Models\SiteSetting::first();$footer = \App\Models\Footer::first();
     @endphp
 
-    {{-- 🌟 ខ្សែបន្ទាត់អក្សររត់ផ្ដល់ដំណឹងនៅខាងលើបង្អស់ (TOP ANNOUNCEMENT MARQUEE BAR) --}}
+    {{-- 🌟 Top Announcement Marquee Bar --}}
     @if(isset($siteSetting) && $siteSetting->show_announcement && !empty($siteSetting->announcement_text))
-        <div class="relative z-[110] bg-[#081747] text-white border-b border-amber-400/30 overflow-hidden shadow-xs select-none">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center h-9 text-xs">
+        <div class="relative z-[120] w-full bg-[#081747] text-white border-b border-amber-400/20 overflow-hidden select-none">
+            <div class="w-full px-4 sm:px-8 lg:px-12 flex items-center h-8 sm:h-9 text-[11px] sm:text-xs">
                 
-                {{-- ស្លាកពាក្យ Badge ខាងឆ្វេង --}}
-                <div class="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black px-2.5 py-0.5 rounded text-[10px] sm:text-xs uppercase tracking-wider shrink-0 shadow-xs z-10">
+                {{-- ស្លាក Badge ខាងឆ្វេងកៀនបង្អស់ --}}
+                <div class="relative z-20 flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black px-2.5 py-0.5 rounded text-[9px] sm:text-xs uppercase tracking-wider shrink-0 shadow-md mr-4">
                     <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-ping"></span>
                     <span>{{ __($siteSetting->announcement_badge ?? 'ANNOUNCEMENT') }}</span>
                 </div>
 
-                {{-- ផ្នែកអក្សររត់ (ដាក់ Mouse ពីលើនឹងឈប់អាន) --}}
-                <div class="relative w-full overflow-hidden ml-3 group">
+                {{-- ផ្នែកអក្សររត់ --}}
+                <div class="relative w-full overflow-hidden group flex-1">
                     <div class="flex whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused] gap-12 items-center text-blue-100">
-                        <span class="font-medium tracking-wide">
-                            {{ __($siteSetting->announcement_text) }}
-                        </span>
+                        <span class="font-medium tracking-wide">{{ __($siteSetting->announcement_text) }}</span>
                         <span class="text-amber-400 font-bold">✦</span>
-                        <span class="font-medium tracking-wide" aria-hidden="true">
-                            {{ __($siteSetting->announcement_text) }}
-                        </span>
+                        <span class="font-medium tracking-wide" aria-hidden="true">{{ __($siteSetting->announcement_text) }}</span>
                         <span class="text-amber-400 font-bold">✦</span>
-                        <span class="font-medium tracking-wide" aria-hidden="true">
-                            {{ __($siteSetting->announcement_text) }}
-                        </span>
+                        <span class="font-medium tracking-wide" aria-hidden="true">{{ __($siteSetting->announcement_text) }}</span>
+                        <span class="text-amber-400 font-bold">✦</span>
+                        <span class="font-medium tracking-wide" aria-hidden="true">{{ __($siteSetting->announcement_text) }}</span>
                     </div>
                 </div>
 
@@ -78,7 +74,7 @@
     @endif
 
     <!-- MASTER NAVBAR -->
-    <nav x-data="{ mobileMenuOpen: false }" class="notranslate flex items-center justify-between px-6 py-4 bg-[#e8e6e1] shadow-md sticky top-0 z-[100] transition-all duration-300">
+    <nav x-data="{ mobileMenuOpen: false }" class="notranslate w-full flex items-center justify-between px-6 sm:px-10 lg:px-16 py-4 bg-[#e8e6e1] shadow-md sticky top-0 z-[100] transition-all duration-300">
         
         <!-- ផ្នែកខាងឆ្វេង: Logo -->
         <div class="flex items-center shrink-0">
@@ -226,7 +222,7 @@
     @endphp
 
     <footer class="notranslate bg-[#0b1240] text-white pt-10 pb-8 mt-12 border-t-4 border-[#e06d64]">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="w-full px-6 sm:px-10 lg:px-16">
             
             <div class="mb-8">
                 <form action="{{ route('search') }}" method="GET" class="relative max-w-full">
