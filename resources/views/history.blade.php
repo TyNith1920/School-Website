@@ -233,9 +233,9 @@
     <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/60 to-slate-950/20 z-10 pointer-events-none"></div>
     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent z-10 pointer-events-none"></div>
 
-    {{-- Hero content (លាតទូលាយដល់ 1600px រត់ទៅកៀនឆ្វេងស្មើបន្ទាត់) --}}
-    <div class="relative z-20 w-full max-w-[1600px] mx-auto flex items-center px-6 sm:px-10 lg:px-16 py-16">
-        <div class="max-w-3xl text-left">
+    {{-- 🌟 Hero content (រុញទៅកៀនឆ្វេងបង្អស់ និងនៅមួយជួរស្មើគ្នា) --}}
+    <div class="relative z-20 w-full px-6 sm:px-10 lg:px-16 xl:px-20 py-16 flex items-center">
+        <div class="max-w-6xl text-left">
             <div data-aos="fade-right" class="mb-5 flex items-center gap-3">
                 <span class="h-1 w-12 rounded-full bg-orange-500"></span>
 
@@ -244,7 +244,8 @@
                 </span>
             </div>
 
-            <h1 data-aos="fade-up" data-aos-delay="150" class="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight tracking-wide text-white drop-shadow-lg">
+            {{-- Title មួយជួរពេញលេញ មិនធ្លាក់បន្ទាត់ --}}
+            <h1 data-aos="fade-up" data-aos-delay="150" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight tracking-wide text-white drop-shadow-lg lg:whitespace-nowrap">
                 {{ __('History & Governance') }}
             </h1>
 
@@ -295,8 +296,11 @@
         </div>
     @endif
 
-    {{-- 🌟 បន្ទាត់ពណ៌មាស នៅបាតក្រោមបង្អស់ (Bottom-0) --}}
-    <div class="absolute inset-x-0 bottom-0 w-full h-2.5 sm:h-3.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-30 shadow-[0_-2px_10px_rgba(245,158,11,0.5)]"></div>
+    {{-- 🌟 បន្ទះទ្រេតពណ៌មាស (Gold Slanted Divider Style ដូចមុន តែពណ៌មាស) --}}
+    <div
+        class="absolute -bottom-px inset-x-0 z-20 h-10 sm:h-14 md:h-16 w-full bg-gradient-to-r from-amber-600 via-amber-400 via-yellow-300 to-amber-600 pointer-events-none shadow-[0_-4px_15px_rgba(245,158,11,0.4)]"
+        style="clip-path: polygon(0 70%, 100% 0, 100% 100%, 0 100%);"
+    ></div>
 </section>
 
 <div class="bg-slate-50 px-6 sm:px-10 lg:px-16 py-16 md:py-24">
