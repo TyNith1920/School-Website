@@ -63,14 +63,14 @@
                     {{ __('LIFE INTERNATIONAL SCHOOL • SIHANOUKVILLE') }}
                 </div>
 
-                {{-- Title --}}
-                <h1 data-aos="fade-up" data-aos-delay="100" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
+              {{-- Title (ប្រើ xl:whitespace-nowrap និងសម្រួលទំហំអក្សរឱ្យនៅមួយជួរស្អាត) --}}
+                <h1 data-aos="fade-up" data-aos-delay="100" class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black uppercase tracking-tight leading-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)] xl:whitespace-nowrap">
                     {{ __($banner->title ?? 'TRUTH | INTEGRITY | LOVE') }}
                 </h1>
 
                 <div data-aos="zoom-in" data-aos-delay="200" class="mt-3 mb-5 h-1.5 w-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-[0_0_20px_rgba(251,191,36,0.9)]"></div>
 
-                <p data-aos="fade-up" data-aos-delay="300" class="text-sm sm:text-base font-bold leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,1)] max-w-lg">
+                <p data-aos="fade-up" data-aos-delay="300" class="text-sm sm:text-base font-bold leading-relaxed text-white drop-shadow-[0_2px_8px_rgba(0,0,0,1)] max-w-xl">
                     {{ __('Equipping future generations with world-class academic excellence, authentic Christian values, and a global perspective.') }}
                 </p>
 
@@ -88,9 +88,9 @@
 
         </div>
 
-        <!-- {{-- Metallic Gold Straight Line Divider (មានតែមួយគត់ នៅបាតក្រោមបង្អស់) --}}
-        <div class="absolute inset-x-0 bottom-0 w-full h-2.5 sm:h-3.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-30 shadow-[0_-2px_10px_rgba(245,158,11,0.5)]"></div>
-    </section> -->
+        {{-- 🌟 បន្ទាត់ពណ៌មាស នៅបាតក្រោមបង្អស់ (Bottom-0) --}}
+        <div class="absolute inset-x-0 bottom-0 w-full h-2 sm:h-2.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-30 shadow-[0_-2px_10px_rgba(245,158,11,0.5)]"></div>
+    </section>
 
     {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
     <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
