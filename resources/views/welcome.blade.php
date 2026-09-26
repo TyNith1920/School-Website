@@ -105,8 +105,8 @@
         </div>
     </section>
 
-    {{-- 🌟 ២. ផ្នែក ADMISSIONS (ទម្រង់ដើម អណ្តែតកាត់លើ Wave ស្រស់ស្អាត) --}}
-    <section class="max-w-7xl mx-auto px-6 -mt-14 sm:-mt-20 md:-mt-28 relative z-30 pb-16">
+    {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
+    <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
         <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.06)] p-8 sm:p-12 lg:p-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
