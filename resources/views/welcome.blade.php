@@ -90,7 +90,7 @@
 
         {{-- Metallic Gold Wave Divider --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
-            <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <svg class="relative block w-full h-10 sm:h-14 md:h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <defs>
                     <linearGradient id="welcomeGoldWave" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#b45309" />
@@ -101,13 +101,12 @@
                     </linearGradient>
                 </defs>
                 <path d="M0,0 C160,85 380,-15 640,40 C890,95 1060,15 1200,50 L1200,120 L0,120 Z" fill="url(#welcomeGoldWave)"></path>
-                <path d="M0,28 C200,85 450,22 700,58 C940,95 1100,32 1200,50 L1200,120 L0,120 Z" fill="#f8fafc"></path>
             </svg>
         </div>
     </section>
 
-   {{-- 🌟 ២. ផ្នែក ADMISSIONS (រីកធំទូលាយតាមអេក្រង់ធំ) --}}
-    <section class="max-w-[1600px] w-full mx-auto px-6 sm:px-10 lg:px-16 pt-10 pb-16">
+  {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
+    <section class="max-w-[1600px] w-full mx-auto px-6 sm:px-10 lg:px-16 -mt-4 sm:-mt-8 relative z-30 pb-16">
         <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.06)] p-8 sm:p-12 lg:p-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
                 
@@ -150,9 +149,9 @@
         </div>
     </section>
 
-    {{-- 🌟 ៣. ផ្នែក RECENT NEWS --}}
-    <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
-        <div class="max-w-[1600px] mx-auto">
+    {{-- 🌟 ៣. ផ្នែក RECENT NEWS (ទូលាយតាមអេក្រង់ធំ និងមាន Padding សមាមាត្រ) --}}
+    <section class="bg-white border-y border-slate-200/80 py-16 md:py-24 px-6 sm:px-10 lg:px-16" x-data="{ imgModal: false, imgModalSrc: '', modalTitle: '', modalDesc: '' }">
+        <div class="max-w-[1600px] w-full mx-auto">
             
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
                 <div>
@@ -275,9 +274,9 @@
 
     </section>
 
-    {{-- 🌟 ៥. ផ្នែក STUDENT LIFE BANNER --}}
-    <section class="relative overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 py-20 px-6 text-white text-center">
-        <div class="relative z-10 max-w-4xl mx-auto">
+    {{-- 🌟 ៥. ផ្នែក STUDENT LIFE BANNER (Full Width Background & ទូលាយល្មមអានស្រួល) --}}
+    <section class="relative w-full overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 py-20 md:py-24 px-6 sm:px-10 lg:px-16 text-white text-center">
+        <div class="relative z-10 max-w-5xl mx-auto">
             <span class="inline-block text-xs font-black uppercase tracking-[0.25em] text-amber-100 mb-3">
                 {{ __('Beyond Academics') }}
             </span>
@@ -296,8 +295,8 @@
         </div>
     </section>
 
-    {{-- 🌟 ៦. ផ្នែក FAQS --}}
-    <section class="max-w-4xl mx-auto px-6 py-20">
+    {{-- 🌟 ៦. ផ្នែក FAQS (រីកទូលាយសមាមាត្រលើអេក្រង់ធំ) --}}
+    <section class="max-w-6xl w-full mx-auto px-6 sm:px-10 lg:px-16 py-20 md:py-28">
         <div class="text-center mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-amber-600">{{ __('Questions & Answers') }}</span>
             <h2 class="text-3xl sm:text-4xl font-black uppercase text-[#081747] mt-1">{{ __('FAQs') }}</h2>
