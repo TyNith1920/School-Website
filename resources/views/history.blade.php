@@ -204,12 +204,12 @@
                         class="h-full w-full object-cover"
                     ></video>
                 @else
-                    <img
-                        src="{{ $getMediaUrl($slide['file']) }}"
-                        alt="History and Governance banner {{ $index + 1 }}"
-                        class="h-full w-full object-cover object-center"
-                    >
-                @endif
+                        <img
+                            src="{{ $getMediaUrl($slide['file']) }}"
+                            alt="History and Governance banner {{ $index + 1 }}"
+                            class="h-full w-full object-cover object-top"
+                        >
+                    @endif
             </div>
         @endforeach
     @else
