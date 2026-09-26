@@ -88,9 +88,9 @@
 
         </div>
 
-        {{-- 🌟 បន្ទាត់ពណ៌មាស នៅបាតក្រោមបង្អស់ (Bottom-0) --}}
+        <!-- {{-- 🌟 បន្ទាត់ពណ៌មាស នៅបាតក្រោមបង្អស់ (Bottom-0) --}}
         <div class="absolute inset-x-0 bottom-0 w-full h-2 sm:h-2.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-30 shadow-[0_-2px_10px_rgba(245,158,11,0.5)]"></div>
-    </section>
+    </section> -->
 
     {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
     <section class="max-w-7xl mx-auto px-6 pt-10 pb-16">
