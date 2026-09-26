@@ -88,21 +88,8 @@
 
         </div>
 
-        {{-- Metallic Gold Straight Line Divider --}}
-        <div class="absolute bottom-0 left-0 right-0 w-full h-2 sm:h-2.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-20 shadow-[0_0_15px_rgba(245,158,11,0.6)]"></div>
-            <svg class="relative block w-full h-8 sm:h-12 md:h-14" viewBox="0 0 1200 60" preserveAspectRatio="none">
-                <defs>
-                    <linearGradient id="welcomeGoldWave" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#b45309" />
-                        <stop offset="25%" stop-color="#f59e0b" />
-                        <stop offset="50%" stop-color="#fde047" />
-                        <stop offset="75%" stop-color="#f59e0b" />
-                        <stop offset="100%" stop-color="#d97706" />
-                    </linearGradient>
-                </defs>
-                <path d="M0,25 C300,50 900,10 1200,30 L1200,60 L0,60 Z" fill="url(#welcomeGoldWave)"></path>
-            </svg>
-        </div>
+        {{-- Metallic Gold Straight Line Divider (មានតែមួយគត់ នៅបាតក្រោមបង្អស់) --}}
+        <div class="absolute inset-x-0 bottom-0 w-full h-2.5 sm:h-3.5 bg-gradient-to-r from-amber-600 via-amber-300 via-yellow-400 to-amber-600 z-30 shadow-[0_-2px_10px_rgba(245,158,11,0.5)]"></div>
     </section>
 
     {{-- 🌟 ២. ផ្នែក ADMISSIONS --}}
