@@ -90,98 +90,138 @@ class AdminPanelProvider extends PanelProvider
                         }
 
                         /* ==========================================
-                           2. PERFECT GLASSMORPHISM LOGIN PAGE
+                           2. SPLIT-SCREEN LOGIN CARD DESIGN
                         ========================================== */
-                        html, body, .fi-layout, .fi-simple-layout {
-                            background: #0b1240 !important;
-                            background-image:
-                                radial-gradient(at 50% 10%, #1d00af 0px, transparent 65%),
-                                radial-gradient(at 90% 90%, #080d2a 0px, transparent 50%),
-                                radial-gradient(at 10% 90%, #17006b 0px, transparent 50%) !important;
+                        /* Background overall page */
+                        html, body, .fi-simple-layout {
+                            background-color: #090e29 !important;
                             min-height: 100vh !important;
                             display: flex !important;
                             align-items: center !important;
                             justify-content: center !important;
                         }
 
-                        /* Fixed Glass Main Box */
-                        .fi-simple-main {
-                            background: rgba(15, 23, 42, 0.8) !important;
-                            backdrop-filter: blur(24px) saturate(180%) !important;
-                            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                            border-radius: 1.5rem !important;
-                            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(29, 0, 175, 0.3) !important;
-                            padding: 2.5rem 2rem !important;
-                            max-width: 28rem !important;
+                        .fi-simple-layout > div {
                             width: 100% !important;
-                            margin: auto !important;
+                            max-width: 900px !important;
+                            padding: 1.5rem !important;
+                        }
+
+                        /* Container holding both side banner & form */
+                        .fi-simple-main {
+                            display: grid !important;
+                            grid-template-columns: 1fr 1fr !important;
+                            background-color: #fcfbf7 !important;
+                            border-radius: 1.5rem !important;
+                            overflow: hidden !important;
+                            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+                            padding: 0 !important;
+                            border: none !important;
+                            max-width: 100% !important;
+                            width: 100% !important;
                             position: relative !important;
                         }
 
-                        /* Logo styling */
-                        .fi-simple-layout img {
-                            height: 4.5rem !important;
-                            object-fit: contain !important;
-                            margin: 0 auto 1.25rem auto !important;
-                            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4)) !important;
+                        /* Responsive for Mobile */
+                        @media (max-width: 768px) {
+                            .fi-simple-main {
+                                grid-template-columns: 1fr !important;
+                            }
+                            .fi-simple-main::before {
+                                display: none !important;
+                            }
                         }
 
-                        /* Heading Title */
-                        .fi-simple-header-heading,
-                        .fi-simple-header h1 {
+                        /* Left Blue Banner Section using ::before */
+                        .fi-simple-main::before {
+                            content: "" !important;
+                            background: linear-gradient(135deg, #1d00af 0%, #150080 100%) !important;
+                            border-right: 4px solid #e06d64 !important;
+                            height: 100% !important;
+                            width: 100% !important;
+                            display: block !important;
+                        }
+
+                        /* Inject text into the left banner */
+                        .fi-simple-main::after {
+                            content: "Life International School\\A\\A Admin portal\\A Manage admissions, academics and website content in one place." !important;
+                            white-space: pre-wrap !important;
+                            position: absolute !important;
+                            top: 50% !important;
+                            left: 5% !important;
+                            width: 40% !important;
+                            transform: translateY(-50%) !important;
                             color: #ffffff !important;
-                            font-weight: 800 !important;
-                            font-size: 1.75rem !important;
-                            letter-spacing: -0.02em !important;
-                            text-align: center !important;
+                            font-size: 0.95rem !important;
+                            line-height: 1.6 !important;
+                            z-index: 10 !important;
+                            pointer-events: none !important;
                         }
 
-                        /* Form Labels */
-                        .fi-fo-field-wrp-label label,
-                        .fi-fo-field-wrp-label span,
-                        .fi-checkbox-label,
-                        label span {
-                            color: #e2e8f0 !important;
+                        /* Form Wrapper styling (Right side) */
+                        .fi-simple-main > form, 
+                        .fi-simple-main > div {
+                            padding: 3rem 2.5rem !important;
+                            background-color: #fcfbf7 !important;
+                        }
+
+                        /* Header inside Form */
+                        .fi-simple-header-heading {
+                            color: #0b1240 !important;
+                            font-size: 2rem !important;
+                            font-weight: 700 !important;
+                            text-align: left !important;
+                            margin-bottom: 1.5rem !important;
+                        }
+
+                        /* Input Fields */
+                        .fi-input-wrp {
+                            background-color: #ffffff !important;
+                            border: 1.5px solid #cbd5e1 !important;
+                            border-radius: 0.75rem !important;
+                            box-shadow: none !important;
+                        }
+                        .fi-input-wrp input {
+                            color: #0f172a !important;
+                        }
+                        .fi-input-wrp:focus-within {
+                            border-color: #1d00af !important;
+                            box-shadow: 0 0 0 3px rgba(29, 0, 175, 0.15) !important;
+                        }
+
+                        /* Label styling */
+                        .fi-fo-field-wrp-label label span {
+                            color: #1e293b !important;
                             font-weight: 600 !important;
                         }
 
-                        /* Inputs */
-                        .fi-input-wrp {
-                            background-color: rgba(30, 41, 59, 0.8) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                            border-radius: 0.75rem !important;
-                            color: #ffffff !important;
-                        }
-                        .fi-input-wrp:focus-within {
-                            border-color: #6366f1 !important;
-                            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3) !important;
-                        }
-                        .fi-input-wrp input { color: #ffffff !important; background: transparent !important; }
-
                         /* Submit Button */
                         .fi-btn-primary, button[type="submit"] {
-                            background: linear-gradient(135deg, #2563eb 0%, #1d00af 100%) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                            background-color: #1d00af !important;
                             border-radius: 0.75rem !important;
                             font-weight: 700 !important;
-                            padding-top: 0.8rem !important;
-                            padding-bottom: 0.8rem !important;
+                            padding-top: 0.85rem !important;
+                            padding-bottom: 0.85rem !important;
                             width: 100% !important;
-                            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.5) !important;
-                            transition: all 0.3s ease !important;
+                            font-size: 1rem !important;
+                            transition: background-color 0.2s ease !important;
                         }
                         .fi-btn-primary:hover, button[type="submit"]:hover {
-                            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-                            transform: translateY(-2px) !important;
-                            box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.7) !important;
+                            background-color: #150080 !important;
+                        }
+
+                        /* Logo Section */
+                        .fi-simple-layout img {
+                            height: 3.5rem !important;
+                            object-fit: contain !important;
+                            margin-bottom: 1rem !important;
                         }
                     </style>
                 ')
             )
             ->brandName('Life International School')
             ->brandLogo(asset('images/lis.png'))
-            ->brandLogoHeight('4.5rem')
+            ->brandLogoHeight('3.5rem')
             ->favicon(asset('images/logo.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
