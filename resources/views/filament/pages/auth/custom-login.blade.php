@@ -317,81 +317,77 @@
 
 
         /* =========================================================
-           7. LABEL
+           7. FIELD LABELS (FIXED FLOATING LABELS)
         ========================================================= */
 
-        .lis-login-left
-        .fi-fo-field-wrp-label {
+        .lis-login-left .fi-fo-field-wrp-label {
 
             position: absolute !important;
 
-            top: -9px !important;
+            top: -10px !important;
 
             left: 18px !important;
 
-            z-index: 50 !important;
+            z-index: 999 !important;
 
-            display: block !important;
+            display: flex !important;
+
+            align-items: center !important;
+
+            gap: 4px !important;
 
             width: auto !important;
 
-            padding:
-                0 8px !important;
+            height: auto !important;
+
+            padding: 0 6px !important;
 
             margin: 0 !important;
 
-            background:
-                #ffffff !important;
+            background: #ffffff !important;
+
+            pointer-events: none;
         }
 
 
-        .lis-login-left
-        .fi-fo-field-wrp-label label {
+        /* Ensure all nested label texts render clearly */
 
-            background:
-                #ffffff !important;
+        .lis-login-left .fi-fo-field-wrp-label label,
+        .lis-login-left .fi-fo-field-wrp-label label *,
+        .lis-login-left .fi-fo-field-wrp-label span {
 
-            color:
-                #0369a1 !important;
-        }
+            display: inline-block !important;
 
+            visibility: visible !important;
 
-        .lis-login-left
-        .fi-fo-field-wrp-label
-        label
-        span {
+            opacity: 1 !important;
 
-            color:
-                #0369a1 !important;
+            color: #0369a1 !important;
 
-            background:
-                #ffffff !important;
+            background: #ffffff !important;
 
-            font-size:
-                0.72rem !important;
+            font-size: 0.72rem !important;
 
-            font-weight:
-                800 !important;
+            font-weight: 800 !important;
 
-            letter-spacing:
-                0.06em !important;
+            line-height: 1 !important;
 
-            text-transform:
-                uppercase !important;
+            letter-spacing: 0.05em !important;
+
+            text-transform: uppercase !important;
         }
 
 
         /* Required star */
 
-        .lis-login-left
-        .fi-fo-field-wrp-label
-        .text-danger-600,
-        .lis-login-left
-        .fi-fo-field-wrp-label
-        [class*="text-danger"] {
+        .lis-login-left .fi-fo-field-wrp-label .fi-fo-field-wrp-required-indicator,
+        .lis-login-left .fi-fo-field-wrp-label [class*="text-danger"] {
 
-            color:
-                #ef4444 !important;
+            color: #ef4444 !important;
+
+            font-size: 0.85rem !important;
+
+            font-weight: 800 !important;
         }
 
 
@@ -540,7 +536,6 @@
 
         /* =========================================================
            10. CHROME / EDGE AUTOFILL FIX
-           This is the main fix for grey input
         ========================================================= */
 
         .lis-login-left
@@ -1377,58 +1372,11 @@
             }
         }
 
-                /* =========================================================
-        FIX FILAMENT FIELD LABELS
-        ========================================================= */
-
-        .lis-login-left .fi-fo-field-wrp-label {
-            position: absolute !important;
-            top: -10px !important;
-            left: 18px !important;
-
-            display: block !important;
-
-            width: auto !important;
-            height: auto !important;
-
-            padding: 0 8px !important;
-
-            background: #ffffff !important;
-
-            z-index: 999 !important;
-        }
-
-        .lis-login-left .fi-fo-field-wrp-label label {
-            display: block !important;
-            background: #ffffff !important;
-        }
-
-        .lis-login-left .fi-fo-field-wrp-label label span {
-            display: inline !important;
-
-            color: #0369a1 !important;
-
-            background: #ffffff !important;
-
-            font-size: 12px !important;
-
-            font-weight: 800 !important;
-
-            letter-spacing: 0.04em !important;
-        }
-
-        /* Required star */
-        .lis-login-left
-        .fi-fo-field-wrp-label
-        .fi-fo-field-wrp-required-indicator {
-            color: #ef4444 !important;
-        }
-
     </style>
 
 
     <!-- =========================================================
-         MAIN LOGIN CARD
+        MAIN LOGIN CARD
     ========================================================= -->
 
     <div class="lis-login-card">
