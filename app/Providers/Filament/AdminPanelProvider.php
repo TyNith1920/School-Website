@@ -88,24 +88,40 @@ class AdminPanelProvider extends PanelProvider
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
 
-                        /* 📍 ធ្វើឱ្យរូបកណ្តឹងលេចពណ៌ច្បាស់ (ពណ៌លឿង/មាស) */
-                        header.fi-topbar button svg {
-                            color: #fbd38d !important; /* ពណ៌លឿងស្រាល ឱ្យងាយឃើញ */
+                        /* 📍 កែប្រែ Style រូបកណ្តឹង (សំដៅចំ Class កណ្ដឹង Filament ដោយផ្ទាល់) */
+                        .fi-topbar-database-notifications-btn,
+                        .fi-topbar-database-notifications-btn svg {
+                            color: #fbd38d !important;
                             transition: all 0.2s ease-in-out !important;
+                            cursor: pointer !important;
+                            pointer-events: auto !important;
                         }
 
-                        header.fi-topbar button:hover svg {
-                            color: #f59e0b !important; /* លឿងទុំពេលដាក់ Mouse លើ */
+                        .fi-topbar-database-notifications-btn:hover svg {
+                            color: #f59e0b !important;
                             transform: scale(1.15) !important;
                         }
 
                         /* 📍 ធ្វើឱ្យរង្វង់លេខ (Badge Notification) លេចពណ៌ក្រហមឆ្អៅ និងអក្សរស */
-                        header.fi-topbar button span[class*="bg-"],
-                        header.fi-topbar button div[class*="bg-"] {
-                            background-color: #ef4444 !important; /* ពណ៌ក្រហម */
-                            color: #ffffff !important; /* លេខពណ៌ស */
+                        .fi-topbar-database-notifications-btn .fi-badge,
+                        .fi-topbar-database-notifications-btn span[class*="bg-"] {
+                            background-color: #ef4444 !important;
+                            color: #ffffff !important;
                             border: none !important;
-                            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important; /* ថែមស្រមោលក្រហមតិចៗឱ្យកាន់តែលេច */
+                            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important;
+                        }
+
+                        /* 📍 FIX: ធានាថា Notification Modal/Dropdown បើកមកនៅលើគេបង្អស់ */
+                        .fi-modal,
+                        .fi-dropdown-panel,
+                        .fi-notifications-database-modal,
+                        div[class*="fi-modal"],
+                        div[class*="fi-dropdown-panel"] {
+                            z-index: 99999 !important;
+                        }
+
+                        .fi-modal-close-overlay {
+                            z-index: 99998 !important;
                         }
                     </style>
                 ')
@@ -121,7 +137,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                // 📍 យើងលុប/បិទ Widgets\AccountWidget::class ចេញ ដើម្បីកុំឱ្យវាចេញប្រអប់ Welcome ជាន់គ្នា
+                // Widgets\AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

@@ -1,7 +1,6 @@
 <x-filament-panels::page.simple>
 
     <style>
-
         /* =========================================================
            LIFE INTERNATIONAL SCHOOL
            ADMIN LOGIN - FULL CUSTOM DESIGN
@@ -553,7 +552,6 @@
             .lis-login-left { padding: 2rem 1.15rem !important; }
             .lis-logo { height: 70px !important; }
         }
-
     </style>
 
     <!-- MAIN LOGIN CARD -->
