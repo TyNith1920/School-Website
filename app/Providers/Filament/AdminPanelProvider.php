@@ -30,7 +30,6 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->simplePageMaxContentWidth('4xl') // wider card for the split layout
             ->colors([
                 'primary' => Color::hex('#1d00af'),
                 'danger'  => Color::Rose,
@@ -52,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 fn (): string => Blade::render('
                     <style>
                         /* ==========================================
-                           1. DASHBOARD SIDEBAR & TOPBAR (unchanged)
+                           1. DASHBOARD SIDEBAR & TOPBAR
                         ========================================== */
                         aside.fi-sidebar { background-color: #0b1240 !important; }
                         aside.fi-sidebar .fi-sidebar-item-label,
@@ -91,114 +90,98 @@ class AdminPanelProvider extends PanelProvider
                         }
 
                         /* ==========================================
-                           2. NEW LOGIN: "SCHOOL NOTEBOOK" SPLIT CARD
-                           Left  = deep blue brand panel
-                           Right = warm paper with faint ruled lines
+                           2. PERFECT GLASSMORPHISM LOGIN PAGE
                         ========================================== */
-                        .fi-simple-layout {
+                        html, body, .fi-layout, .fi-simple-layout {
                             background: #0b1240 !important;
                             background-image:
-                                radial-gradient(60rem 30rem at 85% -10%, rgba(29,0,175,0.55), transparent 70%),
-                                radial-gradient(40rem 25rem at 0% 110%, rgba(224,109,100,0.18), transparent 70%) !important;
+                                radial-gradient(at 50% 10%, #1d00af 0px, transparent 65%),
+                                radial-gradient(at 90% 90%, #080d2a 0px, transparent 50%),
+                                radial-gradient(at 10% 90%, #17006b 0px, transparent 50%) !important;
                             min-height: 100vh !important;
+                            display: flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
                         }
 
-                        /* The card */
+                        /* Fixed Glass Main Box */
                         .fi-simple-main {
-                            position: relative !important;
-                            overflow: hidden !important;
-                            background-color: #fbf9f4 !important;
-                            background-image: repeating-linear-gradient(
-                                to bottom, transparent 0, transparent 31px, rgba(29,0,175,0.07) 31px, rgba(29,0,175,0.07) 32px) !important;
-                            border: 0 !important;
+                            background: rgba(15, 23, 42, 0.8) !important;
+                            backdrop-filter: blur(24px) saturate(180%) !important;
+                            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.15) !important;
                             border-radius: 1.5rem !important;
-                            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.65) !important;
+                            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(29, 0, 175, 0.3) !important;
+                            padding: 2.5rem 2rem !important;
+                            max-width: 28rem !important;
                             width: 100% !important;
-                            max-width: 60rem !important;
-                            margin-inline: auto !important;
-                            padding: 3rem 2.75rem 3rem calc(22rem + 2.75rem) !important;
-                            min-height: 30rem;
+                            margin: auto !important;
+                            position: relative !important;
                         }
 
-                        /* Left brand panel (pure CSS, no extra blade file) */
-                        .fi-simple-main::before {
-                            content: "Life International School\A\A Admin portal\A Manage admissions, academics and website content in one place.";
-                            white-space: pre-line;
-                            position: absolute; inset: 0 auto 0 0; width: 22rem;
-                            display: flex; flex-direction: column; justify-content: flex-end;
-                            padding: 2.5rem;
-                            color: #ffffff; font-size: 0.95rem; line-height: 1.6;
-                            background:
-                                linear-gradient(160deg, rgba(29,0,175,0.0) 40%, rgba(11,18,64,0.85)),
-                                linear-gradient(135deg, #1d00af 0%, #0b1240 100%);
-                            border-right: 6px solid #e06d64; /* the "margin line" of a notebook */
-                        }
-
-                        /* Logo sits on the paper side */
+                        /* Logo styling */
                         .fi-simple-layout img {
-                            height: 4rem !important;
+                            height: 4.5rem !important;
                             object-fit: contain !important;
-                            margin: 0 0 0.75rem 0 !important;
+                            margin: 0 auto 1.25rem auto !important;
+                            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4)) !important;
                         }
 
+                        /* Heading Title */
                         .fi-simple-header-heading,
                         .fi-simple-header h1 {
-                            color: #0b1240 !important;
+                            color: #ffffff !important;
                             font-weight: 800 !important;
                             font-size: 1.75rem !important;
                             letter-spacing: -0.02em !important;
+                            text-align: center !important;
                         }
 
-                        /* Labels */
+                        /* Form Labels */
                         .fi-fo-field-wrp-label label,
                         .fi-fo-field-wrp-label span,
                         .fi-checkbox-label,
                         label span {
-                            color: #1e293b !important;
+                            color: #e2e8f0 !important;
                             font-weight: 600 !important;
                         }
 
                         /* Inputs */
                         .fi-input-wrp {
-                            background-color: #ffffff !important;
-                            border: 1.5px solid #cbd5e1 !important;
+                            background-color: rgba(30, 41, 59, 0.8) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.2) !important;
                             border-radius: 0.75rem !important;
-                            box-shadow: none !important;
+                            color: #ffffff !important;
                         }
                         .fi-input-wrp:focus-within {
-                            border-color: #1d00af !important;
-                            box-shadow: 0 0 0 4px rgba(29,0,175,0.15) !important;
+                            border-color: #6366f1 !important;
+                            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3) !important;
                         }
-                        .fi-input-wrp input { color: #0f172a !important; background: transparent !important; }
+                        .fi-input-wrp input { color: #ffffff !important; background: transparent !important; }
 
-                        /* Button */
+                        /* Submit Button */
                         .fi-btn-primary, button[type="submit"] {
-                            background: #1d00af !important;
+                            background: linear-gradient(135deg, #2563eb 0%, #1d00af 100%) !important;
+                            border: 1px solid rgba(255, 255, 255, 0.15) !important;
                             border-radius: 0.75rem !important;
                             font-weight: 700 !important;
                             padding-top: 0.8rem !important;
                             padding-bottom: 0.8rem !important;
-                            transition: background-color .2s ease, box-shadow .2s ease !important;
+                            width: 100% !important;
+                            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.5) !important;
+                            transition: all 0.3s ease !important;
                         }
                         .fi-btn-primary:hover, button[type="submit"]:hover {
-                            background: #2a10d6 !important;
-                            box-shadow: 0 8px 18px -6px rgba(29,0,175,0.55) !important;
-                        }
-                        .fi-btn-primary:focus-visible, button[type="submit"]:focus-visible {
-                            outline: 3px solid #e06d64 !important; outline-offset: 2px !important;
-                        }
-
-                        /* Phones: drop the left panel, keep the paper card */
-                        @media (max-width: 820px) {
-                            .fi-simple-main { padding: 2rem 1.5rem !important; min-height: 0; }
-                            .fi-simple-main::before { display: none; }
+                            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+                            transform: translateY(-2px) !important;
+                            box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.7) !important;
                         }
                     </style>
                 ')
             )
             ->brandName('Life International School')
             ->brandLogo(asset('images/lis.png'))
-            ->brandLogoHeight('4rem')
+            ->brandLogoHeight('4.5rem')
             ->favicon(asset('images/logo.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
