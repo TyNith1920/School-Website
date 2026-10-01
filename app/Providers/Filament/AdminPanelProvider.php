@@ -52,17 +52,21 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-chat-bubble-left-right'),
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('3s')
+            ->databaseNotificationsPolling('30s') // កែមក 30s ឬ null ដើម្បីកុំឱ្យ Livewire Re-render ញឹកពេក
             
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn (): string => Blade::render('
                     <style>
-                        /* Sidebar Customization */
-                        aside.fi-sidebar { background-color: #0b1240 !important; }
+                        /* Sidebar styling */
+                        aside.fi-sidebar { 
+                            background-color: #0b1240 !important; 
+                        }
                         
                         aside.fi-sidebar .fi-sidebar-item-label, 
-                        aside.fi-sidebar .fi-sidebar-group-label { color: #ffffff !important; } 
+                        aside.fi-sidebar .fi-sidebar-group-label { 
+                            color: #ffffff !important; 
+                        } 
                         
                         html:not(.dark) aside.fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-button .fi-sidebar-item-label {
                             color: #0b1240 !important; 
@@ -74,7 +78,9 @@ class AdminPanelProvider extends PanelProvider
                             font-weight: 800 !important; 
                         }
 
-                        aside.fi-sidebar .fi-sidebar-item-button:hover { background-color: rgba(255, 255, 255, 0.1) !important; }
+                        aside.fi-sidebar .fi-sidebar-item-button:hover { 
+                            background-color: rgba(255, 255, 255, 0.1) !important; 
+                        }
 
                         /* Topbar & Main Canvas */
                         html:not(.dark) header.fi-topbar {
@@ -82,7 +88,9 @@ class AdminPanelProvider extends PanelProvider
                             border-bottom: 2px solid #e2e8f0 !important;
                         }
 
-                        html:not(.dark) main.fi-main { background-color: #f0f2f5 !important; }
+                        html:not(.dark) main.fi-main { 
+                            background-color: #f0f2f5 !important; 
+                        }
 
                         /* Sidebar Group Icons Colors */
                         ul.fi-sidebar-nav-items > li.fi-sidebar-item:first-child svg { color: #e06d64 !important; } 
@@ -90,47 +98,6 @@ class AdminPanelProvider extends PanelProvider
                         li.fi-sidebar-group:nth-of-type(2) button svg { color: #10b981 !important; } 
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
-
-                        /* Notification Bell Styling */
-                        .fi-topbar-database-notifications-trigger,
-                        .fi-topbar-database-notifications-trigger button {
-                            pointer-events: auto !important;
-                            cursor: pointer !important;
-                        }
-
-                        .fi-topbar-database-notifications-trigger button svg {
-                            color: #f59e0b !important;
-                            transition: transform 0.2s ease-in-out !important;
-                        }
-
-                        .fi-topbar-database-notifications-trigger button:hover svg {
-                            transform: scale(1.15) !important;
-                        }
-
-                        /* Badge Notification Badge (រង្វង់លេខក្រហម) */
-                        .fi-topbar-database-notifications-trigger .fi-badge,
-                        .fi-topbar-database-notifications-trigger span[class*="bg-"] {
-                            background-color: #ef4444 !important;
-                            color: #ffffff !important;
-                            border: none !important;
-                            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important;
-                        }
-
-                        /* 📍 FIX ធំ៖ ការពារកុំឱ្យ Modal/Drawer គាំង ឬចុចលែងកើតពេល Livewire Polling */
-                        .fi-modal,
-                        .fi-modal-window,
-                        .fi-dropdown-panel,
-                        .fi-modal-close-overlay {
-                            pointer-events: auto !important;
-                        }
-
-                        .fi-modal-close-overlay {
-                            z-index: 40 !important;
-                        }
-
-                        .fi-modal-window {
-                            z-index: 50 !important;
-                        }
                     </style>
                 ')
             )
