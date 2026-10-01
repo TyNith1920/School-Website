@@ -52,7 +52,7 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-chat-bubble-left-right'),
             ])
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s') // កែមក 30s ឬ null ដើម្បីកុំឱ្យ Livewire Re-render ញឹកពេក
+            ->databaseNotificationsPolling('30s')
             
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
@@ -99,6 +99,19 @@ class AdminPanelProvider extends PanelProvider
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
                     </style>
+
+                    <script>
+                        document.addEventListener("livewire:initialized", () => {
+                            Livewire.hook("request", ({ fail }) => {
+                                fail(({ status, preventDefault }) => {
+                                    if (status === 419) {
+                                        preventDefault();
+                                        window.location.reload();
+                                    }
+                                });
+                            });
+                        });
+                    </script>
                 ')
             )
             ->brandName('Life International School')
