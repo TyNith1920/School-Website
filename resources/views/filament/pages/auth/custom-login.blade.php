@@ -1446,7 +1446,7 @@
             <div class="lis-logo-wrapper">
 
                 <img
-                    src="{{ asset('images/lis-2.png') }}"
+                    src="{{ asset('images/lis.png') }}"
                     alt="Life International School"
                     class="lis-logo"
                 >
