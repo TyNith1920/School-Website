@@ -113,7 +113,10 @@ class AdminPanelProvider extends PanelProvider
                             border: 0 !important;
                             border-radius: 1.5rem !important;
                             box-shadow: 0 40px 80px -20px rgba(0,0,0,0.65) !important;
-                            padding: 3rem 2.75rem 3rem calc(44% + 2.75rem) !important;
+                            width: 100% !important;
+                            max-width: 60rem !important;
+                            margin-inline: auto !important;
+                            padding: 3rem 2.75rem 3rem calc(22rem + 2.75rem) !important;
                             min-height: 30rem;
                         }
 
@@ -121,7 +124,7 @@ class AdminPanelProvider extends PanelProvider
                         .fi-simple-main::before {
                             content: "Life International School\A\A Admin portal\A Manage admissions, academics and website content in one place.";
                             white-space: pre-line;
-                            position: absolute; inset: 0 auto 0 0; width: 44%;
+                            position: absolute; inset: 0 auto 0 0; width: 22rem;
                             display: flex; flex-direction: column; justify-content: flex-end;
                             padding: 2.5rem;
                             color: #ffffff; font-size: 0.95rem; line-height: 1.6;
@@ -186,7 +189,7 @@ class AdminPanelProvider extends PanelProvider
                         }
 
                         /* Phones: drop the left panel, keep the paper card */
-                        @media (max-width: 767px) {
+                        @media (max-width: 820px) {
                             .fi-simple-main { padding: 2rem 1.5rem !important; min-height: 0; }
                             .fi-simple-main::before { display: none; }
                         }
