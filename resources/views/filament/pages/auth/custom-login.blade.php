@@ -7,7 +7,7 @@
             display: none !important;
         }
 
-        /* 1. Background Sky Blue Gradient */
+        /* Background Sky Blue Gradient */
         html, body, .fi-simple-layout {
             background: radial-gradient(circle at 50% 50%, #38bdf8 0%, #0284c7 60%, #0369a1 100%) !important;
             min-height: 100vh !important;
@@ -81,7 +81,7 @@
             line-height: 1.5;
         }
 
-        /* 2. កែរចនា Input Field ឱ្យ Label នៅជាប់លើបន្ទាត់ Box Line */
+        /* កែរចនា Input Field ឱ្យ Label នៅជាប់លើបន្ទាត់ Box Line */
         .fi-fo-field-wrp {
             position: relative !important;
             margin-top: 1.25rem !important;
@@ -99,7 +99,7 @@
         }
 
         .fi-fo-field-wrp-label label span {
-            color: #0284c7 !important; /* ពណ៌ខៀវ Sky Blue */
+            color: #0284c7 !important;
             font-weight: 700 !important;
             font-size: 0.78rem !important;
             text-transform: uppercase !important;
@@ -109,7 +109,7 @@
         /* Input Container Box Line */
         .fi-input-wrp {
             background-color: transparent !important;
-            border: 2px solid #38bdf8 !important; /* បន្ទាត់ខៀវស្រាល */
+            border: 2px solid #38bdf8 !important;
             border-radius: 9999px !important;
             box-shadow: none !important;
             padding: 0.35rem 0.75rem !important;
@@ -126,7 +126,7 @@
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
         }
 
-        /* 3. Button Sign in (Sky Blue Style) */
+        /* Button Sign in */
         .fi-btn-primary, button[type="submit"] {
             background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%) !important;
             border-radius: 9999px !important;
@@ -161,7 +161,7 @@
         <!-- Form Left Side -->
         <div class="lis-login-left">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <img src="{{ asset('images/lis(2).png') }}" alt="LIS Logo" style="height: 4.5rem; margin: 0 auto;">
+                <img src="{{ asset('images/lis-2.png') }}" alt="LIS Logo" style="height: 4.5rem; width: auto; margin: 0 auto; object-fit: contain;">
             </div>
 
             <x-filament-panels::form wire:submit="authenticate">
