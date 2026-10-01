@@ -256,22 +256,24 @@
             opacity: 1 !important;
         }
 
-        /* Hide browser native eye icons */
-        .lis-login-left input::-ms-reveal,
-        .lis-login-left input::-ms-clear,
-        .lis-login-left input::-webkit-contacts-auto-fill-button,
-        .lis-login-left input::-webkit-credentials-auto-fill-button {
+        /* 10. FORCE REMOVE DUPLICATE EYE ICONS */
+        .lis-login-left input[type="password"]::-ms-reveal,
+        .lis-login-left input[type="password"]::-ms-clear,
+        .lis-login-left input[type="password"]::-webkit-contacts-auto-fill-button,
+        .lis-login-left input[type="password"]::-webkit-credentials-auto-fill-button {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
+            pointer-events: none !important;
         }
 
-        /* Prevent duplicate custom reveal buttons */
-        .lis-login-left .fi-input-suffix button ~ button {
+        .lis-login-left .fi-input-suffix button ~ button,
+        .lis-login-left .fi-input-suffix button ~ svg,
+        .lis-login-left .fi-input-suffix .fi-icon-btn ~ .fi-icon-btn {
             display: none !important;
         }
 
-        /* 10. CHROME / EDGE AUTOFILL FIX */
+        /* 11. CHROME / EDGE AUTOFILL FIX */
         .lis-login-left input:-webkit-autofill,
         .lis-login-left input:-webkit-autofill:hover,
         .lis-login-left input:-webkit-autofill:focus,
@@ -283,7 +285,7 @@
             transition: background-color 99999s ease-in-out 0s !important;
         }
 
-        /* 11. FOCUS */
+        /* 12. FOCUS */
         .lis-login-left .fi-input-wrp:hover {
             border-color: #7dd3fc !important;
         }
@@ -293,7 +295,6 @@
             box-shadow: 0 0 0 4px rgba(14,165,233,0.12) !important;
         }
 
-        /* 12. EYE TOGGLE BUTTON STYLING */
         .lis-login-left .fi-input-wrp button {
             display: flex !important;
             align-items: center !important;
@@ -309,7 +310,7 @@
             color: #0284c7 !important;
         }
 
-        /* 13. CHECKBOX (FIX CLICK & CHECKMARK DISPLAY) */
+        /* 13. CHECKBOX (REMEMBER ME CLICKABLE FIX) */
         .lis-login-left .fi-fo-checkbox-wrp,
         .lis-login-left .fi-checkbox-label,
         .lis-login-left label[for*="remember"] {

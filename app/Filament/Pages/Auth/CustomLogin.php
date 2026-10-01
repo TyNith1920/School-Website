@@ -15,12 +15,18 @@ class CustomLogin extends BaseLogin
         return $form
             ->schema([
                 $this->getEmailFormComponent()
-                    ->prefixIcon('heroicon-m-envelope'), // បន្ថែម Icon អ៊ីមែលនៅខាងឆ្វេង
+                    ->prefixIcon('heroicon-m-envelope'), // Icon សំបុត្រ/អ៊ីមែល
 
-                $this->getPasswordFormComponent()
-                    ->prefixIcon('heroicon-m-lock-closed'), // បន្ថែម Icon Password នៅខាងឆ្វេង
-                
-                $this->getRememberFormComponent(),
+                // ប្រើ TextInput ផ្ទាល់ខ្លួនដើម្បីបំបាត់ Icon ភ្នែកឌុបជាន់គ្នា
+                TextInput::make('password')
+                    ->label(__('filament-panels::pages/auth/login.form.password.label'))
+                    ->password()
+                    ->revealable() // បើកត្រឹមតែ 1 Icon របស់ Filament
+                    ->required()
+                    ->prefixIcon('heroicon-m-lock-closed') // Icon សោរ/Password
+                    ->extraInputAttributes(['data-ms-reveal' => 'false']),
+
+                $this->getRememberFormComponent(), // Remember me
             ])
             ->statePath('data');
     }
