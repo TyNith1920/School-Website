@@ -288,7 +288,7 @@
         }
 
         /* 4. Styling Toggle Button ឱ្យស្អាត */
-        .lis-login-left .fi-input-wrp .fi-input-suffix button,
+        /* .lis-login-left .fi-input-wrp .fi-input-suffix button,
         .lis-login-left .fi-input-wrp .fi-input-suffix .fi-icon-btn {
             display: inline-flex !important;
             align-items: center !important;
@@ -299,7 +299,7 @@
             color: #64748b !important;
             cursor: pointer !important;
             padding: 2px !important;
-        }
+        } */
 
         .lis-login-left .fi-input-wrp .fi-input-suffix button:hover {
             color: #0284c7 !important;
