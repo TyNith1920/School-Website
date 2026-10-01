@@ -1,5 +1,13 @@
 <x-filament-panels::page.simple>
     <style>
+        /* លាក់ Logo និងអក្សរ Sign in ដើមរបស់ Filament ខាងលើ Card */
+        .fi-simple-header, 
+        .fi-simple-header-heading, 
+        .fi-logo {
+            display: none !important;
+        }
+
+        /* Reset Background និងពង្រីក Layout ឱ្យពេញអេក្រង់ */
         body, .fi-simple-layout {
             background: #8b2fc9 !important;
             background: radial-gradient(circle at 50% 50%, #b862fe 0%, #8b2fc9 60%, #581c87 100%) !important;
@@ -8,20 +16,23 @@
             align-items: center !important;
             justify-content: center !important;
             margin: 0 !important;
+            padding: 1.5rem !important;
         }
 
+        .fi-simple-main-ctn,
         .fi-simple-main {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
-            max-width: 900px !important;
+            max-width: 960px !important; /* ពង្រីកប្រអប់ឱ្យធំល្មមស្អាត */
             width: 100% !important;
         }
 
+        /* Split Card Container */
         .lis-login-card {
             display: grid;
-            grid-template-columns: 380px 1fr;
+            grid-template-columns: 1fr 1.1fr; /* ចែកសមមាត្រឆ្វេងស្តាំស្មើគ្នាស្អាត */
             background-color: #ffffff;
             border-radius: 1.5rem;
             overflow: hidden;
@@ -30,6 +41,7 @@
             width: 100%;
         }
 
+        /* ផ្នែក Form ខាងឆ្វេង */
         .lis-login-left {
             padding: 3rem 2.5rem;
             display: flex;
@@ -38,13 +50,14 @@
             background-color: #ffffff;
         }
 
+        /* ផ្នែក Banner ខាងស្តាំ */
         .lis-login-right {
             background: linear-gradient(135deg, #7e22ce 0%, #3b0764 50%, #1e1b4b 100%);
             background-image: 
                 radial-gradient(at 80% 20%, rgba(236, 72, 153, 0.6) 0px, transparent 50%),
                 radial-gradient(at 20% 80%, rgba(56, 189, 248, 0.5) 0px, transparent 50%),
                 radial-gradient(at 50% 50%, rgba(147, 51, 234, 0.7) 0px, transparent 50%);
-            padding: 3rem;
+            padding: 3.5rem 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -66,6 +79,7 @@
             line-height: 1.5;
         }
 
+        /* រចនា Input Forms */
         .fi-input-wrp {
             background-color: #ffffff !important;
             border: 1.5px solid #ec4899 !important;
@@ -81,6 +95,7 @@
             box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2) !important;
         }
 
+        /* រចនា Button Sign in */
         .fi-btn-primary, button[type="submit"] {
             background: linear-gradient(90deg, #ec4899 0%, #d946ef 100%) !important;
             border-radius: 9999px !important;
@@ -106,6 +121,7 @@
             text-transform: uppercase !important;
         }
 
+        /* Responsive សម្រាប់ Mobile/Tablet */
         @media (max-width: 820px) {
             .lis-login-card {
                 grid-template-columns: 1fr;
@@ -120,7 +136,7 @@
         <!-- Form Left Side -->
         <div class="lis-login-left">
             <div style="text-align: center; margin-bottom: 1.5rem;">
-                <img src="{{ asset('images/lis.png') }}" alt="LIS Logo" style="height: 4rem; margin: 0 auto;">
+                <img src="{{ asset('images/lis.png') }}" alt="LIS Logo" style="height: 4.5rem; margin: 0 auto;">
             </div>
 
             <x-filament-panels::form wire:submit="authenticate">
