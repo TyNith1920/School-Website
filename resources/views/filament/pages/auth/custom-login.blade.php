@@ -1,42 +1,45 @@
 <x-filament-panels::page.simple>
     <style>
-        /* លាក់ Logo និងអក្សរ Sign in ដើមរបស់ Filament ខាងលើ Card */
+        /* លាក់ Header Logo / Heading ដើម */
         .fi-simple-header, 
         .fi-simple-header-heading, 
         .fi-logo {
             display: none !important;
         }
 
-        /* Reset Background និងពង្រីក Layout ឱ្យពេញអេក្រង់ */
-        body, .fi-simple-layout {
-            background: #8b2fc9 !important;
-            background: radial-gradient(circle at 50% 50%, #b862fe 0%, #8b2fc9 60%, #581c87 100%) !important;
+        /* 1. Background Sky Blue Gradient */
+        html, body, .fi-simple-layout {
+            background: radial-gradient(circle at 50% 50%, #38bdf8 0%, #0284c7 60%, #0369a1 100%) !important;
             min-height: 100vh !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            margin: 0 !important;
-            padding: 1.5rem !important;
         }
 
+        /* Parent Container Reset */
+        .fi-simple-layout > div,
         .fi-simple-main-ctn,
         .fi-simple-main {
             background: transparent !important;
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
-            max-width: 960px !important; /* ពង្រីកប្រអប់ឱ្យធំល្មមស្អាត */
-            width: 100% !important;
+            max-width: 960px !important;
+            width: 90% !important;
+            margin: 0 auto !important;
         }
 
         /* Split Card Container */
         .lis-login-card {
             display: grid;
-            grid-template-columns: 1fr 1.1fr; /* ចែកសមមាត្រឆ្វេងស្តាំស្មើគ្នាស្អាត */
+            grid-template-columns: 1fr 1.1fr;
             background-color: #ffffff;
             border-radius: 1.5rem;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(2, 132, 199, 0.4);
             min-height: 520px;
             width: 100%;
         }
@@ -50,19 +53,18 @@
             background-color: #ffffff;
         }
 
-        /* ផ្នែក Banner ខាងស្តាំ */
+        /* ផ្នែក Banner Sky Blue ខាងស្តាំ */
         .lis-login-right {
-            background: linear-gradient(135deg, #7e22ce 0%, #3b0764 50%, #1e1b4b 100%);
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
             background-image: 
-                radial-gradient(at 80% 20%, rgba(236, 72, 153, 0.6) 0px, transparent 50%),
-                radial-gradient(at 20% 80%, rgba(56, 189, 248, 0.5) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(147, 51, 234, 0.7) 0px, transparent 50%);
+                radial-gradient(at 80% 20%, rgba(56, 189, 248, 0.7) 0px, transparent 50%),
+                radial-gradient(at 20% 80%, rgba(14, 165, 233, 0.6) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(3, 105, 161, 0.8) 0px, transparent 50%);
             padding: 3.5rem 3rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             color: #ffffff;
-            position: relative;
         }
 
         .lis-login-right h1 {
@@ -70,58 +72,81 @@
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 1rem;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .lis-login-right p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
             line-height: 1.5;
         }
 
-        /* រចនា Input Forms */
-        .fi-input-wrp {
-            background-color: #ffffff !important;
-            border: 1.5px solid #ec4899 !important;
-            border-radius: 9999px !important;
-            box-shadow: none !important;
-            padding: 0.2rem 0.5rem !important;
-        }
-        .fi-input-wrp input {
-            color: #1e293b !important;
-        }
-        .fi-input-wrp:focus-within {
-            border-color: #d946ef !important;
-            box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2) !important;
+        /* 2. កែរចនា Input Field ឱ្យ Label នៅជាប់លើបន្ទាត់ Box Line */
+        .fi-fo-field-wrp {
+            position: relative !important;
+            margin-top: 1.25rem !important;
         }
 
-        /* រចនា Button Sign in */
+        /* រុញ Label ទៅលើបន្ទាត់ព្រំ (Box Outline Line) */
+        .fi-fo-field-wrp-label {
+            position: absolute !important;
+            top: -0.65rem !important;
+            left: 1.2rem !important;
+            z-index: 10 !important;
+            background-color: #ffffff !important;
+            padding: 0 0.4rem !important;
+            margin: 0 !important;
+        }
+
+        .fi-fo-field-wrp-label label span {
+            color: #0284c7 !important; /* ពណ៌ខៀវ Sky Blue */
+            font-weight: 700 !important;
+            font-size: 0.78rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+
+        /* Input Container Box Line */
+        .fi-input-wrp {
+            background-color: transparent !important;
+            border: 2px solid #38bdf8 !important; /* បន្ទាត់ខៀវស្រាល */
+            border-radius: 9999px !important;
+            box-shadow: none !important;
+            padding: 0.35rem 0.75rem !important;
+        }
+
+        .fi-input-wrp input {
+            color: #0f172a !important;
+            background-color: transparent !important;
+        }
+
+        /* ពេល Focus លើ Input */
+        .fi-input-wrp:focus-within {
+            border-color: #0284c7 !important;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.25) !important;
+        }
+
+        /* 3. Button Sign in (Sky Blue Style) */
         .fi-btn-primary, button[type="submit"] {
-            background: linear-gradient(90deg, #ec4899 0%, #d946ef 100%) !important;
+            background: linear-gradient(90deg, #38bdf8 0%, #0284c7 100%) !important;
             border-radius: 9999px !important;
             font-weight: 700 !important;
             padding-top: 0.75rem !important;
             padding-bottom: 0.75rem !important;
             width: 100% !important;
             color: #ffffff !important;
-            box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.5) !important;
+            box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.5) !important;
             border: none !important;
             transition: all 0.3s ease !important;
+            margin-top: 0.5rem !important;
         }
+
         .fi-btn-primary:hover, button[type="submit"]:hover {
             opacity: 0.95 !important;
             transform: translateY(-2px) !important;
-            box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.7) !important;
+            box-shadow: 0 15px 25px -5px rgba(2, 132, 199, 0.7) !important;
         }
 
-        .fi-fo-field-wrp-label label span {
-            color: #ec4899 !important;
-            font-weight: 600 !important;
-            font-size: 0.85rem !important;
-            text-transform: uppercase !important;
-        }
-
-        /* Responsive សម្រាប់ Mobile/Tablet */
         @media (max-width: 820px) {
             .lis-login-card {
                 grid-template-columns: 1fr;
@@ -135,7 +160,7 @@
     <div class="lis-login-card">
         <!-- Form Left Side -->
         <div class="lis-login-left">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
                 <img src="{{ asset('images/lis.png') }}" alt="LIS Logo" style="height: 4.5rem; margin: 0 auto;">
             </div>
 
@@ -153,7 +178,7 @@
         <div class="lis-login-right">
             <h1>Welcome.</h1>
             <p><strong>Life International School</strong><br>Admin Portal</p>
-            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.75;">
+            <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.85;">
                 Manage admissions, academics, and website content seamlessly.
             </p>
         </div>
