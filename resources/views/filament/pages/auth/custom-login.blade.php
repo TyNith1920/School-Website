@@ -27,7 +27,7 @@
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
-            max-width: 960px !important;
+            max-width: 980px !important;
             width: 90% !important;
             margin: 0 auto !important;
         }
@@ -35,7 +35,7 @@
         /* Split Card Container */
         .lis-login-card {
             display: grid;
-            grid-template-columns: 1fr 1.1fr;
+            grid-template-columns: 1.1fr 1fr;
             background-color: #ffffff;
             border-radius: 1.5rem;
             overflow: hidden;
@@ -81,7 +81,7 @@
             line-height: 1.5;
         }
 
-        /* កែរចនា Input Field ឱ្យ Label នៅជាប់លើបន្ទាត់ Box Line */
+        /* កែរចនា Input Field */
         .fi-fo-field-wrp {
             position: relative !important;
             margin-top: 1.25rem !important;
@@ -106,18 +106,23 @@
             letter-spacing: 0.05em !important;
         }
 
-        /* Input Container Box Line */
+        /* Input Container Box Line - បំបាត់ Background ប្រផេះដើម */
+        .fi-input-wrp, 
+        .fi-input-wrp > div, 
+        .fi-input-wrp input {
+            background-color: #ffffff !important;
+        }
+
         .fi-input-wrp {
-            background-color: transparent !important;
             border: 2px solid #38bdf8 !important;
             border-radius: 9999px !important;
             box-shadow: none !important;
             padding: 0.35rem 0.75rem !important;
+            overflow: hidden !important;
         }
 
         .fi-input-wrp input {
             color: #0f172a !important;
-            background-color: transparent !important;
         }
 
         /* ពេល Focus លើ Input */
@@ -161,7 +166,8 @@
         <!-- Form Left Side -->
         <div class="lis-login-left">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <img src="{{ asset('images/lis-2.png') }}" alt="LIS Logo" style="height: 4.5rem; width: auto; margin: 0 auto; object-fit: contain;">
+                <!-- បង្កើនទំហំ Logo ឱ្យធំច្បាស់ (height: 6rem) -->
+                <img src="{{ asset('images/lis-2.png') }}" alt="LIS Logo" style="height: 6rem; max-width: 100%; width: auto; margin: 0 auto; object-fit: contain;">
             </div>
 
             <x-filament-panels::form wire:submit="authenticate">
