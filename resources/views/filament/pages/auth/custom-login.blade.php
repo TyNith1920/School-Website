@@ -161,7 +161,7 @@
         <!-- Form Left Side -->
         <div class="lis-login-left">
             <div style="text-align: center; margin-bottom: 2rem;">
-                <img src="{{ asset('images/lis.png') }}" alt="LIS Logo" style="height: 4.5rem; margin: 0 auto;">
+                <img src="{{ asset('images/lis(2).png') }}" alt="LIS Logo" style="height: 4.5rem; margin: 0 auto;">
             </div>
 
             <x-filament-panels::form wire:submit="authenticate">

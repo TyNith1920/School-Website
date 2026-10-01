@@ -111,7 +111,7 @@ class AdminPanelProvider extends PanelProvider
                 ')
             )
             ->brandName('Life International School')
-            ->brandLogo(asset('images/lis.png'))
+            ->brandLogo(asset('images/lis(2).png'))
             ->brandLogoHeight('5rem')
             ->favicon(asset('images/logo.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
