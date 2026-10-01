@@ -78,8 +78,7 @@ class ContactController extends Controller
                         ->button()
                         ->url(
                             ContactResource::getUrl(
-                                'edit',
-                                ['record' => $contact],
+                                'index', // 📍 កែប្រែពី 'edit' មក 'index' ដើម្បីកុំឱ្យស្វែងរក Route ដែលមិនមាន
                                 isAbsolute: false,
                             )
                         )
