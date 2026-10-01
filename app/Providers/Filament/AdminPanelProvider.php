@@ -58,10 +58,11 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::HEAD_END,
                 fn (): string => Blade::render('
                     <style>
+                        /* Sidebar Customization */
                         aside.fi-sidebar { background-color: #0b1240 !important; }
                         
                         aside.fi-sidebar .fi-sidebar-item-label, 
-                        aside.fi-sidebar .fi-sidebar-group-label { color: #ffffff !important; }
+                        aside.fi-sidebar .fi-sidebar-group-label { color: #ffffff !important; } 
                         
                         html:not(.dark) aside.fi-sidebar .fi-sidebar-item.fi-active > .fi-sidebar-item-button .fi-sidebar-item-label {
                             color: #0b1240 !important; 
@@ -75,6 +76,7 @@ class AdminPanelProvider extends PanelProvider
 
                         aside.fi-sidebar .fi-sidebar-item-button:hover { background-color: rgba(255, 255, 255, 0.1) !important; }
 
+                        /* Topbar & Main Canvas */
                         html:not(.dark) header.fi-topbar {
                             background-color: #ffffff !important;
                             border-bottom: 2px solid #e2e8f0 !important;
@@ -82,46 +84,52 @@ class AdminPanelProvider extends PanelProvider
 
                         html:not(.dark) main.fi-main { background-color: #f0f2f5 !important; }
 
+                        /* Sidebar Group Icons Colors */
                         ul.fi-sidebar-nav-items > li.fi-sidebar-item:first-child svg { color: #e06d64 !important; } 
                         li.fi-sidebar-group:nth-of-type(1) button svg { color: #3b82f6 !important; } 
                         li.fi-sidebar-group:nth-of-type(2) button svg { color: #10b981 !important; } 
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
 
-                        /* 📍 កែប្រែ Style រូបកណ្តឹង (សំដៅចំ Class កណ្ដឹង Filament ដោយផ្ទាល់) */
-                        .fi-topbar-database-notifications-btn,
-                        .fi-topbar-database-notifications-btn svg {
-                            color: #fbd38d !important;
-                            transition: all 0.2s ease-in-out !important;
-                            cursor: pointer !important;
+                        /* Notification Bell Styling */
+                        .fi-topbar-database-notifications-trigger,
+                        .fi-topbar-database-notifications-trigger button {
                             pointer-events: auto !important;
+                            cursor: pointer !important;
                         }
 
-                        .fi-topbar-database-notifications-btn:hover svg {
+                        .fi-topbar-database-notifications-trigger button svg {
                             color: #f59e0b !important;
+                            transition: transform 0.2s ease-in-out !important;
+                        }
+
+                        .fi-topbar-database-notifications-trigger button:hover svg {
                             transform: scale(1.15) !important;
                         }
 
-                        /* 📍 ធ្វើឱ្យរង្វង់លេខ (Badge Notification) លេចពណ៌ក្រហមឆ្អៅ និងអក្សរស */
-                        .fi-topbar-database-notifications-btn .fi-badge,
-                        .fi-topbar-database-notifications-btn span[class*="bg-"] {
+                        /* Badge Notification Badge (រង្វង់លេខក្រហម) */
+                        .fi-topbar-database-notifications-trigger .fi-badge,
+                        .fi-topbar-database-notifications-trigger span[class*="bg-"] {
                             background-color: #ef4444 !important;
                             color: #ffffff !important;
                             border: none !important;
                             box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important;
                         }
 
-                        /* 📍 FIX: ធានាថា Notification Modal/Dropdown បើកមកនៅលើគេបង្អស់ */
+                        /* 📍 FIX ធំ៖ ការពារកុំឱ្យ Modal/Drawer គាំង ឬចុចលែងកើតពេល Livewire Polling */
                         .fi-modal,
+                        .fi-modal-window,
                         .fi-dropdown-panel,
-                        .fi-notifications-database-modal,
-                        div[class*="fi-modal"],
-                        div[class*="fi-dropdown-panel"] {
-                            z-index: 99999 !important;
+                        .fi-modal-close-overlay {
+                            pointer-events: auto !important;
                         }
 
                         .fi-modal-close-overlay {
-                            z-index: 99998 !important;
+                            z-index: 40 !important;
+                        }
+
+                        .fi-modal-window {
+                            z-index: 50 !important;
                         }
                     </style>
                 ')
