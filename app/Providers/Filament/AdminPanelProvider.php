@@ -109,59 +109,86 @@ class AdminPanelProvider extends PanelProvider
                         }
 
                         /* ==========================================
-                           2. FULL SCREEN DARK THEME FOR LOGIN PAGE
+                           2. FIXED PRO LOGIN PAGE STYLES
                         ========================================== */
                         html, body, .fi-layout, .fi-simple-layout {
                             background: #090d16 !important;
-                            background-image: radial-gradient(at 50% 10%, #1e1b4b 0px, transparent 60%),
-                                              radial-gradient(at 100% 100%, #0f172a 0px, transparent 50%),
-                                              radial-gradient(at 0% 0%, #020617 0px, transparent 50%) !important;
+                            background-image: radial-gradient(at 50% 10%, #1e1b4b 0px, transparent 65%),
+                                              radial-gradient(at 100% 100%, #0f172a 0px, transparent 50%) !important;
                             min-height: 100vh !important;
                         }
 
-                        /* Card Modern Glassmorphic Style */
+                        /* Modern Glass Card */
                         .fi-simple-main {
-                            background: rgba(30, 41, 59, 0.75) !important;
+                            background: rgba(20, 27, 45, 0.85) !important;
                             backdrop-filter: blur(20px) saturate(180%) !important;
                             -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
-                            border: 1px solid rgba(255, 255, 255, 0.12) !important;
-                            border-radius: 1.25rem !important;
-                            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7) !important;
-                        }
-
-                        /* Logo ភ្លឺច្បាស់ */
-                        .fi-simple-layout img {
-                            filter: brightness(0) invert(1) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.3)) !important;
-                        }
-
-                        /* Input Box Styling */
-                        .fi-input-wrp {
-                            background-color: rgba(15, 23, 42, 0.6) !important;
                             border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                            border-radius: 1.25rem !important;
+                            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(29, 0, 175, 0.25) !important;
+                            padding: 2.5rem !important;
+                        }
+
+                        /* 🌟 រក្សា Logo ដើមឱ្យច្បាស់ល្អ មិនបាច់ប្រើ Invert ទេ */
+                        .fi-simple-layout img {
+                            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)) !important;
+                            height: 4.5rem !important;
+                            object-fit: contain !important;
+                            margin: 0 auto 1rem auto !important;
+                        }
+
+                        /* 🌟 កែចំណងជើង "Sign in" ឱ្យពណ៌សភ្លឺច្បាស់ */
+                        .fi-simple-header-heading, 
+                        .fi-simple-header h1 {
+                            color: #ffffff !important;
+                            font-weight: 800 !important;
+                            letter-spacing: -0.02em !important;
+                            font-size: 1.85rem !important;
+                        }
+
+                        /* 🌟 កែ Labels (Email address, Password, Remember me) ឱ្យពណ៌សច្បាស់ */
+                        .fi-fo-field-wrp-label label, 
+                        .fi-fo-field-wrp-label span,
+                        .fi-checkbox-label,
+                        label span {
+                            color: #f1f5f9 !important;
+                            font-weight: 600 !important;
+                        }
+
+                        /* Input Box Clean Style */
+                        .fi-input-wrp {
+                            background-color: #0f172a !important;
+                            border: 1px solid rgba(255, 255, 255, 0.2) !important;
                             border-radius: 0.75rem !important;
                             color: #ffffff !important;
                         }
 
                         .fi-input-wrp:focus-within {
-                            border-color: #3b82f6 !important;
-                            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25) !important;
+                            border-color: #6366f1 !important;
+                            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.3) !important;
                         }
 
-                        /* Sign in Button Gradient */
+                        .fi-input-wrp input {
+                            color: #ffffff !important;
+                            background-color: transparent !important;
+                        }
+
+                        /* Button Style Gradient Professional */
                         .fi-btn-primary, button[type="submit"] {
                             background: linear-gradient(135deg, #2563eb 0%, #1d00af 100%) !important;
-                            border: none !important;
+                            border: 1px solid rgba(255, 255, 255, 0.15) !important;
                             border-radius: 0.75rem !important;
                             font-weight: 700 !important;
-                            padding-top: 0.75rem !important;
-                            padding-bottom: 0.75rem !important;
-                            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4) !important;
+                            padding-top: 0.8rem !important;
+                            padding-bottom: 0.8rem !important;
+                            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.5) !important;
                             transition: all 0.3s ease !important;
                         }
 
                         .fi-btn-primary:hover, button[type="submit"]:hover {
+                            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
                             transform: translateY(-2px) !important;
-                            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6) !important;
+                            box-shadow: 0 15px 25px -5px rgba(37, 99, 235, 0.7) !important;
                         }
                     </style>
                 ')
