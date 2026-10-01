@@ -256,57 +256,52 @@
             opacity: 1 !important;
         }
 
-        /* 10. FORCE REMOVE DUPLICATE EYE ICONS */
-        .lis-login-left input[type="password"]::-ms-reveal,
-        .lis-login-left input[type="password"]::-ms-clear,
-        .lis-login-left input[type="password"]::-webkit-contacts-auto-fill-button,
-        .lis-login-left input[type="password"]::-webkit-credentials-auto-fill-button {
+        /* =========================================================
+           FORCE HIDE DUPLICATE EYE ICONS (FILAMENT V3 FIX)
+        ========================================================= */
+
+        /* 1. បិទ Browser Native Eye Icon ទាំងអស់ (Edge / Chrome / Safari) */
+        .lis-login-left input::-ms-reveal,
+        .lis-login-left input::-ms-clear,
+        .lis-login-left input::-webkit-contacts-auto-fill-button,
+        .lis-login-left input::-webkit-credentials-auto-fill-button {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
+            opacity: 0 !important;
             pointer-events: none !important;
         }
 
-        .lis-login-left .fi-input-suffix button ~ button,
-        .lis-login-left .fi-input-suffix button ~ svg,
-        .lis-login-left .fi-input-suffix .fi-icon-btn ~ .fi-icon-btn {
+        /* 2. រៀបចំ Suffix Container */
+        .lis-login-left .fi-input-wrp .fi-input-suffix {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* 3. លុប Icon ឬ Button ណាដែលលើសក្នុង Suffix (ទុកតែ ១ គត់) */
+        .lis-login-left .fi-input-wrp .fi-input-suffix button ~ button,
+        .lis-login-left .fi-input-wrp .fi-input-suffix button ~ svg,
+        .lis-login-left .fi-input-wrp .fi-input-suffix svg ~ svg,
+        .lis-login-left .fi-input-wrp .fi-input-suffix .fi-icon-btn ~ .fi-icon-btn {
             display: none !important;
         }
 
-        /* 11. CHROME / EDGE AUTOFILL FIX */
-        .lis-login-left input:-webkit-autofill,
-        .lis-login-left input:-webkit-autofill:hover,
-        .lis-login-left input:-webkit-autofill:focus,
-        .lis-login-left input:-webkit-autofill:active {
-            -webkit-text-fill-color: #0f172a !important;
-            caret-color: #0f172a !important;
-            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
-            box-shadow: 0 0 0 1000px #ffffff inset !important;
-            transition: background-color 99999s ease-in-out 0s !important;
-        }
-
-        /* 12. FOCUS */
-        .lis-login-left .fi-input-wrp:hover {
-            border-color: #7dd3fc !important;
-        }
-
-        .lis-login-left .fi-input-wrp:focus-within {
-            border-color: #0284c7 !important;
-            box-shadow: 0 0 0 4px rgba(14,165,233,0.12) !important;
-        }
-
-        .lis-login-left .fi-input-wrp button {
-            display: flex !important;
+        /* 4. Styling Toggle Button ឱ្យស្អាត */
+        .lis-login-left .fi-input-wrp .fi-input-suffix button,
+        .lis-login-left .fi-input-wrp .fi-input-suffix .fi-icon-btn {
+            display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             background: transparent !important;
             border: none !important;
-            color: #64748b !important;
             box-shadow: none !important;
+            color: #64748b !important;
             cursor: pointer !important;
+            padding: 2px !important;
         }
 
-        .lis-login-left .fi-input-wrp button:hover {
+        .lis-login-left .fi-input-wrp .fi-input-suffix button:hover {
             color: #0284c7 !important;
         }
 
