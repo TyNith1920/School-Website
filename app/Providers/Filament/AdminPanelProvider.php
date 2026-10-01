@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\CustomLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(CustomLogin::class)
             ->colors([
                 'primary' => Color::hex('#1d00af'), 
                 'danger'  => Color::Rose,    
@@ -87,7 +88,7 @@ class AdminPanelProvider extends PanelProvider
                         li.fi-sidebar-group:nth-of-type(3) button svg { color: #f59e0b !important; } 
                         li.fi-sidebar-group:nth-of-type(4) button svg { color: #8b5cf6 !important; } 
 
-                       /* 📍 ធ្វើឱ្យរូបកណ្តឹងលេចពណ៌ច្បាស់ (ពណ៌លឿង/មាស) */
+                        /* 📍 ធ្វើឱ្យរូបកណ្តឹងលេចពណ៌ច្បាស់ (ពណ៌លឿង/មាស) */
                         header.fi-topbar button svg {
                             color: #fbd38d !important; /* ពណ៌លឿងស្រាល ឱ្យងាយឃើញ */
                             transition: all 0.2s ease-in-out !important;
