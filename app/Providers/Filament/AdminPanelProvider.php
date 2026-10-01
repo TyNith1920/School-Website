@@ -106,7 +106,7 @@ class AdminPanelProvider extends PanelProvider
                                 fail(({ status, preventDefault }) => {
                                     if (status === 419) {
                                         preventDefault();
-                                        window.location.reload();
+                                        window.location.href = "/admin/login";
                                     }
                                 });
                             });
