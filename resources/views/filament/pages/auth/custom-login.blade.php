@@ -1377,6 +1377,53 @@
             }
         }
 
+                /* =========================================================
+        FIX FILAMENT FIELD LABELS
+        ========================================================= */
+
+        .lis-login-left .fi-fo-field-wrp-label {
+            position: absolute !important;
+            top: -10px !important;
+            left: 18px !important;
+
+            display: block !important;
+
+            width: auto !important;
+            height: auto !important;
+
+            padding: 0 8px !important;
+
+            background: #ffffff !important;
+
+            z-index: 999 !important;
+        }
+
+        .lis-login-left .fi-fo-field-wrp-label label {
+            display: block !important;
+            background: #ffffff !important;
+        }
+
+        .lis-login-left .fi-fo-field-wrp-label label span {
+            display: inline !important;
+
+            color: #0369a1 !important;
+
+            background: #ffffff !important;
+
+            font-size: 12px !important;
+
+            font-weight: 800 !important;
+
+            letter-spacing: 0.04em !important;
+        }
+
+        /* Required star */
+        .lis-login-left
+        .fi-fo-field-wrp-label
+        .fi-fo-field-wrp-required-indicator {
+            color: #ef4444 !important;
+        }
+
     </style>
 
 
