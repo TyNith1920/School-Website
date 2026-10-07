@@ -93,11 +93,12 @@
         </div>
     </section>
 
-    {{-- 💳 2. Tuition Fee Card Boxes (ទម្រង់ប្រអប់ធំៗ ងាយស្រួលមើល) --}}
-    <main class="max-w-7xl mx-auto px-6 py-14">
+    {{-- 💳 2. Tuition Fee Card Boxes (កែប្រែដំឡើង grid-cols-4 លើ Screen ធំ) --}}
+    <main class="max-w-[92rem] mx-auto px-4 sm:px-6 py-14">
         
         @if(count($tuitionFees) > 0)
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {{-- ⭐️ កែសម្រួល Grid៖ grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @foreach($tuitionFees as $fee)
                     @php
                         $theme = $themes[$fee->theme_color] ?? $themes['yellow'];
@@ -108,79 +109,79 @@
                          x-transition:enter="transition ease-out duration-300"
                          x-transition:enter-start="opacity-0 translate-y-3"
                          x-transition:enter-end="opacity-100 translate-y-0"
-                         class="bg-white rounded-[2.2rem] border-2 border-slate-200/90 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden">
+                         class="bg-white rounded-[2rem] border-2 border-slate-200/90 shadow-[0_15px_35px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_50px_rgba(15,23,42,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden">
                         
                         <div>
                             {{-- Card Top Strip --}}
                             <div class="h-2.5 w-full" style="background-color: {{ $theme['accent'] }};"></div>
 
                             {{-- Card Header --}}
-                            <div class="p-7 pb-4">
-                                <div class="flex items-center justify-between gap-3 mb-3">
-                                    <span class="inline-block px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider border {{ $theme['tag'] }}">
+                            <div class="p-5 pb-3">
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    <span class="inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border truncate {{ $theme['tag'] }}">
                                         {{ $fee->category }}
                                     </span>
-                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center border" style="background-color: {{ $theme['soft'] }}; color: {{ $theme['dark'] }}; border-color: {{ $theme['border'] }};">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                    <div class="w-9 h-9 rounded-xl flex items-center justify-center border shrink-0" style="background-color: {{ $theme['soft'] }}; color: {{ $theme['dark'] }}; border-color: {{ $theme['border'] }};">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                     </div>
                                 </div>
 
-                                <h3 class="text-2xl font-black text-[#081747] uppercase tracking-tight">
+                                <h3 class="text-xl font-black text-[#081747] uppercase tracking-tight line-clamp-1">
                                     {{ $fee->program_name }}
                                 </h3>
 
                                 @if(filled($fee->time_schedule))
-                                    <div class="mt-3 flex items-center gap-2 text-xs font-bold text-slate-600 bg-slate-100 rounded-xl px-3.5 py-2">
-                                        <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    <div class="mt-2.5 flex items-center gap-2 text-[11px] font-bold text-slate-600 bg-slate-100 rounded-xl px-3 py-1.5">
+                                        <svg class="w-3.5 h-3.5 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                         <span class="truncate">{{ $fee->time_schedule }}</span>
                                     </div>
                                 @endif
                             </div>
 
                             {{-- Monthly Tuition Highlight Box --}}
-                            <div class="px-7 py-3">
-                                <div class="p-6 rounded-2xl text-center border-2" style="background-color: {{ $theme['soft'] }}; border-color: {{ $theme['border'] }};">
-                                    <span class="text-xs font-black uppercase tracking-[0.2em] text-slate-500 block">Monthly Tuition</span>
-                                    <div class="text-5xl font-black tracking-tight mt-1" style="color: {{ $theme['dark'] }};">
+                            <div class="px-5 py-2">
+                                <div class="p-5 rounded-2xl text-center border-2" style="background-color: {{ $theme['soft'] }}; border-color: {{ $theme['border'] }};">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 block">Monthly Tuition</span>
+                                    <div class="text-4xl sm:text-5xl font-black tracking-tight mt-1" style="color: {{ $theme['dark'] }};">
                                         {{ $fee->monthly_fee }}
                                     </div>
-                                    <span class="text-xs text-slate-500 font-bold block mt-1">Due on 1st of every month</span>
+                                    <span class="text-[10px] text-slate-500 font-bold block mt-1">Due on 1st of every month</span>
                                 </div>
                             </div>
 
-                            {{-- 📍 Additional Breakdown Fees (អក្សរធំ និងច្បាស់) --}}
-                            <div class="p-7 pt-3 space-y-3">
+                            {{-- 📍 Additional Breakdown Fees (កែសម្រួល Flexbox ការពារ Text ជាន់គ្នា) --}}
+                            <div class="p-5 pt-2 space-y-2.5">
                                 
                                 {{-- Annual Fee --}}
                                 @if(filled($fee->annual_fee))
-                                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                                        <div class="flex items-center gap-2.5">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
-                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">Annual Tuition</span>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                                        <div class="flex items-center gap-2 flex-1 min-w-0 pr-2">
+                                            <span class="w-2 h-2 rounded-full bg-blue-600 shrink-0"></span>
+                                            <span class="text-xs font-bold text-slate-700 uppercase tracking-wide truncate">Annual Tuition</span>
                                         </div>
-                                        <span class="text-lg font-black text-slate-900">{{ $fee->annual_fee }}</span>
+                                        <span class="text-base font-black text-slate-900 shrink-0 whitespace-nowrap ml-2">{{ $fee->annual_fee }}</span>
                                     </div>
                                 @endif
 
                                 {{-- Lunch Fee --}}
                                 @if(filled($fee->lunch_fee))
-                                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                                        <div class="flex items-center gap-2.5">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">{{ $fee->lunch_fee_label ?: 'Lunch / Snack' }}</span>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                                        <div class="flex items-center gap-2 flex-1 min-w-0 pr-2">
+                                            <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                                            <span class="text-xs font-bold text-slate-700 uppercase tracking-wide truncate">{{ $fee->lunch_fee_label ?: 'Lunch / Snack' }}</span>
                                         </div>
-                                        <span class="text-lg font-black text-slate-900">{{ $fee->lunch_fee }}</span>
+                                        <span class="text-base font-black text-slate-900 shrink-0 whitespace-nowrap ml-2">{{ $fee->lunch_fee }}</span>
                                     </div>
                                 @endif
 
                                 {{-- After School Fee --}}
                                 @if(filled($fee->after_school_fee))
-                                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-                                        <div class="flex items-center gap-2.5">
-                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                                            <span class="text-sm font-bold text-slate-700 uppercase tracking-wide">After School Club</span>
+                                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
+                                        <div class="flex items-center gap-2 flex-1 min-w-0 pr-2">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                            <span class="text-xs font-bold text-slate-700 uppercase tracking-wide truncate">After School Club</span>
                                         </div>
-                                        <span class="text-lg font-black text-slate-900">{{ $fee->after_school_fee }}</span>
+                                        <span class="text-base font-black text-slate-900 shrink-0 whitespace-nowrap ml-2">{{ $fee->after_school_fee }}</span>
                                     </div>
                                 @endif
 
@@ -188,9 +189,9 @@
                         </div>
 
                         {{-- Apply Button --}}
-                        <div class="p-7 pt-0">
+                        <div class="p-5 pt-0">
                             <a href="{{ url('/enrollment') }}" 
-                               class="w-full inline-flex items-center justify-center gap-2 py-4 px-6 rounded-xl text-sm font-black uppercase tracking-wider text-white shadow-md transition-all hover:brightness-95 {{ $theme['btn'] }}">
+                               class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-xs font-black uppercase tracking-wider text-white shadow-md transition-all hover:brightness-95 {{ $theme['btn'] }}">
                                 <span>Apply for This Program</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7m0 0l-7 7m7-7H3"/></svg>
                             </a>
