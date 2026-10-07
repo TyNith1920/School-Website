@@ -41,7 +41,8 @@
 
     {{-- 🎨 1. Top Navigation Bar (Sticky & Clean Glassmorphism) --}}
     <nav class="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-md transition-all py-4">
-        <div class="mx-auto max-w-7xl px-5 md:px-8 flex items-center justify-between gap-4">
+        {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] --}}
+        <div class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12 flex items-center justify-between gap-4">
             
             {{-- Back Button --}}
             <a href="{{ url('/student-life') }}" 
@@ -73,8 +74,9 @@
 
     {{-- 🌟 2. Gallery Header Banner --}}
     <header class="relative overflow-hidden bg-white border-b border-slate-200 pt-12 pb-10">
-        <div class="mx-auto max-w-7xl px-5 md:px-8">
-            <div class="max-w-3xl">
+        {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] --}}
+        <div class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12">
+            <div class="max-w-4xl">
                 
                 {{-- Category Pill --}}
                 <div data-aos="fade-down" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-black uppercase tracking-widest mb-4">
@@ -100,11 +102,12 @@
     </header>
 
     {{-- 📸 3. Photo Exhibition Grid (Masonry Columns) --}}
-    <main class="mx-auto max-w-7xl px-5 md:px-8 py-12 md:py-16">
+    {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] --}}
+    <main class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12 py-12 md:py-16">
         @if(count($galleryImages) > 0)
-            <div class="columns-1 sm:columns-2 lg:columns-3 gap-7 [column-fill:_balance] space-y-7">
+            <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-7 [column-fill:_balance] space-y-7">
                 @foreach($galleryImages as $index =>$image)
-                    <figure data-aos="fade-up" data-aos-delay="{{ ($index % 3) * 100 }}"
+                    <figure data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}"
                             onclick="openStudentLightbox({{ $index }})"
                             class="group relative break-inside-avoid overflow-hidden rounded-[2rem] bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-1.5 cursor-pointer">
                         

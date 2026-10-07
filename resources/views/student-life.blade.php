@@ -33,7 +33,8 @@
         <div class="absolute -top-24 right-1/4 h-80 w-80 rounded-full bg-amber-400/10 blur-3xl pointer-events-none"></div>
         <div class="absolute top-1/2 -left-20 h-72 w-72 rounded-full bg-blue-400/10 blur-3xl pointer-events-none"></div>
 
-        <div class="relative z-10 mx-auto max-w-7xl px-6 md:px-10 text-center">
+        {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] --}}
+        <div class="relative z-10 mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12 text-center">
             
             {{-- Category Pill --}}
             <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200/80 text-amber-700 text-xs font-black uppercase tracking-[0.2em] shadow-xs mb-6">
@@ -48,7 +49,7 @@
 
             <div data-aos="zoom-in" data-aos-delay="150" class="mx-auto mt-4 mb-6 h-1.5 w-24 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 shadow-sm"></div>
 
-            {{-- 📍 កែសម្រួលអត្ថបទ Subtitle ថ្មីតាមការស្នើសុំ --}}
+            {{-- Subtitle --}}
             <p data-aos="fade-up" data-aos-delay="200" class="mx-auto max-w-2xl text-base sm:text-lg md:text-xl text-slate-600 font-normal leading-relaxed">
                 {{ __('Discover the activities, celebrations and experiences that make student life at LIS truly special.') }}
             </p>
@@ -107,7 +108,8 @@
     </section>
 
     {{-- 🌟 ៣. Activities Gallery Showcase --}}
-    <main class="mx-auto max-w-7xl px-6 md:px-10 py-14 md:py-20">
+    {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] --}}
+    <main class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12 py-12 md:py-16">
 
         @if($allActivities->isNotEmpty())
 
@@ -119,12 +121,12 @@
                     $leadCount = count($leadGallery);
                 @endphp
 
-                <div data-aos="fade-up" class="mb-20">
+                <div data-aos="fade-up" class="mb-16 sm:mb-20">
                     <div class="overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.06)] hover:shadow-2xl transition-all duration-500">
                         <div class="grid grid-cols-1 lg:grid-cols-12 items-stretch">
                             
                             {{-- Image Side --}}
-                            <div class="relative lg:col-span-7 min-h-[360px] md:min-h-[460px] bg-slate-900 overflow-hidden group">
+                            <div class="relative lg:col-span-7 xl:col-span-8 min-h-[360px] md:min-h-[460px] bg-slate-900 overflow-hidden group">
                                 @if($leadActivity->image)
                                     <img src="{{ $getMediaUrl($leadActivity->image) }}" alt="{{ $leadActivity->title }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
                                 @endif
@@ -135,14 +137,14 @@
 
                                 @if($leadCount > 0)
                                     <div class="absolute bottom-6 left-6 bg-black/60 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-white text-xs font-bold shadow-lg flex items-center gap-2">
-                                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                         {{ $leadCount }} {{ __('Full Album Photos') }}
                                     </div>
                                 @endif
                             </div>
 
                             {{-- Content Side --}}
-                            <div class="lg:col-span-5 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
+                            <div class="lg:col-span-5 xl:col-span-4 p-8 sm:p-10 lg:p-12 flex flex-col justify-between">
                                 <div>
                                     <div class="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-600 mb-3">
                                         <span class="w-2 h-2 rounded-full bg-amber-500"></span>
