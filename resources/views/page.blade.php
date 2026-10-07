@@ -72,7 +72,7 @@
     @keydown.escape.window="lightboxOpen && closeLightbox()"
     @keydown.arrow-left.window="lightboxOpen && previousImage()"
     @keydown.arrow-right.window="lightboxOpen && nextImage()"
-    class="min-h-screen bg-[#f8fafc]"
+    class="min-h-screen bg-[#f8fafc] w-full"
 >
     {{-- 🌟 1. Cinema Academic Hero Banner ជាមួយ Auto Slideshow (លោតរូបម្តងមួយៗ) --}}
     <section 
@@ -95,10 +95,10 @@
         x-init="start()"
         @mouseenter="stop()"
         @mouseleave="start()"
-        class="relative isolate min-h-[540px] md:min-h-[640px] flex items-center overflow-hidden bg-[#061238]"
+        class="relative isolate min-h-[540px] md:min-h-[640px] flex items-center overflow-hidden bg-[#061238] w-full"
     >
         
-        {{-- 📍 កន្លែងបង្ហាញរូបភាព Slide ម្តងមួយៗ (Smooth Cross-Fade) --}}
+        {{-- 📍 កន្លែងបង្ហាញរូបភាព Slide ម្តងមួយៗ --}}
         @if(count($bannerSlides) > 0)
             <div class="absolute inset-0 z-0">
                 <template x-for="(img, idx) in slides" :key="idx">
@@ -118,12 +118,12 @@
             <div class="absolute inset-0 bg-gradient-to-br from-[#081747] via-[#102c74] to-[#1d4ed8]"></div>
         @endif
 
-        {{-- Cinematic Vignette Overlay (ជួយឱ្យអក្សរច្បាស់ត្រជាក់ភ្នែក មិនបាំងរូបភាព) --}}
+        {{-- Cinematic Vignette Overlay --}}
         <div class="absolute inset-0 bg-gradient-to-r from-[#061238]/90 via-[#061238]/50 to-transparent z-10 pointer-events-none"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-[#061238]/90 via-transparent to-black/30 z-10 pointer-events-none"></div>
 
-        <div class="relative z-20 mx-auto w-full max-w-7xl px-6 pt-16 pb-28 md:px-12 md:pb-36">
-            <div class="max-w-3xl">
+        <div class="relative z-20 w-full px-6 pt-16 pb-28 md:px-12 md:pb-36">
+            <div class="max-w-4xl">
                 
                 {{-- Breadcrumb --}}
                 <div data-aos="fade-down" class="mb-6 inline-flex flex-wrap items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs md:text-sm font-semibold text-blue-100 backdrop-blur-md shadow-xs">
@@ -171,7 +171,7 @@
             </div>
         </div>
 
-        {{-- 📍 Dual-Layer Rich Metallic Gold Wave Transition --}}
+        {{-- Dual-Layer Metallic Gold Wave Transition --}}
         <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
             <svg class="relative block w-full h-14 sm:h-18 md:h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <defs>
@@ -190,11 +190,11 @@
     </section>
 
     {{-- 📖 2. Main Content --}}
-    <main class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+    <main class="w-full px-6 md:px-12 py-16 md:py-24">
         
         @if($hasContent)
-            <article data-aos="fade-up" class="mb-20 overflow-hidden rounded-[2.5rem] border border-slate-200/90 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.06)]">
-                <div class="grid grid-cols-1 lg:grid-cols-[300px_1fr]">
+            <article data-aos="fade-up" class="mb-20 overflow-hidden rounded-[2.5rem] border border-slate-200/90 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.06)] w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-[320px_1fr]">
                     
                     {{-- Left Sidebar Card --}}
                     <div class="relative overflow-hidden bg-gradient-to-br from-[#081747] to-[#122e70] p-8 text-white md:p-10 flex flex-col justify-between">
@@ -223,9 +223,9 @@
             </article>
         @endif
 
-        {{-- 🖼️ 3. Gallery Grid --}}
+        {{-- 🖼️ 3. Photo Gallery Grid --}}
         @if(count($galleryImages) > 0)
-            <div>
+            <div class="w-full">
                 <div data-aos="fade-right" class="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                     <div>
                         <span class="text-xs font-black uppercase tracking-widest text-amber-600">Learning in Action</span>
@@ -238,14 +238,15 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {{-- កែប្រែ Grid ឱ្យបង្ហាញ 4 ឬ 3 Columns តាមទំហំ Screen ដើម្បីឱ្យរូបទាំងអស់លាតសន្ធឹងពេញស្អាត --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
                     @foreach($galleryImages as $index => $image)
                         <button
                             data-aos="zoom-in"
-                            data-aos-delay="{{ ($index % 3) * 100 }}"
+                            data-aos-delay="{{ ($index % 4) * 100 }}"
                             type="button"
                             @click="openLightbox({{ $index }})"
-                            class="group relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-slate-200 text-left shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl border-2 border-white"
+                            class="group relative w-full aspect-[4/3] overflow-hidden rounded-[2rem] bg-slate-200 text-left shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl border-2 border-white"
                         >
                             <img src="{{ $image }}" alt="{{ $pageTitle }} gallery {{ $index + 1 }}" loading="lazy" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
                             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-50 transition-opacity duration-300 group-hover:opacity-90"></div>
