@@ -25,10 +25,10 @@
     // មុខងារទាញយករូបភាពទាំងអស់ជា Array សុទ្ធ
     $extractNewsImages = function($item) use ($getMediaUrl) {
         $images = [];
-        $rawImages =$item->image ?? null;
+        $rawImages = $item->image ?? null;
 
         if (is_array($rawImages)) {
-            foreach ($rawImages as$img) {
+            foreach ($rawImages as $img) {
                 if ($url = $getMediaUrl($img)) $images[] =$url;
             }
         } elseif (is_string($rawImages)) {
@@ -55,7 +55,8 @@
 
     {{-- Clean Editorial Header --}}
     <header class="border-b border-slate-200 bg-white pt-10 sm:pt-12 pb-7 sm:pb-8">
-        <div class="mx-auto max-w-7xl px-5 md:px-8">
+        {{-- 💡 កែប្រែពី max-w-7xl ទៅ max-w-[1536px] ដើម្បីអោយ Header ធំពេញអេក្រង់ --}}
+        <div class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12">
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-xs font-black uppercase tracking-widest mb-3">
@@ -65,7 +66,7 @@
                     <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#081747]">
                         News <span class="text-orange-500">&</span> Events
                     </h1>
-                    <p class="mt-3 text-sm sm:text-base text-slate-500 max-w-xl font-normal leading-relaxed">
+                    <p class="mt-3 text-sm sm:text-base text-slate-500 max-w-2xl font-normal leading-relaxed">
                         Stay connected with daily moments, academic milestones, and inspiring stories from our vibrant school community.
                     </p>
                 </div>
@@ -89,16 +90,17 @@
         </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
+    {{-- 💡 កែប្រែ Container ធំរហូតដល់ 1536px (2XL Screens) --}}
+    <main class="mx-auto max-w-[1536px] px-4 sm:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
 
         @if($featuredNews)
-            {{-- 🌟 Featured Story ជាមួយ Auto-Slide Carousel --}}
+            {{-- 🌟 Featured Story --}}
             <section data-aos="fade-up" class="mb-12 sm:mb-16">
                 <div class="group relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_15px_40px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_50px_rgba(30,64,175,0.1)] transition-all duration-500">
                     <div class="grid grid-cols-1 lg:grid-cols-12 items-stretch">
                         
                         {{-- Featured Image Slider --}}
-                        <div class="relative lg:col-span-7 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto overflow-hidden bg-slate-950 w-full"
+                        <div class="relative lg:col-span-7 xl:col-span-8 min-h-[350px] sm:min-h-[450px] lg:min-h-[500px] overflow-hidden bg-slate-950 w-full"
                              x-data="{ 
                                 current: 0, 
                                 slides: @js($featuredImages),
@@ -129,11 +131,11 @@
                                          x-transition:leave="transition ease-in duration-500 absolute inset-0"
                                          x-transition:leave-start="opacity-100 scale-100"
                                          x-transition:leave-end="opacity-0 scale-98"
-                                         class="h-full w-full object-cover object-center" 
+                                         class="h-full w-full object-cover object-center absolute inset-0" 
                                          loading="lazy">
                                 </template>
                             @else
-                                <div class="flex h-full w-full min-h-[260px] items-center justify-center bg-blue-900 text-blue-200">Featured Story</div>
+                                <div class="flex h-full w-full items-center justify-center bg-blue-900 text-blue-200">Featured Story</div>
                             @endif
 
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
@@ -181,7 +183,7 @@
                         </div>
 
                         {{-- Featured Content --}}
-                        <div class="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                        <div class="lg:col-span-5 xl:col-span-4 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-white">
                             <div>
                                 <div class="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
                                     <span class="text-orange-500 font-black">Life International School</span>
@@ -189,12 +191,12 @@
                                     <span>{{ $featuredNews->created_at?->format('Y') ?? date('Y') }}</span>
                                 </div>
 
-                                <h2 class="text-xl sm:text-2xl lg:text-3xl font-black leading-snug text-[#081747] group-hover:text-blue-700 transition-colors">
+                                <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-black leading-snug text-[#081747] group-hover:text-blue-700 transition-colors">
                                     {{ $featuredNews->title }}
                                 </h2>
 
-                                <p class="mt-3 sm:mt-4 text-xs sm:text-sm sm:leading-relaxed text-slate-600 line-clamp-3 sm:line-clamp-4">
-                                    {!! Str::limit(strip_tags($featuredNews->description), 200) !!}
+                                <p class="mt-3 sm:mt-4 text-xs sm:text-sm sm:leading-relaxed text-slate-600 line-clamp-4 lg:line-clamp-6">
+                                    {!! Str::limit(strip_tags($featuredNews->description), 250) !!}
                                 </p>
                             </div>
 
@@ -205,7 +207,7 @@
                                     data-title="{{ $featuredNews->title }}"
                                     data-link="{{ $featuredNews->link ?? '' }}"
                                     data-date="{{ $featuredNews->created_at?->format('F d, Y') ?? '' }}"
-                                    class="inline-flex items-center gap-2 bg-[#081747] hover:bg-orange-500 text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-3 rounded-xl shadow-xs hover:-translate-y-0.5 transition-all">
+                                    class="inline-flex items-center gap-2 bg-[#081747] hover:bg-orange-500 text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl shadow-xs hover:-translate-y-0.5 transition-all">
                                     <span>Read Full Article</span>
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </button>
@@ -219,11 +221,11 @@
             </section>
         @endif
 
-        {{-- Regular News Grid --}}
+        {{-- Regular News Grid (3 Columns on Large Screens) --}}
         @if($regularNews->count() > 0)
             <div class="mb-8 flex items-center justify-between">
-                <h3 class="text-xl sm:text-2xl font-black uppercase text-[#081747]">More Stories & Happenings</h3>
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">{{ $regularNews->count() }} More Updates</span>
+                <h3 class="text-xl sm:text-2xl lg:text-3xl font-black uppercase text-[#081747]">More Stories & Happenings</h3>
+                <span class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-400">{{ $regularNews->count() }} More Updates</span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -251,32 +253,32 @@
 
                             @if(count($itemImages) > 1)
                                 <div class="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-white text-[10px] sm:text-[11px] font-bold flex items-center gap-1 border border-white/20">
-                                    <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                     <span>{{ count($itemImages) }} Photos</span>
                                 </div>
                             @endif
                         </div>
 
                         {{-- Card Body --}}
-                        <div class="flex flex-1 flex-col p-5 sm:p-7 justify-between">
+                        <div class="flex flex-1 flex-col p-6 sm:p-7 justify-between">
                             <div>
                                 <span class="text-[11px] font-bold uppercase tracking-wider text-blue-600">News Release</span>
                                 <h4 class="mt-1.5 text-base sm:text-lg font-black text-[#081747] line-clamp-2 leading-snug group-hover:text-orange-500 transition-colors">
                                     {{ $news->title }}
                                 </h4>
                                 <p class="mt-2.5 text-xs sm:text-sm text-slate-500 line-clamp-3 leading-relaxed">
-                                    {!! Str::limit(strip_tags($news->description), 120) !!}
+                                    {!! Str::limit(strip_tags($news->description), 140) !!}
                                 </p>
                             </div>
 
-                            <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                                 <button type="button" 
                                     onclick="openModal(this)"
                                     data-images='@json($itemImages)'
                                     data-title="{{ $news->title }}"
                                     data-link="{{ $news->link ?? '' }}"
                                     data-date="{{ $news->created_at?->format('F d, Y') ?? '' }}"
-                                    class="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#081747] group-hover:text-orange-500 transition-colors">
+                                    class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-black uppercase tracking-wider text-[#081747] group-hover:text-orange-500 transition-colors">
                                     <span>Read Story</span>
                                     <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                                 </button>
@@ -303,16 +305,16 @@
 
 </div>
 
-{{-- 🔍 Dynamic News Modal ជាមួយ Multi-image Navigation --}}
+{{-- 🔍 Dynamic News Modal --}}
 <div id="newsModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/80 p-3 sm:p-4 opacity-0 backdrop-blur-md transition-opacity duration-300" aria-hidden="true">
-    <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[92vh] w-full max-w-4xl scale-95 overflow-y-auto rounded-[2rem] sm:rounded-[2.5rem] bg-white shadow-2xl transition-transform duration-300">
+    <div id="modalContent" role="dialog" aria-modal="true" class="relative max-h-[92vh] w-full max-w-5xl scale-95 overflow-y-auto rounded-[2rem] sm:rounded-[2.5rem] bg-white shadow-2xl transition-transform duration-300">
         
         <button id="modalCloseButton" type="button" onclick="closeModal()" aria-label="Close" class="absolute right-4 top-4 sm:right-5 sm:top-5 z-30 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-slate-900/60 text-white hover:bg-orange-500 transition-colors shadow-md">
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
         {{-- Modal Image Slider --}}
-        <div class="relative aspect-[4/3] sm:aspect-[16/9] w-full overflow-hidden bg-slate-950" id="modalImageContainer">
+        <div class="relative aspect-[16/9] w-full overflow-hidden bg-slate-950" id="modalImageContainer">
             <img id="modalImage" src="" alt="" class="h-full w-full object-contain">
             
             <button type="button" id="modalPrevBtn" class="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-orange-500 text-white flex items-center justify-center transition-colors">
