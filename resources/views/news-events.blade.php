@@ -5,23 +5,26 @@
 @section('content')
 
 @php
-    // 📍 មុខងារទាញយករូបភាពពី R2 ដែលគាំទ្រទាំង String និង Array
+    // 📍 មុខងារទាញយករូបភាពពី R2 / S3 ដែលគាំទ្រទាំង String និង Array
     $getMediaUrl = function($path) use (&$getMediaUrl) {
         if (empty($path)) return null;
         if (is_array($path)) {
             $first = reset($path);
             return $getMediaUrl($first);
         }
-        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) return$path;
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
         try { 
             return \Storage::disk('s3')->url($path); 
         } catch (\Exception $e) { 
-            return asset('storage/' . $path); 
+            return asset('storage/' . ltrim($path, '/')); 
         }
     };
 
     // មុខងារទាញយករូបភាពទាំងអស់ជា Array សុទ្ធ
-    $extractNewsImages = function($item) use ($getMediaUrl) {$images = [];
+    $extractNewsImages = function($item) use ($getMediaUrl) {
+        $images = [];
         $rawImages =$item->image ?? null;
 
         if (is_array($rawImages)) {
@@ -30,7 +33,7 @@
             }
         } elseif (is_string($rawImages)) {
             $decoded = json_decode($rawImages, true);
-            if (is_array($decoded)) {
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                 foreach ($decoded as$img) {
                     if ($url = $getMediaUrl($img)) $images[] =$url;
                 }
@@ -89,12 +92,12 @@
     <main class="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-8 sm:py-12 md:py-16">
 
         @if($featuredNews)
-            {{-- 🌟 Featured Story ជាមួយ Auto-Slide Carousel សមាមាត្រស្អាតលើ Mobile --}}
+            {{-- 🌟 Featured Story ជាមួយ Auto-Slide Carousel --}}
             <section data-aos="fade-up" class="mb-12 sm:mb-16">
                 <div class="group relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_15px_40px_rgba(15,23,42,0.06)] hover:shadow-[0_20px_50px_rgba(30,64,175,0.1)] transition-all duration-500">
                     <div class="grid grid-cols-1 lg:grid-cols-12 items-stretch">
                         
-                        {{-- Featured Image Slider: Aspect Ratio សមាមាត្រមិនកាត់ក្បាល --}}
+                        {{-- Featured Image Slider --}}
                         <div class="relative lg:col-span-7 aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto overflow-hidden bg-slate-950 w-full"
                              x-data="{ 
                                 current: 0, 
@@ -118,7 +121,7 @@
                             @if(count($featuredImages) > 0)
                                 <template x-for="(img, idx) in slides" :key="idx">
                                     <img :src="img" 
-                                         :alt="'{{ addslashes($featuredNews->title) }} photo ' + (idx + 1)"
+                                         :alt="'{{ e($featuredNews->title) }} photo ' + (idx + 1)"
                                          x-show="current === idx"
                                          x-transition:enter="transition ease-out duration-500"
                                          x-transition:enter-start="opacity-0 scale-102"
@@ -164,7 +167,7 @@
                                 </button>
                             </div>
 
-                            {{-- Dots: បង្ហាញតែពេលរូបតិចជាង ៨ ដើម្បីកុំឱ្យណែនលើ Mobile --}}
+                            {{-- Dots --}}
                             @if(count($featuredImages) > 1 && count($featuredImages) <= 8)
                                 <div class="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5">
                                     <template x-for="(s, sIdx) in slides" :key="'feat-dot-' + sIdx">
@@ -183,7 +186,7 @@
                                 <div class="flex items-center gap-2.5 text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
                                     <span class="text-orange-500 font-black">Life International School</span>
                                     <span>•</span>
-                                    <span>{{ $featuredNews->created_at?->format('Y') ?? '2026' }}</span>
+                                    <span>{{ $featuredNews->created_at?->format('Y') ?? date('Y') }}</span>
                                 </div>
 
                                 <h2 class="text-xl sm:text-2xl lg:text-3xl font-black leading-snug text-[#081747] group-hover:text-blue-700 transition-colors">
@@ -326,7 +329,7 @@
             <span id="modalDate" class="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-2"></span>
             <h2 id="modalTitle" class="text-xl sm:text-3xl font-black text-[#081747] leading-tight"></h2>
             
-            <div id="modalDesc" class="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-slate-600 divide-y divide-slate-100"></div>
+            <div id="modalDesc" class="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-slate-600 space-y-4"></div>
 
             <div class="mt-8 pt-5 border-t border-slate-100 flex items-center justify-between">
                 <a id="modalLink" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-blue-600 hover:text-orange-500 transition-colors">
@@ -400,7 +403,8 @@
         const title = card.dataset.title || 'News Update';
         const date = card.dataset.date || '';
         const link = card.dataset.link || '';
-        const descHtml = card.querySelector('.news-full-description')?.innerHTML || card.parentElement.querySelector('.news-full-description')?.innerHTML || '';
+        const descContainer = card.parentElement.querySelector('.news-full-description');
+        const descHtml = descContainer ? descContainer.innerHTML : '';
 
         modalTitle.textContent = title;
         modalDescription.innerHTML = descHtml || 'No further description is available.';
@@ -438,15 +442,11 @@
     });
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !newsModal.classList.contains('hidden')) {
-            closeModal();
-        }
-        if (e.key === 'ArrowLeft' && !newsModal.classList.contains('hidden')) {
-            modalPrevBtn.click();
-        }
-        if (e.key === 'ArrowRight' && !newsModal.classList.contains('hidden')) {
-            modalNextBtn.click();
-        }
+        if (newsModal.classList.contains('hidden')) return;
+
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') modalPrevBtn.click();
+        if (e.key === 'ArrowRight') modalNextBtn.click();
     });
 </script>
 
