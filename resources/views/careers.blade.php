@@ -18,17 +18,17 @@
 
 <div class="min-h-screen bg-[#f8fafc] text-slate-800">
 
-    {{-- 🚀 1. Studio Split Hero (ប្លែកដាច់ គ្មាន Banner ខៀវជាន់គ្នាទៀតទេ) --}}
+    {{-- 🚀 1. Hero Section --}}
     <section class="relative overflow-hidden bg-white border-b border-slate-200/80 pt-10 pb-16 lg:py-20">
         
-        {{-- Subtle background decoration --}}
+        {{-- Subtle Background Decoration --}}
         <div class="absolute -top-24 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-100/60 via-amber-50/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute top-1/2 left-0 w-80 h-80 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 
-                {{-- ខាងឆ្វេង: Headline & Actions --}}
+                {{-- Left Side: Headline & Actions --}}
                 <div class="lg:col-span-6 flex flex-col justify-center text-left">
                     
                     <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-xs font-black uppercase tracking-widest w-fit mb-6 shadow-sm">
@@ -46,12 +46,12 @@
 
                     {{-- Call to Actions --}}
                     <div data-aos="fade-up" data-aos-delay="300" class="mt-8 flex flex-wrap items-center gap-4">
-                        <a href="#openings" class="inline-flex items-center gap-2.5 bg-[#081747] hover:bg-orange-500 text-white text-sm font-bold uppercase tracking-wider px-7 py-4 rounded-xl shadow-lg hover:-translate-y-0.5 transition-all">
+                        <a href="#openings" class="inline-flex items-center gap-2.5 bg-[#081747] hover:bg-orange-500 text-white text-sm font-bold uppercase tracking-wider px-7 py-4 rounded-xl shadow-lg hover:-translate-y-0.5 transition-all duration-200">
                             <span>Explore Open Roles</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
                         </a>
 
-                        <a href="mailto:lifeinternationalschool@gmail.com" class="inline-flex items-center gap-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-bold uppercase tracking-wider px-6 py-4 rounded-xl transition-all">
+                        <a href="mailto:lifeinternationalschool@gmail.com" class="inline-flex items-center gap-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-bold uppercase tracking-wider px-6 py-4 rounded-xl transition-all duration-200">
                             <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             <span>Send Spontaneous CV</span>
                         </a>
@@ -75,7 +75,7 @@
 
                 </div>
 
-                {{-- ខាងស្តាំ: Studio Hero Banner Card (រូបថតពេញភ្នែក គ្មានអ្វីបាំង) --}}
+                {{-- Right Side: Banner Card --}}
                 <div data-aos="zoom-in" data-aos-delay="200" class="lg:col-span-6 relative">
                     <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.1)] p-3">
                         <div class="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-slate-100">
@@ -105,7 +105,7 @@
         </div>
     </section>
 
-    {{-- 📋 2. Hiring Roadmap Steps --}}
+    {{-- 📋 2. Application Guide Steps --}}
     <section class="mx-auto max-w-7xl px-6 md:px-10 py-16">
         <div class="text-center max-w-2xl mx-auto mb-12">
             <span class="text-xs font-black uppercase tracking-widest text-orange-500">Application Guide</span>
@@ -113,17 +113,17 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div data-aos="fade-up" data-aos-delay="100" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm relative">
+            <div data-aos="fade-up" data-aos-delay="100" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
                 <span class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 font-black flex items-center justify-center text-base mb-5">1</span>
                 <h4 class="font-black text-[#081747] text-lg">Select Open Position</h4>
                 <p class="mt-2 text-sm text-slate-500 leading-relaxed">Review the available teaching or administrative roles below to find the best match for your experience.</p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="200" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm relative">
+            <div data-aos="fade-up" data-aos-delay="200" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
                 <span class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 font-black flex items-center justify-center text-base mb-5">2</span>
                 <h4 class="font-black text-[#081747] text-lg">Complete Form (PDF)</h4>
                 <p class="mt-2 text-sm text-slate-500 leading-relaxed">Download our official application form PDF, fill out your details, and prepare your CV and credentials.</p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="300" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm relative">
+            <div data-aos="fade-up" data-aos-delay="300" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
                 <span class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 font-black flex items-center justify-center text-base mb-5">3</span>
                 <h4 class="font-black text-[#081747] text-lg">Submit via Email</h4>
                 <p class="mt-2 text-sm text-slate-500 leading-relaxed">Send your application package directly to <strong class="text-[#081747]">lifeinternationalschool@gmail.com</strong>.</p>
@@ -167,7 +167,7 @@
                             <div class="flex items-center gap-2 text-xs font-bold text-slate-400 mb-5">
                                 <span class="text-orange-600">Life International School</span>
                                 <span>•</span>
-                                <span>{{ $job->created_at?->format('M d, Y') ?? 'Active' }}</span>
+                                <span>{{ isset($job->created_at) ? $job->created_at->format('M d, Y') : 'Active' }}</span>
                             </div>
 
                             <div class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-6">
@@ -185,7 +185,7 @@
                                 </a>
                             @endif
 
-                            <a href="mailto:lifeinternationalschool@gmail.com?subject=Application for {{ rawurlencode($job->title) }}"
+                            <a href="mailto:lifeinternationalschool@gmail.com?subject=Application%20for%20{{ rawurlencode($job->title) }}"
                                class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#081747] hover:bg-blue-900 px-5 py-3 text-xs sm:text-sm font-bold uppercase tracking-wider text-white shadow-md transition-all {{ $job->application_file ? '' : 'w-full' }}">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 <span>Apply via Email</span>
