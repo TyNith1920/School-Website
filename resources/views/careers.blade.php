@@ -26,10 +26,11 @@
         <div class="absolute top-1/2 left-0 w-80 h-80 bg-blue-100/40 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
+            {{-- កែសម្រួល Grid ត្រង់នេះ៖ col-span-7 សម្រាប់អត្ថបទ និង col-span-5 សម្រាប់រូបភាព --}}
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 
-                {{-- Left Side: Headline & Actions --}}
-                <div class="lg:col-span-6 flex flex-col justify-center text-left">
+                {{-- Left Side: Headline & Actions (ច្បាមយក 7 ល្វែង) --}}
+                <div class="lg:col-span-7 flex flex-col justify-center text-left">
                     
                     <div data-aos="fade-down" class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-600 text-xs font-black uppercase tracking-widest w-fit mb-6 shadow-sm">
                         <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
@@ -75,10 +76,12 @@
 
                 </div>
 
-                {{-- Right Side: Banner Card --}}
-                <div data-aos="zoom-in" data-aos-delay="200" class="lg:col-span-6 relative">
-                    <div class="relative overflow-hidden rounded-[2.5rem] bg-white border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.1)] p-3">
-                        <div class="relative aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-slate-100">
+                {{-- Right Side: Banner Card (ច្បាមយក 5 ល្វែង និងបន្ថែម max-w-md ដើម្បីបង្រួមទំហំ) --}}
+                <div data-aos="zoom-in" data-aos-delay="200" class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-md overflow-hidden rounded-[2rem] bg-white border border-slate-200 shadow-[0_15px_45px_rgba(15,23,42,0.08)] p-2.5">
+                        
+                        {{-- អ្នកអាចដូរ aspect-[4/3] ទៅ aspect-[4/3] ឬ h-[320px] តាមតម្រូវការ --}}
+                        <div class="relative aspect-[4/3] w-full overflow-hidden rounded-[1.5rem] bg-slate-100">
                             @if(isset($banner) && $banner->image)
                                 <img src="{{ $getMediaUrl($banner->image) }}" alt="Life International School Educators" class="h-full w-full object-cover">
                             @else
@@ -88,45 +91,19 @@
                         </div>
 
                         {{-- Floating Hiring Badge --}}
-                        <div class="absolute bottom-8 left-8 inline-flex items-center gap-3 rounded-2xl bg-white/95 backdrop-blur-md px-5 py-3 shadow-xl border border-white/60">
-                            <span class="flex h-3 w-3 relative">
+                        <div class="absolute bottom-6 left-6 inline-flex items-center gap-2.5 rounded-xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-lg border border-white/60">
+                            <span class="flex h-2.5 w-2.5 relative">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                             </span>
                             <div>
-                                <p class="text-[10px] font-black uppercase tracking-wider text-slate-400 leading-none">LIS Careers</p>
-                                <p class="text-sm font-black text-[#081747] mt-0.5">We Are Hiring Educators</p>
+                                <p class="text-[9px] font-black uppercase tracking-wider text-slate-400 leading-none">LIS Careers</p>
+                                <p class="text-xs font-black text-[#081747] mt-0.5">We Are Hiring Educators</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    {{-- 📋 2. Application Guide Steps --}}
-    <section class="mx-auto max-w-7xl px-6 md:px-10 py-16">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-xs font-black uppercase tracking-widest text-orange-500">Application Guide</span>
-            <h2 class="text-3xl font-black text-[#081747] uppercase tracking-tight mt-1">How To Apply In 3 Steps</h2>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div data-aos="fade-up" data-aos-delay="100" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-                <span class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 font-black flex items-center justify-center text-base mb-5">1</span>
-                <h4 class="font-black text-[#081747] text-lg">Select Open Position</h4>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed">Review the available teaching or administrative roles below to find the best match for your experience.</p>
-            </div>
-            <div data-aos="fade-up" data-aos-delay="200" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-                <span class="w-10 h-10 rounded-2xl bg-blue-100 text-blue-600 font-black flex items-center justify-center text-base mb-5">2</span>
-                <h4 class="font-black text-[#081747] text-lg">Complete Form (PDF)</h4>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed">Download our official application form PDF, fill out your details, and prepare your CV and credentials.</p>
-            </div>
-            <div data-aos="fade-up" data-aos-delay="300" class="p-8 rounded-[2rem] bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-                <span class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 font-black flex items-center justify-center text-base mb-5">3</span>
-                <h4 class="font-black text-[#081747] text-lg">Submit via Email</h4>
-                <p class="mt-2 text-sm text-slate-500 leading-relaxed">Send your application package directly to <strong class="text-[#081747]">lifeinternationalschool@gmail.com</strong>.</p>
             </div>
         </div>
     </section>
